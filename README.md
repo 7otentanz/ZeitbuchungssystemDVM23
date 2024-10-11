@@ -1,9 +1,9 @@
 **Anforderungen**  
 1. Das System soll ermöglichen, dass autorisierte Anwender Arbeitsberichte zu ihrer Arbeitszeit bei DVM erstellen.
 2. Einzelne Arbeitsberichte sollen dabei folgende Information enthalten: 	
-  2.1 Wie viele Minuten wurde gearbeitet.
-  2.2 An welchem Tag (Datum) wurde die Arbeit verrichtet.
-  2.3 Für welches Modul wurde gearbeitet.
+  2.1 Wie viele Minuten wurde gearbeitet.  
+  2.2 An welchem Tag (Datum) wurde die Arbeit verrichtet.  
+  2.3 Für welches Modul wurde gearbeitet.  
   2.4 Inhalt der getanen Arbeit (kurzer Bericht)  
 *3. Es soll drei verschiedene Gruppen von Anwendern geben: einfache Anwender, VIP Anwender, und Administratoren.
 Jede Person soll sich registrieren können und als einfacher Anwender das System benutzen können.
