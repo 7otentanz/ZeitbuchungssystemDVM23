@@ -7,7 +7,7 @@
   2.4 Inhalt der getanen Arbeit (kurzer Bericht)  
 3. Es soll drei verschiedene Gruppen von Anwendern geben: einfache Anwender, VIP Anwender, und Administratoren.  
 4. Jede Person soll sich registrieren können und als einfacher Anwender das System benutzen können.  
-5. Für einfache Anwender gilt:    	
+5. Für einfache Anwender gilt:  
   5.1 Sie können die Online-Umgebung nutzen, um ihre Berichte zu "posten" / verwalten / anzeigen.  
   5.2 Einfache Anwender können zu VIP Anwendern werden, wenn sie das beantragen, und ein Administrator das genehmigt hat.  
 6. Für VIP Anwender gilt zusätzlich zu dem was für einfache Anwender gilt:  
