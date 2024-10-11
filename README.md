@@ -1,5 +1,5 @@
 **Anforderungen**  
-1. Das System soll ermöglichen, dass autorisierte Anwender Arbeitsberichte zu ihrer Arbeitszeit bei DVM erstellen.
+  1. Das System soll ermöglichen, dass autorisierte Anwender Arbeitsberichte zu ihrer Arbeitszeit bei DVM erstellen.
 2. Einzelne Arbeitsberichte sollen dabei folgende Information enthalten: 	
   2.1 Wie viele Minuten wurde gearbeitet.
   2.2 An welchem Tag (Datum) wurde die Arbeit verrichtet.
