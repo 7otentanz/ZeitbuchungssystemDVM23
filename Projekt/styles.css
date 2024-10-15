@@ -1,33 +1,43 @@
 * {
     left: 0;
     top: 0;
+    font-family: "Baloo Paaji 2";
+}
+
+body {
+    background-color: #ffbd59;
+}
+
+.logo {
+    height: 20vh;
+    width: auto;
 }
 
 #tabBox {
+    top: 0;
     min-width: 90vh;
     min-height: 32px;
-    /**border: solid black 4px;**/
 }
 
 .tab {
     display: inline-block;
     min-width: 16%;
     min-height: 32px;
-    background: linear-gradient(90deg, rgba(3,3,254,1) 0%, rgba(104,230,255,1) 100%);
-    margin-top: 2px;
-    /**left: 0.5px;**/
+    background: linear-gradient(90deg, #0097b2 0%, #a0f5ff 100%);
     border-radius: 10px 10px 0 0;
-    /**border: solid black 4px;**/
+    padding-left: 7.5px;
     text-align: inherit; /**DER SCHEIßDRECK SOLL UNTEN STEHEN!**/
 }
 
 .aktiv {
-    background: linear-gradient(90deg, rgba(121,112,254,1) 0%, rgba(204,230,255,1) 100%);
+    background: #a0f5ff;
+    padding-top: 5px;
 }
 
 .tabInhalt {
     min-width: 90vh;
     min-height: 80vh;
     border: solid black 1px;
+    background-color: #a0f5ff99;
     margin-top: 0;
 }
