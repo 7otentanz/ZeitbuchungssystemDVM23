@@ -6,10 +6,17 @@ class Modulgruppe:
         self.module = module
         self.zeit = list()
         self.bericht = list()
-        self.modulnummer = self.name.split(".")[0]
+        self.modulnummer = self.name.split(".")
     
     def modulHinzufuegen(self, modul):
-        self.module.append(modul)
+        if modul.modulnummer[0] == self.modulnummer[0]:
+            #print(f"{modul.modulnummer[0]} ist angeblich gleich {self.modulnummer[0]}")
+            #print(f"{modul.name} wurde {self.name} hinzugefügt!")
+            self.module.append(modul)
+        elif modul.modulnummer[0] != self.modulnummer[0]:
+            print("kann niemals passieren, weil beim erstellen jede zeile durchiteriert wird - und die stimmen immer überein.")
+        else:
+            print("kann niemals passieren, weil beim erstellen jede zeile durchiteriert wird - und die stimmen immer überein.")
 
     def aufgewendeteZeitenhinzufuegen(self, Zeiteintragobjekt):      #Zeit muss irgendwo her kommen. Soll aber schon direkt für das Teilmodul getrackt werden und dann den übergeorndeten auch hinzugefügt werden.
         self.zeit.append(Zeiteintragobjekt.zeit)
@@ -21,10 +28,17 @@ class Modul:
         self.modulgruppe = modulgruppe
         self.teilmodule = teilmodule
         self.zeit = list()
-        self.modulnummer = self.name.split(".")[1]  # Hier die Nummer X2 von X1.X2.X3 definieren
+        self.modulnummer = self.name.split(".")  # Hier die Nummer X2 von X1.X2.X3 definieren
 
     def teilmodulHinzufuegen(self, teilmodul):
-        self.teilmodule.append(teilmodul)
+        if teilmodul.modulnummer[1] == self.modulnummer[1]:
+            #print(f"{teilmodul.modulnummer[1]} ist tatsächlich gleich {self.modulnummer[1]}")
+            #print(f"{teilmodul.name} wurde {self.name} hinzugefügt!")
+            self.teilmodule.append(teilmodul)
+        elif teilmodul.modulnummer[1] != self.modulnummer[1]:
+            print("kann niemals passieren, weil beim erstellen jede zeile durchiteriert wird - und die stimmen immer überein.")
+        else:
+            print("kann niemals passieren, weil beim erstellen jede zeile durchiteriert wird - und die stimmen immer überein.")
         
     def aufgewendeteZeitenhinzufuegen(self, Zeiteintragobjekt):      #Zeit muss irgendwo her kommen. Soll aber schon direkt für das Teilmodul getrackt werden und dann den übergeorndeten auch hinzugefügt werden.
         self.zeit.append(Zeiteintragobjekt.zeit)
@@ -37,6 +51,7 @@ class Teilmodul:
         self.name = name
         self.modul = modul
         self.zeit = list()
+        self.modulnummer = self.name.split(".")
 
     def aufgewendeteZeitenhinzufuegen(self, Zeiteintragobjekt):      #Zeit muss irgendwo her kommen. Soll aber schon direkt für das Teilmodul getrackt werden und dann den übergeorndeten auch hinzugefügt werden.
         self.zeit.append(Zeiteintragobjekt.zeit)
@@ -81,45 +96,47 @@ with open("./BeispieleundInformationen/moduluebersicht.csv", "r", encoding="utf-
             modulname = zeile["Modul"]
             modulgruppenname = zeile["Modulgruppe"]
             
-            if modulgruppenname in modulgruppen:
-                pass
-            else:
+            if modulgruppenname not in modulgruppen:
                 modulgruppen[modulgruppenname] = Modulgruppe(modulgruppenname)
+            else:
+                pass
             modulgruppe = modulgruppen[modulgruppenname]
             
-            if modulname in module:
-                pass
-            else:
+            if modulname not in module:
                 module[modulname] = Modul(modulname, modulgruppe)
                 modulgruppe.modulHinzufuegen(module[modulname])
+            else:
+                pass
             modul = module[modulname]
 
-            if teilmodulname in teilmodule:
-                pass
-            else:
+            if teilmodulname not in teilmodule:
                 teilmodule[teilmodulname] = Teilmodul(teilmodulname, modul)
                 modul.teilmodulHinzufuegen(teilmodule[teilmodulname])
+            else:
+                pass
             teilmodul = teilmodule[teilmodulname]
 
-# Ergebnisse ausgeben
-print("Modulgruppen:")
-for modulgruppe in modulgruppen.values():
-    print(f"- {modulgruppe.name} ({len(modulgruppe.module)} Module)")
+modulgruppe2 = modulgruppen["1. Technische Dimension der Digitalisierung"]
 
-print("\nModule:")
-for modul in module.values():
-    print(f"- {modul.name} ({len(modul.teilmodule)} Teilmodule, gehört zu {modul.modulgruppe.name})")
+#print(modulgruppe2.name)       # Hier wird die richtige Modulgruppe (bzw. ihr Name) geprintet. Passt.
 
-print("\nTeilmodule:")
-for teilmodul in teilmodule.values():
-    print(f"- {teilmodul.name} (gehört zu {teilmodul.modul.name})")
+module2 = modulgruppe2.module
 
-# Infos aus den CSV Spalten?
+for inhalt in module2:         # Hier soll die Liste aller Module dieser Modulgruppe geprintet werden. ANGEBLICH SIND DA ABER ALLE DRIN! Passt nicht.
+    print(inhalt.name)
 
-# Alle Modulgruppen erstellen
-# Alle Module erstellen + Modulgruppen definieren.
-# Alle Teilmodule erstellen + Module definieren
+modul2 = module2[4]
 
+#print(modul2.name)
+
+teilmodule2 = modul2.teilmodule
+
+#for inhalt in teilmodule2:
+    #print(inhalt.name)
+
+teilmodul2 = teilmodule2[0]
+
+#print(teilmodul2.name)
 
 
 
