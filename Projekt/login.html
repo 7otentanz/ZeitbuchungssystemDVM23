@@ -18,7 +18,7 @@
         <img src="{% static 'Logoentwurf.png' %}" class="logo">
         <div id="datumUhrzeit"></div>
 
-        <form action="woranArbeitestDu.html" method="post">
+        <form action="{% url 'woranArbeitestDu' %}" method="post">
             <label for="matrikelnummer">Matrikelnummer: </label>
             <input type="text" id="matrikelnummer" name="matrikelnummer"></input><br>
             <label for="passwort">Passwort: </label>
@@ -26,7 +26,7 @@
             <button type="submit">Einloggen</button>
             <!-- Mit Django muss hier noch sichergestellt werde, dass User nur eingeloggt wieder zurück auf die Startseite kommen und ansonsten eine Fehlermeldung bekommen. -->
         </form>
-        <form action="registrieren.html" target="_blank">
+        <form action="{% url 'registrieren' %}" target="_blank">
             <label for="registrieren">Stattdessen registrieren?</label>
             <button type="submit">Registrieren</button>
         </form>

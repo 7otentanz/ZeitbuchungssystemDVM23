@@ -19,11 +19,11 @@
         <div id="datumUhrzeit"></div>
 
         <div id="tabBox">
-            <div id="woranArbeitestDu" class="tab"><a href="woranArbeitestDu.html">Woran arbeitest du gerade?</a></div>
-            <div id="erzaehlMirMehr" class="tab"><a href="erzaehlMirMehr.html">Erzähl mir mehr!</a></div>
-            <div id="kuerzlichAbgeschlossen" class="tab"><a href="kuerzlichAbgeschlossen.html">Kürzlich abgeschlossen.</a></div>
-            <div id="lassMichdasZusammenfassen" class="tab aktiv"><a href="lassMichDasZusammenfassen.html">Lass mich das zusammenfassen.</a></div>
-            <div id="login" class="tab"><a href="login.html">Einloggen & Loslegen!</a></div>
+            <div id="woranArbeitestDu" class="tab"><a href="{% url 'woranArbeitestDu' %}">Woran arbeitest du gerade?</a></div>
+            <div id="erzaehlMirMehr" class="tab"><a href="{% url 'erzaehlMirMehr' %}">Erzähl mir mehr!</a></div>
+            <div id="kuerzlichAbgeschlossen" class="tab"><a href="{% url 'kuerzlichAbgeschlossen' %}">Kürzlich abgeschlossen.</a></div>
+            <div id="lassMichdasZusammenfassen" class="tab aktiv"><a href="{% url 'lassMichDasZusammenfassen' %}">Lass mich das zusammenfassen.</a></div>
+            <div id="login" class="tab"><a href="{% url 'login' %}">Einloggen & Loslegen!</a></div>
         </div>
 
         <div class="tabInhalt"></div>
