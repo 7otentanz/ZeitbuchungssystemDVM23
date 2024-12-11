@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="de">
+
+    <head>
+        <meta charset="utf-8">
+        <title>10PM - Wenn's beim Lernen mal wieder spät wird</title>
+        <link rel="stylesheet" type="text/css" href="styles.css">
+        <script src="scripts.js"></script>
+        <!-- Schriftarten-->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Baloo+Paaji+2&display=swap" rel="stylesheet">   
+    </head>
+
+    <body onload="datumEinfuegen()">
+
+        <img src="Logoentwurf.png" class="logo">
+        <div id="datumUhrzeit"></div>
+
+        <form method="post">
+            <label for="matrikelnummer">Matrikelnummer: </label>
+            <input type="text" id="matrikelnummer" name="matrikelnummer" pattern="^[0-9]{6}$" required></input><br>
+            <label for="vorname">Vorname: </label>
+            <input type="text" id="vorname" name="vorname" required></input><br>
+            <label for="nachname">Nachname: </label>
+            <input type="text" id="nachname" name="nachname"required></input><br>
+            <label for="jahrgang">Jahrgang: </label>
+            <input type="text" id="jahrgang" name="jahrgang" pattern="^[A-Za-z]{3}[0-9]{2}$" required></input><br>
+            <label for="passwort">Passwort: </label>
+            <input type="password" id="passwort" name="passwort"></input><br>
+            <button type="submit">Registrieren!</button>
+        </form>
+
+    </body>
+
+</html>
