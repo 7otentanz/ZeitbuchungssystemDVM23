@@ -1,0 +1,117 @@
+<ModuleGroup index="1" name="Technische Dimensionen der Digitalisierung">
+  <Module index="1" name="Informatik Einführung und Vertiefung">
+    <Submodule index="1" name="Einführung in die Informatik" semester="2" />
+    <Submodule index="2" name="Vertiefung Informatik" semester="3" />
+  </Module>
+  <Module index="2" name="E-Government mit Exkursionen">
+    <Submodule index="0" name="E-Government mit Exkursionen" semester="1" />
+  </Module>
+  <Module index="3" name="Betriebs- und Kommunikationssysteme/ verteilte Systeme">
+    <Submodule index="1" name="Betriebs- und Kommunikationssysteme" semester="3" />
+    <Submodule index="2" name="Verteilte Systeme" semester="4" />
+    <Submodule index="3" name="Aktuelle Anwendungen erproben, Web Collagen, Roboter bauen, Raspberry Pi" semester="4" />
+  </Module>
+  <Module index="4" name="Vorgehensmodelle der Softwareentwicklung, Requirements-Engineering und Requirements-Management">
+    <Submodule index="1" name="Vorgehensmodelle (Software-Engineering 1)" semester="1" />
+    <Submodule index="2" name="Requirements-Engineering und Requirements-Management (Software-Engineering 2)" semester="2" />
+  </Module>
+  <Module index="5" name="Systemanalyse, Softwareentwurf und Implementierung, Softwarequilität und Test">
+    <Submodule index="1" name="Systemanalyse (Software-Engineering 3)" semester="3" />
+    <Submodule index="2" name="Softwareentwurf und Implementierung (Software-Engineering 4)" semester="4" />
+    <Submodule index="3" name="Softwarequalität und Test (Software-Engineering 5)" semester="4" />
+  </Module>
+  <Module index="6" name="Cybersecurity und ITIL">
+    <Submodule index="1" name="Cybersecurity" semester="6" />
+    <Submodule index="2" name="ITIL" semester="6" />
+  </Module>
+  <Module index="7" name="IT-Management">
+    <Submodule index="0" name="IT-Management" semester="5" />
+  </Module>
+  <Module index="8" name="IT-Systeme und Informationssysteme">
+    <Submodule index="0" name="IT-Systeme und Informationssysteme" semester="5" />
+  </Module>
+</ModuleGroup>
+<ModuleGroup index="2" name="Verwaltungsmanagement">
+  <Module index="1" name="Steuerung, Public Management und Projektmanagement">
+    <Submodule index="0" name="Steuerung, Public Management und Projektmanagement" semester="1" />
+  </Module>
+  <Module index="2" name="Organisations- und Prozessmanagement">
+    <Submodule index="0" name="Organisations- und Prozessmanagement" semester="3" />
+  </Module>
+  <Module index="3" name="Öffentliche Betriebswirtschaftslehre">
+    <Submodule index="0" name="Öffentliche Betriebswirtschaftslehre" semester="5" />
+  </Module>
+</ModuleGroup>
+<ModuleGroup index="3" name="Rechtliche Grundlagen der öffentlichen Verwaltung">
+  <Module index="1" name="Öffentlich-rechtliche Grundlagen der Verwaltungsorganisation und des Verwaltungshandelns">
+    <Submodule index="1" name="Grundlagen des Staats- und Europarechts" semester="1" />
+    <Submodule index="2" name="Verwaltungsrecht" semester="1" />
+  </Module>
+  <Module index="2" name="Kommunales Wirtschaftsrecht">
+    <Submodule index="1" name="Kommunalrecht" semester="3" />
+    <Submodule index="2" name="Finanzwirtschaft der Kommunen" semester="3" />
+    <Submodule index="3" name="Staatliches Haushaltsrecht" semester="3" />
+  </Module>
+  <Module index="3" name="Zivilrechtliche Grundlagen des Verwaltungshandelns">
+    <Submodule index="1" name="Grundlagen des Zivilrechts" semester="2" />
+    <Submodule index="2" name="Grundlagen des Kartell- und Wettbewerbsrechts" semester="2" />
+    <Submodule index="3" name="Grundlagen des Handels- und Gesellschaftsrechts" semester="2" />
+    <Submodule index="4" name="IT-Recht" semester="2" />
+  </Module>
+  <Module index="4" name="Rechtliche Grundlagen der öffentlichen Beschaffung">
+    <Submodule index="1" name="Vergaberecht (einschließlich E-Government)" semester="4" />
+    <Submodule index="2" name="Beihilferecht" semester="4" />
+  </Module>
+  <Module index="5" name="Rechtliche Grundlagen des Datenschutzes, Informationszugangsrecht und Personalrecht">
+    <Submodule index="1" name="Recht Datenschutzes" semester="5" />
+    <Submodule index="2" name="Informationszugangsrecht" semester="5" />
+    <Submodule index="3" name="Arbeitsrecht" semester="5" />
+    <Submodule index="4" name="Beamtenrecht" semester="5" />
+  </Module>
+  <Module index="6" name="Vertragsgestaltung und rechtliche Kernkompetenzen">
+    <Submodule index="1" name="Vertragsgestaltung" semester="6" />
+    <Submodule index="2" name="Rechtliche Kernkompetenzen bei Digitalisierungsprojekten" semester="6" />
+  </Module>
+</ModuleGroup>
+<ModuleGroup index="4" name="Digital Leadership">
+  <Module index="1" name="Digital Governance: Von der ganzheitlichen Strategie zur Umsetzung">
+    <Submodule index="1" name="Strategische und integrale Steuerung" semester="1" />
+    <Submodule index="2" name="Smart Cities und Smart Services" semester="1" />
+    <Submodule index="3" name="Grundlagen des Change Managements" semester="2" />
+  </Module>
+  <Module index="2" name="Führung, Kommunikation und Partizipation im digitalen Kontext">
+    <Submodule index="1" name="Gestaltung von Kommunikation und Partizipation mit digitalen Medien" semester="4" />
+    <Submodule index="2" name="Führung und Teamentwicklung mit digitalen Medien" semester="3" />
+    <Submodule index="3" name="Digitalisierung und digitales Wissensmanagement" semester="4" />
+  </Module>
+</ModuleGroup>
+<ModuleGroup index="5" name="Praxisphasen Praktika 1 und 7">
+  <Module index="1" name="Praktikum 1">
+    <Submodule index="0" name="Praktikum 1" />
+  </Module>
+  <Module index="2" name="Praktikum 7">
+    <Submodule index="0" name="Praktikum 7" />
+  </Module>
+</ModuleGroup>
+<ModuleGroup index="6" name="Fallstudien">
+  <Module index="1" name="Fallstudie 1">
+    <Submodule index="0" name="Fallstudie 1" semester="2" />
+  </Module>
+  <Module index="2" name="Fallstudie 2">
+    <Submodule index="0" name="Fallstudie 2" semester="3" />
+  </Module>
+  <Module index="3" name="Fallstudie 3">
+    <Submodule index="0" name="Fallstudie 3" semester="4" />
+  </Module>
+  <Module index="4" name="Fallstudie 4">
+    <Submodule index="0" name="Fallstudie 4" semester="5" />
+  </Module>
+  <Module index="5" name="Fallstudie 5">
+    <Submodule index="0" name="Fallstudie 5" semester="6" />
+  </Module>
+</ModuleGroup>
+<ModuleGroup index="7" name="Bachelorarbeit">
+  <Module index="0" name="Bachelorarbeit">
+    <Submodule index="0" name="Bachelorarbeit" />
+  </Module>
+</ModuleGroup>
