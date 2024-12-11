@@ -27,6 +27,7 @@ urlpatterns = [
     path('lassmichdaszusammenfassen', views.lassmichdaszusammenfassen, name='lassMichDasZusammenfassen'),
     path('login', views.login, name='login'),
     path('registrieren', views.registrieren, name='registrieren'),
+    path('nutzerRegistrieren', views.nutzerRegistrieren, name='nutzerRegistrieren'),
 ]
 
 urlpatterns += staticfiles_urlpatterns()

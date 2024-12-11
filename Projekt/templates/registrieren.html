@@ -18,7 +18,8 @@
         <img src="{% static 'Logoentwurf.png' %}" class="logo">
         <div id="datumUhrzeit"></div>
 
-        <form method="post">
+        <form method="post" action="{% url 'nutzerRegistrieren' %}">
+            {% csrf_token %}
             <label for="matrikelnummer">Matrikelnummer: </label>
             <input type="text" id="matrikelnummer" name="matrikelnummer" pattern="^[0-9]{6}$" required></input><br>
             <label for="vorname">Vorname: </label>
