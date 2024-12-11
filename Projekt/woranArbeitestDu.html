@@ -1,20 +1,21 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="de">
 
     <head>
         <meta charset="utf-8">
         <title>10PM - Wenn's beim Lernen mal wieder spät wird</title>
-        <link rel="stylesheet" type="text/css" href="styles.css">
-        <script src="scripts.js"></script>
+        <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
+        <script src="{% static 'scripts.js' %}"></script>
         <!-- Schriftarten-->
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Baloo+Paaji+2&display=swap" rel="stylesheet">        
+        <link href="https://fonts.googleapis.com/css2?family=Baloo+Paaji+2&display=swap" rel="stylesheet">   
     </head>
 
     <body onload="datumEinfuegen()">
 
-        <img src="Logoentwurf.png" class="logo">
+        <img src="{% static 'Logoentwurf.png' %}" class="logo">
         <div id="datumUhrzeit"></div>
 
         <div id="tabBox">
