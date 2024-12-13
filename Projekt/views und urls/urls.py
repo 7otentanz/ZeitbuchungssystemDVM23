@@ -22,6 +22,7 @@ from ten_pm import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('woranarbeitestdu', views.woranarbeitestdu, name='woranArbeitestDu'),
+    path('', views.zeitGeben, name='zeitGeben'),
     path('erzaehlmirmehr', views.erzaehlmirmehr, name='erzaehlMirMehr'),
     path('kuerzlichabgeschlossen', views.kuerzlichabgeschlossen, name='kuerzlichAbgeschlossen'),
     path('lassmichdaszusammenfassen', views.lassmichdaszusammenfassen, name='lassMichDasZusammenfassen'),

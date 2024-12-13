@@ -29,7 +29,262 @@
             {% endif %}
         </div>
 
-        <div class="tabInhalt"></div>
+        <div class="tabInhalt">
+            {% if request.session.semester == 2 %}
+            <form method="post" action="{% url 'zeitGeben' %}">
+                {% csrf_token %}
+                <button type="submit" class="zeitbutton" id="1.1.1">1.1.1 Einführung Informatik</button>
+            </form>
+            {% endif %}
+            {% if request.session.semester == 3 %}
+            <form method="post" action="{% url 'zeitGeben' %}">
+                {% csrf_token %}
+                <button type="submit" class="zeitbutton" id="1.1.2">1.1.2 Vertiefung Informatik</button>
+            </form>
+            {% endif %}
+            {% if request.session.semester == 1 %}
+            <form method="post" action="{% url 'zeitGeben' %}">
+                {% csrf_token %}
+                <button type="submit" class="zeitbutton" id="1.2.0">1.2.0. E-Government mit Exkursionen</button>
+            </form>
+            {% endif %}
+            {% if request.session.semester == 3 %}
+            <form method="post" action="{% url 'zeitGeben' %}">
+                {% csrf_token %}
+                <button type="submit" class="zeitbutton" id="1.3.1">1.3.1. Betriebs- und Kommunikationssysteme</button>
+            </form>
+            {% endif %}
+            {% if request.session.semester == 4 %}
+            <form method="post" action="{% url 'zeitGeben' %}">
+                {% csrf_token %}
+                <button type="submit" class="zeitbutton" id="1.3.2">1.3.2. Verteilte Systeme</button>
+            </form>
+            {% endif %}
+            {% if request.session.semester == 4 %}
+            <form method="post" action="{% url 'zeitGeben' %}">
+                {% csrf_token %}
+                <button type="submit" class="zeitbutton" id="1.3.3">1.3.3. Aktuelle Anwendungen erproben, Raspberry Pi</button>
+            </form>
+            {% endif %}
+            {% if request.session.semester == 1 %}
+            <form method="post" action="{% url 'zeitGeben' %}">
+                {% csrf_token %}
+                <button type="submit" class="zeitbutton" id="1.4.1">1.4.1. Vorgehensmodelle (Software Engineering 1)</button>
+            </form>
+            {% endif %}
+            {% if request.session.semester == 2 %}
+            <form method="post" action="{% url 'zeitGeben' %}">
+                {% csrf_token %}
+                <button type="submit" class="zeitbutton" id="1.4.2">1.4.2. Requirementsengineering und Requirementsmanagement (Software Engineering 2)</button>
+            </form>
+            {% endif %}
+            {% if request.session.semester == 3 %}
+            <form method="post" action="{% url 'zeitGeben' %}">
+                {% csrf_token %}
+                <button type="submit" class="zeitbutton" id="1.5.1">1.5.1. Systemanalyse (Software Engineering 3)</button>
+            </form>
+            {% endif %}
+            {% if request.session.semester == 4 %}
+            <form method="post" action="{% url 'zeitGeben' %}">
+                {% csrf_token %}
+                <button type="submit" class="zeitbutton" id="1.5.2">1.5.2. Software Entwurf und Implementierung (Software Engineering 4)</button>
+            </form>
+            {% endif %}
+            {% if request.session.semester == 4 %}
+            <form method="post" action="{% url 'zeitGeben' %}">
+                {% csrf_token %}
+                <button type="submit" class="zeitbutton" id="1.5.3">1.5.3. Softwarequalität und Test (Software Engineering 5)</button>
+            </form>
+            {% endif %}
+            {% if request.session.semester == 6 %}
+            <form method="post" action="{% url 'zeitGeben' %}">
+                {% csrf_token %}
+                <button type="submit" class="zeitbutton" id="1.6.1">1.6.1. Cybersecurity</button>
+            </form>
+            {% endif %}
+            {% if request.session.semester == 6 %}
+            <form method="post" action="{% url 'zeitGeben' %}">
+                {% csrf_token %}
+                <button type="submit" class="zeitbutton" id="1.6.2">1.6.2. ITIL</button>
+            </form>
+            {% endif %}
+            {% if request.session.semester == 5 %}
+            <form method="post" action="{% url 'zeitGeben' %}">
+                {% csrf_token %}
+                <button type="submit" class="zeitbutton" id="1.7.0">1.7.0. IT-Management</button>
+            </form>
+            {% endif %}
+            {% if request.session.semester == 5 %}
+            <form method="post" action="{% url 'zeitGeben' %}">
+                {% csrf_token %}
+                <button type="submit" class="zeitbutton" id="1.8.0">1.8.0. IT-Systeme und Informationssysteme</button>
+            </form>
+            {% endif %}
+            {% if request.session.semester == 1 %}
+            <form method="post" action="{% url 'zeitGeben' %}">
+                {% csrf_token %}
+                <button type="submit" class="zeitbutton" id="2.1.0">2.1.0. Steuerung, Public Management und Projektmanagement</button>
+            </form>
+            {% endif %}
+            {% if request.session.semester == 3 %}
+            <form method="post" action="{% url 'zeitGeben' %}">
+                {% csrf_token %}
+                <button type="submit" class="zeitbutton" id="2.2.0">2.2.0. Organisations- und Prozessmanagement</button>
+            </form>
+            {% endif %}
+            {% if request.session.semester == 5 %}
+            <form method="post" action="{% url 'zeitGeben' %}">
+                {% csrf_token %}
+                <button type="submit" class="zeitbutton" id="2.3.0">2.3.0. Öffentliche Betriebswirtschaftslehre</button>
+            </form>
+            {% endif %}
+            {% if request.session.semester == 1 %}
+            <form method="post" action="{% url 'zeitGeben' %}">
+                {% csrf_token %}
+                <button type="submit" class="zeitbutton" id="3.1.1">3.1.1. Grundlagen des Staats- und Europarechts</button>
+            </form>
+            {% endif %}
+            {% if request.session.semester == 1 %}
+            <form method="post" action="{% url 'zeitGeben' %}">
+                {% csrf_token %}
+                <button type="submit" class="zeitbutton" id="3.1.2">3.1.2. Verwaltungsrecht</button>
+            </form>
+            {% endif %}
+            {% if request.session.semester == 3 %}
+            <form method="post" action="{% url 'zeitGeben' %}">
+                {% csrf_token %}
+                <button type="submit" class="zeitbutton" id="3.2.1">3.2.1. Kommunalrecht</button>
+            </form>
+            {% endif %}
+            {% if request.session.semester == 3 %}
+            <form method="post" action="{% url 'zeitGeben' %}">
+                {% csrf_token %}
+                <button type="submit" class="zeitbutton" id="3.2.2">3.2.2. Finanzwirtschaft der Kommunen</button>
+            </form>
+            {% endif %}
+            {% if request.session.semester == 3 %}
+            <form method="post" action="{% url 'zeitGeben' %}">
+                {% csrf_token %}
+                <button type="submit" class="zeitbutton" id="3.2.3">3.2.3. Staatliches Haushaltsrecht</button>
+            </form>
+            {% endif %}
+            {% if request.session.semester == 2 %}
+            <form method="post" action="{% url 'zeitGeben' %}">
+                {% csrf_token %}
+                <button type="submit" class="zeitbutton" id="3.3.1">3.3.1. Grundlagen des Zivilrechts</button>
+            </form>
+            {% endif %}
+            {% if request.session.semester == 2 %}
+            <form method="post" action="{% url 'zeitGeben' %}">
+                {% csrf_token %}
+                <button type="submit" class="zeitbutton" id="3.3.2">3.3.2. Grundlagen des Kartell- und Wettbewerbsrechts</button>
+            </form>
+            {% endif %}
+            {% if request.session.semester == 2 %}
+            <form method="post" action="{% url 'zeitGeben' %}">
+                {% csrf_token %}
+                <button type="submit" class="zeitbutton" id="3.3.3">3.3.3. Grundlagen des Handels- und Gesellschaftsrechts</button>
+            </form>
+            {% endif %}
+            {% if request.session.semester == 2 %}
+            <form method="post" action="{% url 'zeitGeben' %}">
+                {% csrf_token %}
+                <button type="submit" class="zeitbutton" id="3.3.4">3.3.4. IT-Recht</button>
+            </form>
+            {% endif %}
+            {% if request.session.semester == 4 %}
+            <form method="post" action="{% url 'zeitGeben' %}">
+                {% csrf_token %}
+                <button type="submit" class="zeitbutton" id="3.4.1">3.4.1. Vergaberecht (einschließlich e-Government)</button>
+            </form>
+            {% endif %}
+            {% if request.session.semester == 4 %}
+            <form method="post" action="{% url 'zeitGeben' %}">
+                {% csrf_token %}
+                <button type="submit" class="zeitbutton" id="3.4.2">3.4.2. Beihilferecht</button>
+            </form>
+            {% endif %}
+            {% if request.session.semester == 5 %}
+            <form method="post" action="{% url 'zeitGeben' %}">
+                {% csrf_token %}
+                <button type="submit" class="zeitbutton" id="3.5.1">3.5.1. Recht des Datenschutzes</button>
+            </form>
+            {% endif %}
+            {% if request.session.semester == 5 %}
+            <form method="post" action="{% url 'zeitGeben' %}">
+                {% csrf_token %}
+                <button type="submit" class="zeitbutton" id="3.5.2">3.5.2. Informationszugangsrecht</button>
+            </form>
+            {% endif %}
+            {% if request.session.semester == 5 %}
+            <form method="post" action="{% url 'zeitGeben' %}">
+                {% csrf_token %}
+                <button type="submit" class="zeitbutton" id="3.5.3">3.5.3. Arbeitsrecht</button>
+            </form>
+            {% endif %}
+            {% if request.session.semester == 5 %}
+            <form method="post" action="{% url 'zeitGeben' %}">
+                {% csrf_token %}
+                <button type="submit" class="zeitbutton" id="3.5.4">3.5.4. Beamtenrecht</button>
+            </form>
+            {% endif %}
+            {% if request.session.semester == 6 %}
+            <form method="post" action="{% url 'zeitGeben' %}">
+                {% csrf_token %}
+                <button type="submit" class="zeitbutton" id="3.6.1">3.6.1. Vertragsgestaltung</button>
+            </form>
+            {% endif %}
+            {% if request.session.semester == 6 %}
+            <form method="post" action="{% url 'zeitGeben' %}">
+                {% csrf_token %}
+                <button type="submit" class="zeitbutton" id="3.6.2">3.6.2. Rechtliche Kernkompetenzen bei Digitalisierungsprojekten</button>
+            </form>
+            {% endif %}
+            {% if request.session.semester == 1 %}
+            <form method="post" action="{% url 'zeitGeben' %}">
+                {% csrf_token %}
+                <button type="submit" class="zeitbutton" id="4.1.1">4.1.1. Strategische und Integrale Steuerung</button>
+            </form>
+            {% endif %}
+            {% if request.session.semester == 1 %}
+            <form method="post" action="{% url 'zeitGeben' %}">
+                {% csrf_token %}
+                <button type="submit" class="zeitbutton" id="4.1.2">4.1.2. Smart Cities und Smart Services</button>
+            </form>
+            {% endif %}
+            {% if request.session.semester == 2 %}
+            <form method="post" action="{% url 'zeitGeben' %}">
+                {% csrf_token %}
+                <button type="submit" class="zeitbutton" id="4.1.3">4.1.3. Grundlagen des Change Managements</button>
+            </form>
+            {% endif %}
+            {% if request.session.semester == 4 %}
+            <form method="post" action="{% url 'zeitGeben' %}">
+                {% csrf_token %}
+                <button type="submit" class="zeitbutton" id="4.2.1">4.2.1. Gestaltung von Kommunikation und Partizipation mit digitalen Medien</button>
+            </form>
+            {% endif %}
+            {% if request.session.semester == 3 %}
+            <form method="post" action="{% url 'zeitGeben' %}">
+                {% csrf_token %}
+                <button type="submit" class="zeitbutton" id="4.2.2">4.2.2. Führung und Teamentwicklung mit digitalen Medien</button>
+            </form>
+            {% endif %}
+            {% if request.session.semester == 4 %}
+            <form method="post" action="{% url 'zeitGeben' %}">
+                {% csrf_token %}
+                <button type="submit" class="zeitbutton" id="4.2.3">4.2.3. Digitalisierung und digitales Wissensmanagement</button>
+            </form>
+            {% endif %}
+            {% if request.session.semester == 6 %}
+            <form method="post" action="{% url 'zeitGeben' %}">
+                {% csrf_token %}
+                <button type="submit" class="zeitbutton" id="7.1.1">7.1.1. Bachelorarbeit</button>
+            </form>
+            {% endif %}
+
+
+        </div>
 
     </body>
 
