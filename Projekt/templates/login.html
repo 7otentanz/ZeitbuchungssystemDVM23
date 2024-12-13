@@ -19,6 +19,7 @@
         <div id="datumUhrzeit"></div>
 
         <form action="{% url 'woranArbeitestDu' %}" method="post">
+            {% csrf_token %}
             <label for="matrikelnummer">Matrikelnummer: </label>
             <input type="text" id="matrikelnummer" name="matrikelnummer"></input><br>
             <label for="passwort">Passwort: </label>

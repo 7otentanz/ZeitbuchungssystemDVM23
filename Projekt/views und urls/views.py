@@ -27,6 +27,7 @@ def registrieren(request):
 speicherpfadJSON = "/var/www/static"
 
 def nutzerRegistrieren(request):
+	
 	matrikelnummer = request.POST.get("matrikelnummer")
 	vorname = request.POST.get("vorname")
 	nachname = request.POST.get("nachname")
@@ -45,7 +46,7 @@ def nutzerRegistrieren(request):
 
 	jsonDatei = os.path.join(speicherpfadJSON, "nutzerdatenbank.json")
 
-	with open(jsonDatei, "r") as datei:
+	with open(jsonDatei, "r", encoding="utf-8") as datei:
 		daten = json.load(datei)
 
 		if matrikelnummer in daten["Benutzer"]:
@@ -54,7 +55,7 @@ def nutzerRegistrieren(request):
 		else:
 			daten["Benutzer"][matrikelnummer] = nutzerDaten
 
-	with open(jsonDatei, "w") as datei:
-		json.dump(daten, datei)
+	with open(jsonDatei, "w", encoding="utf-8") as datei:
+		json.dump(daten, datei, indent=4)		# der indent rückt die jsonDatei so ein, wie sie soll - erhöht die Lesbarkeit.
 	
 	return redirect("login")
