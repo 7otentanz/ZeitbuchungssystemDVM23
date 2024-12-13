@@ -30,9 +30,19 @@ body {
 
 .tab {
     display: inline-block;
-    min-width: 16%;
+    min-width: 15%;
     min-height: 32px;
     background: linear-gradient(90deg, #0097b2 0%, #a0f5ff 100%);
+    border-radius: 10px 10px 0 0;
+    padding-left: 7.5px;
+    text-align: inherit; /**DER SCHEIßDRECK SOLL UNTEN STEHEN!**/
+}
+
+.nutzer-tab {
+    display: inline-block;
+    min-width: 15%;
+    min-height: 32px;
+    background: linear-gradient(90deg, #dfd0bb 0%, #ffdaa2 100%);
     border-radius: 10px 10px 0 0;
     padding-left: 7.5px;
     text-align: inherit; /**DER SCHEIßDRECK SOLL UNTEN STEHEN!**/
@@ -45,6 +55,12 @@ a, :link, :visited, :active{
 
 .aktiv {
     background: #a0f5ff;
+    padding-top: 5px;
+    font-weight: bold;
+}
+
+.nutzer-aktiv {
+    background: #ffdaa2;
     padding-top: 5px;
     font-weight: bold;
 }

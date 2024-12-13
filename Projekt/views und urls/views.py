@@ -16,6 +16,9 @@ def kuerzlichabgeschlossen(request):
 def lassmichdaszusammenfassen(request):
 	return render(request, 'lassMichDasZusammenfassen.html')
 
+def nutzerverwaltung(request):
+	return render(request, 'nutzerverwaltung.html')
+
 def login(request):
 	return render(request, 'login.html')
 
