@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from django.middleware.csrf import get_token
 import os
@@ -24,27 +24,37 @@ def registrieren(request):
 
 # Neuen Benutzer anlegen / registrieren
 
-speicherpfadJSON = "./static/"		# Hier muss der tatsächliche Speicherort rein!
+speicherpfadJSON = "/var/www/static"
 
 def nutzerRegistrieren(request):
-
 	matrikelnummer = request.POST.get("matrikelnummer")
 	vorname = request.POST.get("vorname")
 	nachname = request.POST.get("nachname")
 	jahrgang = request.POST.get("jahrgang")
 	passwort = request.POST.get("passwort")
+	berechtigung = "nutzer"
 
 	nutzerDaten = {
 		"matrikelnummer": matrikelnummer,
 		"vorname": vorname,
 		"nachname": nachname,
 		"jahrgang": jahrgang,
-		"passwort": passwort
+		"passwort": passwort,
+		"berechtigung": berechtigung
 	}
 
 	jsonDatei = os.path.join(speicherpfadJSON, "nutzerdatenbank.json")
 
-	with open(jsonDatei, "w") as nutzerdatenbank:							# PERMISSION DENIED -- noch keine Lösung.
-		json.dump(nutzerDaten, nutzerdatenbank)
+	with open(jsonDatei, "r") as datei:
+		daten = json.load(datei)
 
-	return JsonResponse({"status": "success", "message": "Benutzer registriert!"})
+		if matrikelnummer in daten["Benutzer"]:
+			return redirect("login")
+		
+		else:
+			daten["Benutzer"][matrikelnummer] = nutzerDaten
+
+	with open(jsonDatei, "w") as datei:
+		json.dump(daten, datei)
+	
+	return redirect("login")

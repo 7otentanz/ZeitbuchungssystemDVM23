@@ -26,7 +26,7 @@
             <button type="submit">Einloggen</button>
             <!-- Mit Django muss hier noch sichergestellt werde, dass User nur eingeloggt wieder zurück auf die Startseite kommen und ansonsten eine Fehlermeldung bekommen. -->
         </form>
-        <form action="{% url 'registrieren' %}" target="_blank">
+        <form action="{% url 'registrieren' %}">
             <label for="registrieren">Stattdessen registrieren?</label>
             <button type="submit">Registrieren</button>
         </form>
