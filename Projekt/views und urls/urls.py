@@ -27,6 +27,7 @@ urlpatterns = [
     path('lassmichdaszusammenfassen', views.lassmichdaszusammenfassen, name='lassMichDasZusammenfassen'),
     path('nutzerverwaltung', views.nutzerverwaltung, name='nutzerverwaltung'),
     path('login', views.login, name='login'),
+    path('nutzeranmelden', views.nutzerAnmelden, name='nutzerAnmelden'),
     path('registrieren', views.registrieren, name='registrieren'),
     path('nutzerRegistrieren', views.nutzerRegistrieren, name='nutzerRegistrieren'),
 ]

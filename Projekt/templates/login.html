@@ -18,7 +18,7 @@
         <img src="{% static 'Logoentwurf.png' %}" class="logo">
         <div id="datumUhrzeit"></div>
 
-        <form action="{% url 'woranArbeitestDu' %}" method="post">
+        <form action="{% url 'nutzerAnmelden' %}" method="post">
             {% csrf_token %}
             <label for="matrikelnummer">Matrikelnummer: </label>
             <input type="text" id="matrikelnummer" name="matrikelnummer"></input><br>
