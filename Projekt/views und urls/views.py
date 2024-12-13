@@ -1,7 +1,5 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from django.contrib.auth import login, authenticate
-from django.middleware.csrf import get_token
 import os
 import json
 
@@ -75,12 +73,14 @@ def nutzerAnmelden(request):
 		daten = json.load(datei)
 
 		if matrikelnummer in daten["Benutzer"]:
+
 			if passwort == daten["Benutzer"][matrikelnummer]["passwort"]:
-				user = authenticate(request, matrikelnummer=matrikelnummer, passwort=passwort)
-				login(request, user)	# erstellt eine Session 
+				request.session["matrikelnummer"] = matrikelnummer		# erstellt eine session... die so lange aktiv bleibt, wie der browser geöffnet ist.
 				return redirect("woranArbeitestDu")
+			
 			elif passwort != daten["Benutzer"][matrikelnummer]["passwort"]:
 				return HttpResponse("<script>alert('Falsches Passwort!');window.history.back()</script>")
+			
 		if matrikelnummer not in daten["Benutzer"]:
 			return HttpResponse("<script>alert('Du musst dich zuerst registrieren!');window.history.back()</script>")
 

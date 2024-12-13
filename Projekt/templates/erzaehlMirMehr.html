@@ -24,8 +24,9 @@
             <div id="kuerzlichAbgeschlossen" class="tab"><a href="{% url 'kuerzlichAbgeschlossen' %}">Kürzlich abgeschlossen.</a></div>
             <div id="lassMichdasZusammenfassen" class="tab"><a href="{% url 'lassMichDasZusammenfassen' %}">Lass mich das zusammenfassen.</a></div>
             <div id="login" class="tab"><a href="{% url 'login' %}">Einloggen & Loslegen!</a></div>
-            <!-- Hier muss noch ein {% if %} rein, dass der Tab nur angezeigt wird, wenn man eingeloggt ist!-->
+            {% if request.session.matrikelnummer %}
             <div id="nutzerverwaltung" class="nutzer-tab"><a href="{% url 'nutzerverwaltung' %}">Deinen Account verwalten.</a></div>
+            {% endif %}
         </div>
 
         <div class="tabInhalt"></div>
