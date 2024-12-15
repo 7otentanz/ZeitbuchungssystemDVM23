@@ -1,25 +1,77 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from datetime import datetime
+import smtplib
+from email.message import EmailMessage
 import os
 import json
 
 speicherpfadJSON = "/var/www/static"
 
 def woranarbeitestdu(request):
-	return render(request, 'woranArbeitestDu.html')
+
+	try:
+		matrikelnummer = request.session["matrikelnummer"]
+		semester = request.session["semester"]
+		berechtigung = request.session["berechtigung"]
+	except:
+		matrikelnummer = "Nicht angemeldet!"
+		semester= "Nicht angemeldet!"
+		berechtigung = "Nicht angemeldet!"
+
+	return render(request, 'woranArbeitestDu.html', {"berechtigung": berechtigung, "matrikelnummer": matrikelnummer, "semester": semester})
 
 def erzaehlmirmehr(request):
-	return render(request, 'erzaehlMirMehr.html')
+
+	try:
+		matrikelnummer = request.session["matrikelnummer"]
+		semester = request.session["semester"]
+		berechtigung = request.session["berechtigung"]
+	except:
+		matrikelnummer = "Nicht angemeldet!"
+		semester= "Nicht angemeldet!"
+		berechtigung = "Nicht angemeldet!"
+
+	return render(request, 'erzaehlMirMehr.html', {"berechtigung": berechtigung, "matrikelnummer": matrikelnummer, "semester": semester})
 
 def kuerzlichabgeschlossen(request):
-	return render(request, 'kuerzlichAbgeschlossen.html')
+
+	try:
+		matrikelnummer = request.session["matrikelnummer"]
+		semester = request.session["semester"]
+		berechtigung = request.session["berechtigung"]
+	except:
+		matrikelnummer = "Nicht angemeldet!"
+		semester= "Nicht angemeldet!"
+		berechtigung = "Nicht angemeldet!"
+
+	return render(request, 'kuerzlichAbgeschlossen.html', {"berechtigung": berechtigung, "matrikelnummer": matrikelnummer, "semester": semester})
 
 def lassmichdaszusammenfassen(request):
-	return render(request, 'lassMichDasZusammenfassen.html')
+
+	try:
+		matrikelnummer = request.session["matrikelnummer"]
+		semester = request.session["semester"]
+		berechtigung = request.session["berechtigung"]
+	except:
+		matrikelnummer = "Nicht angemeldet!"
+		semester= "Nicht angemeldet!"
+		berechtigung = "Nicht angemeldet!"
+
+	return render(request, 'lassMichDasZusammenfassen.html', {"berechtigung": berechtigung, "matrikelnummer": matrikelnummer, "semester": semester})
 
 def nutzerverwaltung(request):
-	return render(request, 'nutzerverwaltung.html')
+
+	try:
+		matrikelnummer = request.session["matrikelnummer"]
+		semester = request.session["semester"]
+		berechtigung = request.session["berechtigung"]
+	except:
+		matrikelnummer = "Nicht angemeldet!"
+		semester= "Nicht angemeldet!"
+		berechtigung = "Nicht angemeldet!"
+
+	return render(request, 'nutzerverwaltung.html', {"berechtigung": berechtigung, "matrikelnummer": matrikelnummer, "semester": semester})
 
 def login(request):
 	return render(request, 'login.html')
@@ -87,10 +139,14 @@ def nutzerAnmelden(request):
 		if matrikelnummer in daten["Benutzer"]:
 
 			if passwort == daten["Benutzer"][matrikelnummer]["passwort"]:
+				
 				request.session["matrikelnummer"] = matrikelnummer		# erstellt eine session... die so lange aktiv bleibt, wie der browser geöffnet ist.
 				semester = daten["Benutzer"][matrikelnummer]["semester"]
 				request.session["semester"] = semester
-				return redirect("woranArbeitestDu")
+				berechtigung = daten["Benutzer"][matrikelnummer]["berechtigung"]
+				request.session["berechtigung"] = berechtigung
+				
+				return render(request, "woranArbeitestDu.html", {"berechtigung": berechtigung, "matrikelnummer": matrikelnummer, "semester": semester})
 			
 			elif passwort != daten["Benutzer"][matrikelnummer]["passwort"]:
 				return HttpResponse("<script>alert('Falsches Passwort!');window.history.back()</script>")
@@ -98,9 +154,10 @@ def nutzerAnmelden(request):
 		if matrikelnummer not in daten["Benutzer"]:
 			return HttpResponse("<script>alert('Du musst dich zuerst registrieren!');window.history.back()</script>")
 
-### Datetime Objekt annehmen ###
+### Datetime Objekt absetzen ###
 
 def zeitGeben(request):
+
 	if request.method == "POST":
 		jetzt = datetime.now()
 		print(jetzt)
@@ -109,5 +166,28 @@ def zeitGeben(request):
 
 		return render(request, 'woranArbeitestDu.html')
 
+def berechtigungsantrag(request):
 
-	
+	if request.method =="POST":
+
+		berechtigung = request.session["berechtigung"]
+		matrikelnummer = request.session["matrikelnummer"]
+
+		if berechtigung == "nutzer":
+			antragAls = "vip"
+		elif berechtigung == "vip":
+			antragAls = "admin"
+		
+		s = smtplib.SMTP(host="smtp.web.de", port=587)
+		s.starttls()
+		s.login("tenpm@web.de", "Mindestens9Zeichen!")
+
+		msg = EmailMessage()
+		msg["From"] = "tenpm@web.de"
+		msg["To"] = "t_hauser@web.de"
+		msg["Subject"] = f"Antrag von {matrikelnummer}"
+		msg.set_content(f"Guten Tag liebe Admins,\nder Nutzer {matrikelnummer} hat einen Antrag auf {antragAls} gestellt.\nDer Antrag liegt in ihrer Nutzerverwaltung zur Zustimmung bereit!")
+
+		s.send_message(msg)
+
+		s.quit()

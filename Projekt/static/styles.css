@@ -72,3 +72,20 @@ a, :link, :visited, :active{
     background-color: #a0f5ff99;
     margin-top: 0;
 }
+
+#semesterheader {
+    color: #000;
+}
+
+#berechtigungsheader {
+    color: #000;
+}
+
+#berechtigungsanfragen {
+    color: #000;
+}
+
+#berechtigungsantrag {
+    color: #000;
+}
+

@@ -31,6 +31,7 @@ urlpatterns = [
     path('nutzeranmelden', views.nutzerAnmelden, name='nutzerAnmelden'),
     path('registrieren', views.registrieren, name='registrieren'),
     path('nutzerRegistrieren', views.nutzerRegistrieren, name='nutzerRegistrieren'),
+    path('berechtigungsantrag', views.berechtigungsantrag, name='berechtigungsantrag'),
 ]
 
 urlpatterns += staticfiles_urlpatterns()

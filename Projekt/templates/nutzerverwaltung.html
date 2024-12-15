@@ -27,7 +27,44 @@
             <div id="nutzerverwaltung" class="nutzer-tab nutzer-aktiv"><a href="{% url 'nutzerverwaltung' %}">Deinen Account verwalten.</a></div>
         </div>
 
-        <div class="tabInhalt"></div>
+        <div class="tabInhalt">
+
+            <div id="berechtigungsheader">
+                Deine Berechtigung ist "{{ berechtigung }}".<br><br>
+                <b>Nutzer</b> können blablabla Text. <br>
+                <b>Vips</b> können zusätzlich blablabla Text. <br>
+                <b>Admins</b> können, zusätzlich zu allem was vip und nutzer können blablabla Text...
+            </div>
+
+            {% if request.session.berechtigung == "admin" %}
+            <div id="berechtigungsanfragen">
+
+                <!-- Hier müssen (per Javascript!?) die einzelnen Anfragen der Benutzer eingesetzt werden. -->
+
+            </div>
+            {% endif %}
+
+            {% if request.session.berechtigung == "vip" %}
+            <div id="berechtigungsantrag">
+                <form action="berechtigungsantrag" method="post">
+                    {% csrf_token %}
+                    <label for="berechtigungsantrag">Mit Klick auf den folgenden Button kannst du den Admin-Status für deinen Benutzeraccount beantragen: </label>
+                    <button type="submit">Admin-Status beantragen</button>
+                </form>
+            </div>
+            {% endif %}
+
+            {% if request.session.berechtigung == "nutzer" %}
+            <div id="berechtigungsantrag">
+                <form action="berechtigungsantrag" method="post">
+                    {% csrf_token %}
+                    <label for="berechtigungsantrag">Mit Klick auf den folgenden Button kannst du den VIP-Status für deinen Benutzeraccount beantragen: </label>
+                    <button type="submit">VIP-Status beantragen</button>
+                </form>
+            </div>
+            {% endif %}
+
+        </div>
 
     </body>
 

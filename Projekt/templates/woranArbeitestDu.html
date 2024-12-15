@@ -30,6 +30,11 @@
         </div>
 
         <div class="tabInhalt">
+
+            <div id="semesterheader">
+                Dein aktuellen Semester ist das {{ semester }}. Viel Erfolg!
+            </div>
+
             {% if request.session.semester == 2 %}
             <form method="post" action="{% url 'zeitGeben' %}">
                 {% csrf_token %}
