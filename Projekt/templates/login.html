@@ -25,7 +25,6 @@
             <label for="passwort">Passwort: </label>
             <input type="password" id="passwort" name="passwort"></input><br>
             <button type="submit">Einloggen</button>
-            <!-- Mit Django muss hier noch sichergestellt werde, dass User nur eingeloggt wieder zurück auf die Startseite kommen und ansonsten eine Fehlermeldung bekommen. -->
         </form>
         <form action="{% url 'registrieren' %}">
             <label for="registrieren">Stattdessen registrieren?</label>
