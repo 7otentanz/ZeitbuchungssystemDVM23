@@ -178,7 +178,7 @@ def berechtigungsantrag(request):
 		elif berechtigung == "vip":
 			antragAls = "admin"
 		
-		s = smtplib.SMTP(host="smtp.web.de", port=587)
+		s = smtplib.SMTP(host="smtp.web.de", port=587)		# Scheinbar blockiert der Server selbst die Verbindung zum SMTP Server...
 		s.starttls()
 		s.login("tenpm@web.de", "Mindestens9Zeichen!")
 
