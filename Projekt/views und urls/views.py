@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from datetime import datetime
 import smtplib
 from email.message import EmailMessage
+import socket
 import os
 import json
 
@@ -162,9 +163,18 @@ def zeitGeben(request):
 		jetzt = datetime.now()
 		print(jetzt)
 
-		### dann muss diese Zeit übermittelt werden an die modularchitektur.py... oder so!? ###
+	try:
+		matrikelnummer = request.session["matrikelnummer"]
+		semester = request.session["semester"]
+		berechtigung = request.session["berechtigung"]
+	except:
+		matrikelnummer = "Nicht angemeldet!"
+		semester= "Nicht angemeldet!"
+		berechtigung = "Nicht angemeldet!"
 
-		return render(request, 'woranArbeitestDu.html')
+	return render(request, 'woranArbeitestDu.html', {"berechtigung": berechtigung, "matrikelnummer": matrikelnummer, "semester": semester})
+
+### Berechtigungsantrag verschicken, für alle, die noch nicht Admin sind ###
 
 def berechtigungsantrag(request):
 
@@ -172,22 +182,29 @@ def berechtigungsantrag(request):
 
 		berechtigung = request.session["berechtigung"]
 		matrikelnummer = request.session["matrikelnummer"]
+		semester = request.session["semester"]
 
 		if berechtigung == "nutzer":
 			antragAls = "vip"
 		elif berechtigung == "vip":
 			antragAls = "admin"
 		
-		s = smtplib.SMTP(host="smtp.web.de", port=587)		# Scheinbar blockiert der Server selbst die Verbindung zum SMTP Server...
-		s.starttls()
-		s.login("tenpm@web.de", "Mindestens9Zeichen!")
+		# JSON erstellen mit allen Berichten!? oder die auch in die Nutzer mit rein!? 
 
-		msg = EmailMessage()
-		msg["From"] = "tenpm@web.de"
-		msg["To"] = "t_hauser@web.de"
-		msg["Subject"] = f"Antrag von {matrikelnummer}"
-		msg.set_content(f"Guten Tag liebe Admins,\nder Nutzer {matrikelnummer} hat einen Antrag auf {antragAls} gestellt.\nDer Antrag liegt in ihrer Nutzerverwaltung zur Zustimmung bereit!")
+		#### Scheinbar blockiert der Server selbst die Verbindung zum SMTP Server... ####
 
-		s.send_message(msg)
+		# s = smtplib.SMTP(host="213.165.67.124", port=587)
+		# s.starttls()
+		# s.login("tenpm@web.de", "Mindestens9Zeichen!")
 
-		s.quit()
+		# msg = EmailMessage()
+		# msg["From"] = "tenpm@web.de"
+		# msg["To"] = "t_hauser@web.de"
+		# msg["Subject"] = f"Antrag von {matrikelnummer}"
+		# msg.set_content(f"Guten Tag liebe Admins,\nder Nutzer {matrikelnummer} hat einen Antrag auf {antragAls} gestellt.\nDer Antrag liegt in ihrer Nutzerverwaltung zur Zustimmung bereit!")
+
+		# s.send_message(msg)
+
+		# s.quit()
+
+		return render(request, 'nutzerverwaltung.html', {"berechtigung": berechtigung, "matrikelnummer": matrikelnummer, "semester": semester})
