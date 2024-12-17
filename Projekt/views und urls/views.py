@@ -180,14 +180,31 @@ def berechtigungsantrag(request):
 
 	if request.method =="POST":
 
+		jsonDatei = os.path.join(speicherpfadJSON, "berechtigungsantraege.json")
+
 		berechtigung = request.session["berechtigung"]
 		matrikelnummer = request.session["matrikelnummer"]
-		semester = request.session["semester"]
 
 		if berechtigung == "nutzer":
 			antragAls = "vip"
 		elif berechtigung == "vip":
 			antragAls = "admin"
+
+		with open(jsonDatei, "r", encoding="utf-8") as datei:
+			
+			daten = json.load(datei)
+
+			if matrikelnummer in daten["Anträge"]:
+				daten["Anträge"][matrikelnummer] = antragAls
+
+			else:
+				daten["Anträge"][matrikelnummer] = antragAls
+
+
+		with open(jsonDatei, "w", encoding="utf-8") as datei:
+			json.dump(daten, datei, indent=4)
+
+		return redirect("nutzerverwaltung")
 		
 		# JSON erstellen mit allen Berichten!? oder die auch in die Nutzer mit rein!? 
 
@@ -207,4 +224,4 @@ def berechtigungsantrag(request):
 
 		# s.quit()
 
-		return render(request, 'nutzerverwaltung.html', {"berechtigung": berechtigung, "matrikelnummer": matrikelnummer, "semester": semester})
+		#return render(request, 'nutzerverwaltung.html', {"berechtigung": berechtigung, "matrikelnummer": matrikelnummer, "semester": semester})
