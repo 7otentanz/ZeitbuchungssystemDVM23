@@ -31,15 +31,17 @@
 
             <div id="berechtigungsheader">
                 Deine Berechtigung ist "{{ berechtigung }}".<br><br>
+                {% if request.session.berechtigung == "nutzer" or request.session.berechtigung == "vip" %}
                 <b>Nutzer</b> können blablabla Text. <br>
                 <b>Vips</b> können zusätzlich blablabla Text. <br>
                 <b>Admins</b> können, zusätzlich zu allem was vip und nutzer können blablabla Text...
+                {% endif %}
             </div>
 
             {% if request.session.berechtigung == "admin" %}
             <div id="berechtigungsanfragen">
 
-                <!-- Hier müssen (per Javascript!?) die einzelnen Anfragen der Benutzer eingesetzt werden. -->
+                
 
             </div>
             {% endif %}
