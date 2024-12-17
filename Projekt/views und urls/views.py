@@ -172,6 +172,9 @@ def zeitGeben(request):
 		semester= "Nicht angemeldet!"
 		berechtigung = "Nicht angemeldet!"
 
+		### DIESE ZEIT IN DER SESSION SPEICHER UM SIE ABZUFRAGEN ###
+		### Dynamisch den STartzeitbutton ausblenden und den Endzeitbutton einblenden ###
+
 	return render(request, 'woranArbeitestDu.html', {"berechtigung": berechtigung, "matrikelnummer": matrikelnummer, "semester": semester})
 
 ### Berechtigungsantrag verschicken, für alle, die noch nicht Admin sind ###
