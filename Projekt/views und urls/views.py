@@ -5,10 +5,11 @@ import smtplib
 from email.message import EmailMessage
 import os
 import json
+from . import berichtarchitektur
 
 speicherpfadJSON = "/var/www/static"
 
-def woranarbeitestdu(request):
+def loginPruefen(request):
 
 	try:
 		matrikelnummer = request.session["matrikelnummer"]
@@ -19,59 +20,28 @@ def woranarbeitestdu(request):
 		semester= "Nicht angemeldet!"
 		berechtigung = "Nicht angemeldet!"
 
-	return render(request, 'woranArbeitestDu.html', {"berechtigung": berechtigung, "matrikelnummer": matrikelnummer, "semester": semester})
+	parameter = {"berechtigung": berechtigung, "matrikelnummer": matrikelnummer, "semester": semester}
+	return parameter
+
+def woranarbeitestdu(request):
+	parameter = loginPruefen(request)
+	return render(request, 'woranArbeitestDu.html', parameter)
 
 def erzaehlmirmehr(request):
-
-	try:
-		matrikelnummer = request.session["matrikelnummer"]
-		semester = request.session["semester"]
-		berechtigung = request.session["berechtigung"]
-	except:
-		matrikelnummer = "Nicht angemeldet!"
-		semester= "Nicht angemeldet!"
-		berechtigung = "Nicht angemeldet!"
-
-	return render(request, 'erzaehlMirMehr.html', {"berechtigung": berechtigung, "matrikelnummer": matrikelnummer, "semester": semester})
+	parameter = loginPruefen(request)
+	return render(request, 'erzaehlMirMehr.html', parameter)
 
 def kuerzlichabgeschlossen(request):
-
-	try:
-		matrikelnummer = request.session["matrikelnummer"]
-		semester = request.session["semester"]
-		berechtigung = request.session["berechtigung"]
-	except:
-		matrikelnummer = "Nicht angemeldet!"
-		semester= "Nicht angemeldet!"
-		berechtigung = "Nicht angemeldet!"
-
-	return render(request, 'kuerzlichAbgeschlossen.html', {"berechtigung": berechtigung, "matrikelnummer": matrikelnummer, "semester": semester})
+	parameter = loginPruefen(request)
+	return render(request, 'kuerzlichAbgeschlossen.html', parameter)
 
 def lassmichdaszusammenfassen(request):
-
-	try:
-		matrikelnummer = request.session["matrikelnummer"]
-		semester = request.session["semester"]
-		berechtigung = request.session["berechtigung"]
-	except:
-		matrikelnummer = "Nicht angemeldet!"
-		semester= "Nicht angemeldet!"
-		berechtigung = "Nicht angemeldet!"
-
-	return render(request, 'lassMichDasZusammenfassen.html', {"berechtigung": berechtigung, "matrikelnummer": matrikelnummer, "semester": semester})
+	parameter = loginPruefen(request)
+	return render(request, 'lassMichDasZusammenfassen.html', parameter)
 
 def nutzerverwaltung(request):
-
-	try:
-		matrikelnummer = request.session["matrikelnummer"]
-		semester = request.session["semester"]
-		berechtigung = request.session["berechtigung"]
-	except:
-		matrikelnummer = "Nicht angemeldet!"
-		semester= "Nicht angemeldet!"
-		berechtigung = "Nicht angemeldet!"
-
-	return render(request, 'nutzerverwaltung.html', {"berechtigung": berechtigung, "matrikelnummer": matrikelnummer, "semester": semester})
+	parameter = loginPruefen(request)
+	return render(request, 'nutzerverwaltung.html', parameter)
 
 def login(request):
 	return render(request, 'login.html')
@@ -156,31 +126,34 @@ def nutzerAnmelden(request):
 
 ### Datetime Objekt absetzen ###
 
-def zeitGeben(request):
+def berichtAnlegen(request):
 
 	if request.method == "POST":
-		jetzt = datetime.now()
-		print(jetzt)
-
-	try:
+		
+		startzeit = datetime.now()
+		teilmodul = request.POST.get("teilmodul")
 		matrikelnummer = request.session["matrikelnummer"]
-		semester = request.session["semester"]
-		berechtigung = request.session["berechtigung"]
-	except:
-		matrikelnummer = "Nicht angemeldet!"
-		semester= "Nicht angemeldet!"
-		berechtigung = "Nicht angemeldet!"
 
-		### DIESE ZEIT IN DER SESSION SPEICHER UM SIE ABZUFRAGEN ###
-		### Dynamisch den STartzeitbutton ausblenden und den Endzeitbutton einblenden ###
+		neuerBericht = berichtarchitektur.Bericht(startzeit, teilmodul)
 
-	return render(request, 'woranArbeitestDu.html', {"berechtigung": berechtigung, "matrikelnummer": matrikelnummer, "semester": semester})
+		jsonDatei = os.path.join(speicherpfadJSON, "Nutzerberichte", f"berichte_{matrikelnummer}.json")
 
-def zeitAusrechnen(request):
+		try:
+			with open(jsonDatei, "r", encoding="utf-8") as datei:
+				daten = json.load(datei)
+				berichteliste = daten["Berichte"]
+				berichteliste.append(neuerBericht)
 
-	###
+			with open(jsonDatei, "w", encoding="utf-8") as datei:
+				json.dump(daten, datei, indent=4)
 
-	return render(request)
+		except:
+			with open(jsonDatei, "w", encoding="utf-8") as datei:
+				daten = {"Berichte": [neuerBericht]}
+				json.dump(daten, datei, indent=4)
+
+	parameter = loginPruefen(request)
+	return render(request, 'woranArbeitestDu.html', parameter)
 
 ### Berechtigungsantrag verschicken, für alle, die noch nicht Admin sind ###
 
