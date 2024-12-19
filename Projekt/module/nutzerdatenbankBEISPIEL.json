@@ -1,0 +1,25 @@
+{
+    "Benutzer": {
+        "123123": {
+            "matrikelnummer": "123123",
+            "vorname": "Hans",
+            "nachname": "Anderson",
+            "jahrgang": "DVM78",
+            "semester": 3,
+            "passwort": "123",
+            "berechtigung": "admin",
+            "berichte": [
+                {
+                    "Modul": "1.1.1",
+                    "Arbeitszeit": 45,
+                    "Text": "Was ich gemacht habe"
+                },
+                {
+                    "Modul": "1.1.2",
+                    "Arbeitszeit": 75,
+                    "Text": "Was ich gemacht habe"
+                }
+            ]
+        }
+    }
+}

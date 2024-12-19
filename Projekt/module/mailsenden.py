@@ -3,21 +3,24 @@ from email.message import EmailMessage
 
 adresse = "tenpm@web.de"        # eigene emailadresse
 passwort = "Mindestens9Zeichen!"       # eigenes Passwort
+emails = ["t_hauser@web.de"]
+
 
 def emailsenden():
 
-    s = smtplib.SMTP(host="smtp.web.de", port=587)
-    s.starttls()
-    s.login(adresse, passwort)
+    for mail in emails:
 
-    msg = EmailMessage()
-    msg["From"] = adresse
-    msg["To"] = "t_hauser@web.de"
-    msg["Subject"] = "Testmail!"
-    msg.set_content("Ja moin, jetzt ist hier auch\nInhalt")
+        s = smtplib.SMTP_SSL("smtp.web.de", 465)
+        s.login(adresse, passwort)
 
-    s.send_message(msg)
+        msg = EmailMessage()
+        msg["From"] = adresse
+        msg["To"] = mail
+        msg["Subject"] = "Testmail!"
+        msg.set_content("Ja moin, jetzt ist hier auch\nInhalt")
 
-    s.quit()
+        s.send_message(msg)
+
+        s.quit()
 
 emailsenden()
