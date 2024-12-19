@@ -3,7 +3,6 @@ from django.http import HttpResponse
 from datetime import datetime
 import smtplib
 from email.message import EmailMessage
-import socket
 import os
 import json
 
@@ -176,6 +175,12 @@ def zeitGeben(request):
 		### Dynamisch den STartzeitbutton ausblenden und den Endzeitbutton einblenden ###
 
 	return render(request, 'woranArbeitestDu.html', {"berechtigung": berechtigung, "matrikelnummer": matrikelnummer, "semester": semester})
+
+def zeitAusrechnen(request):
+
+	###
+
+	return render(request)
 
 ### Berechtigungsantrag verschicken, für alle, die noch nicht Admin sind ###
 
