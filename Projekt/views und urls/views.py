@@ -138,18 +138,19 @@ def berichtAnlegen(request):
 
 		jsonDatei = os.path.join(speicherpfadJSON, "Nutzerberichte", f"berichte_{matrikelnummer}.json")
 
+		alleBerichteListe = neuerBericht.serialisierenalsjson()
+
 		try:
 			with open(jsonDatei, "r", encoding="utf-8") as datei:
 				daten = json.load(datei)
-				berichteliste = daten["Berichte"]
-				berichteliste.append(neuerBericht)
+				daten["Berichte"] = alleBerichteListe
 
 			with open(jsonDatei, "w", encoding="utf-8") as datei:
 				json.dump(daten, datei, indent=4)
 
 		except:
 			with open(jsonDatei, "w", encoding="utf-8") as datei:
-				daten = {"Berichte": [neuerBericht]}
+				daten = {"Berichte": alleBerichteListe}
 				json.dump(daten, datei, indent=4)
 
 	parameter = loginPruefen(request)
