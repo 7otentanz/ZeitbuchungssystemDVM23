@@ -2,7 +2,7 @@ import smtplib
 from email.message import EmailMessage
 
 adresse = "tenpm@web.de"        # eigene emailadresse
-passwort = "Mindestens9Zeichen!"       # eigenes Passwort
+passwort = ""       # eigenes Passwort
 emails = ["t_hauser@web.de"]
 
 
