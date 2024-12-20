@@ -30,8 +30,9 @@
         <div class="tabInhalt">
 
             <div id="berechtigungsheader">
-                Deine Berechtigung ist <b>"{{ berechtigung }}"</b>.<br><br>
+                Deine Berechtigung ist <b>"{{ berechtigung }}"</b>.<br>
                 {% if request.session.berechtigung == "nutzer" or request.session.berechtigung == "vip" %}
+                <br>
                 <b>Nutzer</b> können blablabla Text. <br>
                 <b>Vips</b> können zusätzlich blablabla Text. <br>
                 <b>Admins</b> können, zusätzlich zu allem was vip und nutzer können blablabla Text...
@@ -47,12 +48,12 @@
                 <div class="berechtigungsanfragen">
                     {% for matrikelnummer, antragAls in Anträge.items %}
                         <div class="einAntrag">
-                            <div>Nutzer {{ matrikelnummer }} beantragt seinen Status als {{ antragAls }}</div>
-                            <form method="post" action="antraggenehmigen">
+                            Nutzer <b>{{ matrikelnummer }}</b> beantragt seinen Status als <b>{{ antragAls }}</b>
+                            <form method="post" action="antraggenehmigen" class="berechtigungsbuttonform">
                                 {% csrf_token %}
                                 <button class="berechtigungsbutton" type="submit" name="matrikelnummer" value="{{ matrikelnummer }}">Genehmigen!</button>
                             </form>
-                            <form method="post" action="antragablehnen">
+                            <form method="post" action="antragablehnen" class="berechtigungsbuttonform">
                                 {% csrf_token %}
                                 <button class="berechtigungsbutton" type="submit" name="matrikelnummer" value="{{ matrikelnummer }}">Ablehnen!</button>
                             </form>
@@ -65,7 +66,7 @@
                     {% for nutzer, nutzerdaten in Benutzer.items %}
                         <div>
                             <b>Matrikelnummer:</b> {{ nutzerdaten.matrikelnummer }}, <b>Vorname:</b> {{ nutzerdaten.vorname }}, <b>Nachname:</b> {{ nutzerdaten.nachname }}, <b>Jahrgang:</b> {{ nutzerdaten.jahrgang }}, <b>Berechtigung:</b> {{ nutzerdaten.berechtigung }}
-                            <form method="post" action="nutzersperren">
+                            <form method="post" action="nutzersperren" class="sperrbuttonform">
                                 {% csrf_token %}
                                 <button class="sperrbutton" type="submit" name="matrikelnummer" value="{{ nutzerdaten.matrikelnummer }}">Nutzer sperren.</button>
                             </form>

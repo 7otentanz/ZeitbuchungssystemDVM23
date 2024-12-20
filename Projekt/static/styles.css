@@ -35,7 +35,7 @@ body {
     background: linear-gradient(90deg, #0097b2 0%, #a0f5ff 100%);
     border-radius: 10px 10px 0 0;
     padding-left: 7.5px;
-    text-align: inherit; /**DER SCHEIßDRECK SOLL UNTEN STEHEN!**/
+    text-align: inherit;
 }
 
 .nutzer-tab {
@@ -45,7 +45,7 @@ body {
     background: linear-gradient(90deg, #dfd0bb 0%, #ffdaa2 100%);
     border-radius: 10px 10px 0 0;
     padding-left: 7.5px;
-    text-align: inherit; /**DER SCHEIßDRECK SOLL UNTEN STEHEN!**/
+    text-align: inherit;
 }
 
 a, :link, :visited, :active{
@@ -73,37 +73,22 @@ a, :link, :visited, :active{
     margin-top: 0;
 }
 
-#semesterheader {
+.tabInhalt div,
+.tabInhalt form,
+.tabInhalt p {
     margin-left: 1%;
     margin-top: 1%;
-    margin-bottom: 1%;
     color: #000;
 }
 
 .zeitbutton {
-    margin-left: 1%;
-    margin-bottom: 0.1%;
     background-color:  #a0f5ff;
     border-color: #0097b2;
     border-radius: 5px;
     width: 40%;
 }
 
-#berechtigungsheader {
-    margin-left: 1%;
-    margin-top: 1%;
-    margin-bottom: 1%;
-    color: #000;
-}
-
-#berechtigungsanfragenheader {
-    margin-left: 1%;
-    margin-top: 1%;
-    margin-bottom: 1%;
-    color: #000;
-}
-
-.berechtigungsanfragen {
+/* .berechtigungsanfragen {
     margin-left: 1%;
 }
 
@@ -113,28 +98,27 @@ a, :link, :visited, :active{
 
 .nutzerverzeichnis {
     margin-left: 1%;
-}
+} */
 
-.sperrbutton {
-    margin-left: 1%;
-    margin-bottom: 0.1%;
-    background-color:  #ffbd59;
-    border-color: #b20000;
-    border-radius: 5px;
-}
-
-.berechtigungsantrag {
-    color: #000;
-}
-
-.antragsbuttonlabel{
-    margin-left: 1%;
-}
-
+.sperrbutton,
 .berechtigungsbutton {
     margin-left: 1%;
-    margin-bottom: 0.1%;
+    border-radius: 5px;
+}
+
+.sperrbuttonform,
+.berechtigungsbuttonform {
+    display: inline;
+}
+
+/* .berechtigungsantrag {
+
+} */
+.sperrbutton {
+    background-color:  #ffbd59;
+    border-color: #b20000;
+}
+.berechtigungsbutton {
     background-color:  #a0f5ff;
     border-color: #0097b2;
-    border-radius: 5px;
 }
