@@ -186,6 +186,8 @@ def berechtigungsantrag(request):
 			antragAls = "vip"
 		elif berechtigung == "vip":
 			antragAls = "admin"
+		elif berechtigung == "gesperrt":
+			antragAls = "nutzer"
 
 		with open(jsonDatei, "r", encoding="utf-8") as datei:
 			
@@ -241,6 +243,9 @@ def antragGenehmigen(request):
 			
 			elif daten["Benutzer"][matrnummer]["berechtigung"] == "vip":
 				daten["Benutzer"][matrnummer]["berechtigung"] = "admin"
+
+			elif daten["Benutzer"][matrnummer]["berechtigung"] == "gesperrt":
+				daten["Benutzer"][matrnummer]["berechtigung"] = "nutzer"
 		
 		with open(jsonDatei, "w", encoding="utf-8") as datei:
 			json.dump(daten, datei, indent=4)

@@ -64,7 +64,7 @@
                     Hier kannst du alle Nutzer sehen, die in unserem System registriert sind. Bei grobem Fehlverhalten kannst du Nutzer sperren!
                     {% for nutzer, nutzerdaten in Benutzer.items %}
                         <div>
-                            <b>Matrikelnummer:</b> {{ nutzerdaten.matrikelnummer }}, <b>Vorname:</b> {{ nutzerdaten.vorname }}, <b>Nachname:</b> {{ nutzerdaten.nachname }}, <b>Jahrgang:</b> {{ nutzerdaten.jahrgang }}
+                            <b>Matrikelnummer:</b> {{ nutzerdaten.matrikelnummer }}, <b>Vorname:</b> {{ nutzerdaten.vorname }}, <b>Nachname:</b> {{ nutzerdaten.nachname }}, <b>Jahrgang:</b> {{ nutzerdaten.jahrgang }}, <b>Berechtigung:</b> {{ nutzerdaten.berechtigung }}
                             <form method="post" action="nutzersperren">
                                 {% csrf_token %}
                                 <button class="sperrbutton" type="submit" name="matrikelnummer" value="{{ nutzerdaten.matrikelnummer }}">Nutzer sperren.</button>
@@ -90,6 +90,16 @@
                     {% csrf_token %}
                     <label for="berechtigungsantrag">Mit Klick auf den folgenden Button kannst du den VIP-Status für deinen Benutzeraccount beantragen: </label>
                     <button class="berechtigungsbutton" type="submit"><b>VIP-Status beantragen</b></button>
+                </form>
+            </div>
+            {% endif %}
+
+            {% if request.session.berechtigung == "gesperrt" %}
+            <div class="berechtigungsantrag">
+                <form class="antragsbuttonlabel" action="berechtigungsantrag" method="post">
+                    {% csrf_token %}
+                    <label for="berechtigungsantrag">Mit Klick auf den folgenden Button kannst du beantragen entsperrt zu werden: </label>
+                    <button class="berechtigungsbutton" type="submit"><b>Entsperrung beantragen</b></button>
                 </form>
             </div>
             {% endif %}
