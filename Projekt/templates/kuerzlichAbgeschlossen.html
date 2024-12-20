@@ -25,15 +25,11 @@
             <div id="lassMichdasZusammenfassen" class="tab"><a href="{% url 'lassMichDasZusammenfassen' %}">Lass mich das zusammenfassen.</a></div>
             <div id="login" class="tab"><a href="{% url 'login' %}">Einloggen & Loslegen!</a></div>
             {% if request.session.matrikelnummer %}
-            <div id="nutzerverwaltung" class="nutzer-tab"><a href="{% url 'nutzerverwaltung' %}">Deinen Account verwalten.</a></div>
+            <div id="nutzerverwaltung" class="nutzer-tab"><a href="{% url 'nutzerverwaltung' %}">Nutzerverwaltung</a></div>
             {% endif %}
         </div>
 
         <div class="tabInhalt">
-<!-- 
-            {% for berichte in user.berichte %}
-                <div class="bericht">{% Modulnummer %}, {% {% startzeit %} - {% endzeit %} %}</div>
-            {% endfor %} -->
 
         </div>
 

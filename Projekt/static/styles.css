@@ -90,14 +90,35 @@ a, :link, :visited, :active{
 }
 
 #berechtigungsheader {
+    margin-left: 1%;
+    margin-top: 1%;
+    margin-bottom: 1%;
     color: #000;
 }
 
-#berechtigungsanfragen {
+#berechtigungsanfragenheader {
+    margin-left: 1%;
+    margin-top: 1%;
+    margin-bottom: 1%;
     color: #000;
 }
 
-#berechtigungsantrag {
+.berechtigungsanfragen {
+    margin-left: 1%;
+}
+
+.berechtigungsantrag {
     color: #000;
 }
 
+.antragsbuttonlabel{
+    margin-left: 1%;
+}
+
+.berechtigungsbutton {
+    margin-left: 1%;
+    margin-bottom: 0.1%;
+    background-color:  #a0f5ff;
+    border-color: #0097b2;
+    border-radius: 5px;
+}

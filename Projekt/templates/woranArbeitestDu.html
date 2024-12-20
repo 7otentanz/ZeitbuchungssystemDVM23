@@ -16,22 +16,22 @@
     <body onload="datumEinfuegen()">
 
         <img src="{% static 'Logoentwurf.png' %}" class="logo">
-        <div value="datumUhrzeit"></div>
+        <div id="datumUhrzeit"></div>
 
-        <div value="tabBox">
-            <div value="woranArbeitestDu" class="tab aktiv"><a href="{% url 'woranArbeitestDu' %}">Woran arbeitest du gerade?</a></div>
-            <div value="erzaehlMirMehr" class="tab"><a href="{% url 'erzaehlMirMehr' %}">Erzähl mir mehr!</a></div>
-            <div value="kuerzlichAbgeschlossen" class="tab"><a href="{% url 'kuerzlichAbgeschlossen' %}">Kürzlich abgeschlossen.</a></div>
-            <div value="lassMichdasZusammenfassen" class="tab"><a href="{% url 'lassMichDasZusammenfassen' %}">Lass mich das zusammenfassen.</a></div>
-            <div value="login" class="tab"><a href="{% url 'login' %}">Einloggen & Loslegen!</a></div>
+        <div id="tabBox">
+            <div id="woranArbeitestDu" class="tab aktiv"><a href="{% url 'woranArbeitestDu' %}">Woran arbeitest du gerade?</a></div>
+            <div id="erzaehlMirMehr" class="tab"><a href="{% url 'erzaehlMirMehr' %}">Erzähl mir mehr!</a></div>
+            <div id="kuerzlichAbgeschlossen" class="tab"><a href="{% url 'kuerzlichAbgeschlossen' %}">Kürzlich abgeschlossen.</a></div>
+            <div id="lassMichdasZusammenfassen" class="tab"><a href="{% url 'lassMichDasZusammenfassen' %}">Lass mich das zusammenfassen.</a></div>
+            <div id="login" class="tab"><a href="{% url 'login' %}">Einloggen & Loslegen!</a></div>
             {% if request.session.matrikelnummer %}
-            <div value="nutzerverwaltung" class="nutzer-tab"><a href="{% url 'nutzerverwaltung' %}">Deinen Account verwalten.</a></div>
+            <div id="nutzerverwaltung" class="nutzer-tab"><a href="{% url 'nutzerverwaltung' %}">Nutzerverwaltung</a></div>
             {% endif %}
         </div>
 
         <div class="tabInhalt">
 
-            <div value="semesterheader">
+            <div id="semesterheader">
                 Dein aktuelles Semester ist das {{ semester }}. Viel Erfolg!
             </div>
 

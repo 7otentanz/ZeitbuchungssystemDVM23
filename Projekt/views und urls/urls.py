@@ -32,6 +32,8 @@ urlpatterns = [
     path('registrieren', views.registrieren, name='registrieren'),
     path('nutzerRegistrieren', views.nutzerRegistrieren, name='nutzerRegistrieren'),
     path('berechtigungsantrag', views.berechtigungsantrag, name='berechtigungsantrag'),
+    path('antragablehnen', views.antragAblehnen, name='antragAblehnen'),
+    path('antraggenehmigen', views.antragGenehmigen, name='antragGenehmigen'),
 ]
 
 urlpatterns += staticfiles_urlpatterns()

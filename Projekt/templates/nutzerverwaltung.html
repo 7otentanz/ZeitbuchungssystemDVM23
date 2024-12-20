@@ -24,13 +24,13 @@
             <div id="kuerzlichAbgeschlossen" class="tab"><a href="{% url 'kuerzlichAbgeschlossen' %}">Kürzlich abgeschlossen.</a></div>
             <div id="lassMichdasZusammenfassen" class="tab"><a href="{% url 'lassMichDasZusammenfassen' %}">Lass mich das zusammenfassen.</a></div>
             <div id="login" class="tab"><a href="{% url 'login' %}">Einloggen & Loslegen!</a></div>
-            <div id="nutzerverwaltung" class="nutzer-tab nutzer-aktiv"><a href="{% url 'nutzerverwaltung' %}">Deinen Account verwalten.</a></div>
+            <div id="nutzerverwaltung" class="nutzer-tab nutzer-aktiv"><a href="{% url 'nutzerverwaltung' %}">Nutzerverwaltung</a></div>
         </div>
 
         <div class="tabInhalt">
 
             <div id="berechtigungsheader">
-                Deine Berechtigung ist "{{ berechtigung }}".<br><br>
+                Deine Berechtigung ist <b>"{{ berechtigung }}"</b>.<br><br>
                 {% if request.session.berechtigung == "nutzer" or request.session.berechtigung == "vip" %}
                 <b>Nutzer</b> können blablabla Text. <br>
                 <b>Vips</b> können zusätzlich blablabla Text. <br>
@@ -39,29 +39,44 @@
             </div>
 
             {% if request.session.berechtigung == "admin" %}
-            <div id="berechtigungsanfragen">
+                <div id="berechtigungsanfragenheader">
+                    Falls Nutzer eine Statusveränderung beantragt haben, kannst du sie hier sehen.<br>
+                    <b>Akzeptiere</b> die Anfragen oder <b>lehne sie ab</b>:
+                </div>
 
-                
-
-            </div>
+                <div class="berechtigungsanfragen">
+                    {% for matrikelnummer, antragAls in Anträge.items %}
+                        <div class="einAntrag">
+                            <div>Nutzer {{ matrikelnummer }} beantragt seinen Status als {{ antragAls }}</div>
+                            <form method="post" action="antraggenehmigen">
+                                {% csrf_token %}
+                                <button class="berechtigungsbutton" type="submit" name="matrikelnummer" value="{{ matrikelnummer }}">Genehmigen!</button>
+                            </form>
+                            <form method="post" action="antragablehnen">
+                                {% csrf_token %}
+                                <button class="berechtigungsbutton" type="submit" name="matrikelnummer" value="{{ matrikelnummer }}">Ablehnen!</button>
+                            </form>
+                        </div>
+                    {% endfor %}
+                </div>
             {% endif %}
 
             {% if request.session.berechtigung == "vip" %}
-            <div id="berechtigungsantrag">
-                <form action="berechtigungsantrag" method="post">
+            <div class="berechtigungsantrag">
+                <form class="antragsbuttonlabel" action="berechtigungsantrag" method="post">
                     {% csrf_token %}
                     <label for="berechtigungsantrag">Mit Klick auf den folgenden Button kannst du den Admin-Status für deinen Benutzeraccount beantragen: </label>
-                    <button type="submit">Admin-Status beantragen</button>
+                    <button class="berechtigungsbutton" type="submit"><b>Admin-Status beantragen</b></button>
                 </form>
             </div>
             {% endif %}
 
             {% if request.session.berechtigung == "nutzer" %}
-            <div id="berechtigungsantrag">
-                <form action="berechtigungsantrag" method="post">
+            <div class="berechtigungsantrag">
+                <form class="antragsbuttonlabel" action="berechtigungsantrag" method="post">
                     {% csrf_token %}
                     <label for="berechtigungsantrag">Mit Klick auf den folgenden Button kannst du den VIP-Status für deinen Benutzeraccount beantragen: </label>
-                    <button type="submit">VIP-Status beantragen</button>
+                    <button class="berechtigungsbutton" type="submit"><b>VIP-Status beantragen</b></button>
                 </form>
             </div>
             {% endif %}

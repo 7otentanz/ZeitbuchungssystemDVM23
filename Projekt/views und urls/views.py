@@ -41,7 +41,15 @@ def lassmichdaszusammenfassen(request):
 
 def nutzerverwaltung(request):
 	parameter = loginPruefen(request)
-	return render(request, 'nutzerverwaltung.html', parameter)
+
+	jsonDatei = os.path.join(speicherpfadJSON, "berechtigungsantraege.json")
+
+	with open(jsonDatei, "r", encoding="utf-8") as datei:
+		daten = json.load(datei)
+		antraege = daten["Anträge"]
+		parameter["Anträge"] = antraege
+
+	return render(request, 'nutzerverwaltung.html', parameter)	# parameter und antraege übergeben!
 
 def login(request):
 	return render(request, 'login.html')
@@ -207,3 +215,52 @@ def berechtigungsantrag(request):
 		# s.quit()
 
 		#return render(request, 'nutzerverwaltung.html', {"berechtigung": berechtigung, "matrikelnummer": matrikelnummer, "semester": semester})
+
+def antragEntfernen(request):
+
+	jsonDatei = os.path.join(speicherpfadJSON, "berechtigungsantraege.json")
+
+	with open(jsonDatei, "r", encoding="utf-8") as datei:
+			
+		daten = json.load(datei)
+		print(daten)
+		matrnummer = request.POST.get("matrikelnummer")
+		daten["Anträge"].pop(matrnummer)
+		
+	with open(jsonDatei, "w", encoding="utf-8") as datei:
+		json.dump(daten, datei, indent=4)
+
+def antragAblehnen(request):
+	
+	if request.method =="POST":
+
+		antragEntfernen(request)
+
+		return redirect("nutzerverwaltung")
+
+def antragGenehmigen(request):
+
+	if request.method =="POST":
+
+		matrnummer = request.POST.get("matrikelnummer")
+
+		jsonDatei = os.path.join(speicherpfadJSON, "nutzerdatenbank.json")
+
+		with open(jsonDatei, "r", encoding="utf-8") as datei:
+			daten = json.load(datei)
+
+			if daten["Benutzer"][matrnummer]["berechtigung"] == "nutzer":
+				daten["Benutzer"][matrnummer]["berechtigung"] = "vip"
+			
+			elif daten["Benutzer"][matrnummer]["berechtigung"] == "vip":
+				daten["Benutzer"][matrnummer]["berechtigung"] = "admin"
+		
+		with open(jsonDatei, "w", encoding="utf-8") as datei:
+			json.dump(daten, datei, indent=4)
+		
+		antragEntfernen(request)
+
+		return redirect("nutzerverwaltung")
+			
+
+			
