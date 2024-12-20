@@ -49,6 +49,13 @@ def nutzerverwaltung(request):
 		antraege = daten["Anträge"]
 		parameter["Anträge"] = antraege
 
+	jsonDatei = os.path.join(speicherpfadJSON, "nutzerdatenbank.json")
+
+	with open(jsonDatei, "r", encoding="utf-8") as datei:
+		daten = json.load(datei)
+		benutzer = daten["Benutzer"]
+		parameter["Benutzer"] = benutzer
+
 	return render(request, 'nutzerverwaltung.html', parameter)	# parameter und antraege übergeben!
 
 def login(request):
@@ -195,26 +202,6 @@ def berechtigungsantrag(request):
 			json.dump(daten, datei, indent=4)
 
 		return redirect("nutzerverwaltung")
-		
-		# JSON erstellen mit allen Berichten!? oder die auch in die Nutzer mit rein!? 
-
-		#### Scheinbar blockiert der Server selbst die Verbindung zum SMTP Server... ####
-
-		# s = smtplib.SMTP(host="213.165.67.124", port=587)
-		# s.starttls()
-		# s.login("tenpm@web.de", "Mindestens9Zeichen!")
-
-		# msg = EmailMessage()
-		# msg["From"] = "tenpm@web.de"
-		# msg["To"] = "t_hauser@web.de"
-		# msg["Subject"] = f"Antrag von {matrikelnummer}"
-		# msg.set_content(f"Guten Tag liebe Admins,\nder Nutzer {matrikelnummer} hat einen Antrag auf {antragAls} gestellt.\nDer Antrag liegt in ihrer Nutzerverwaltung zur Zustimmung bereit!")
-
-		# s.send_message(msg)
-
-		# s.quit()
-
-		#return render(request, 'nutzerverwaltung.html', {"berechtigung": berechtigung, "matrikelnummer": matrikelnummer, "semester": semester})
 
 def antragEntfernen(request):
 
@@ -262,5 +249,20 @@ def antragGenehmigen(request):
 
 		return redirect("nutzerverwaltung")
 			
+def nutzersperren(request):
 
-			
+	if request.method =="POST":
+
+		matrnummer = request.POST.get("matrikelnummer")
+
+		jsonDatei = os.path.join(speicherpfadJSON, "nutzerdatenbank.json")
+
+		with open(jsonDatei, "r", encoding="utf-8") as datei:
+			daten = json.load(datei)
+
+			daten["Benutzer"][matrnummer]["berechtigung"] = "gesperrt"
+		
+		with open(jsonDatei, "w", encoding="utf-8") as datei:
+			json.dump(daten, datei, indent=4)
+
+		return redirect("nutzerverwaltung")

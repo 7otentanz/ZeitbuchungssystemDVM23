@@ -30,7 +30,9 @@
         </div>
 
         <div class="tabInhalt">
-
+            {% if request.session.berechtigung == "gesperrt" %}
+                <p>DU BIST GESPERRT! Lass dich in der Nutzerverwaltung entsperren.</p>
+            {% endif %}
         </div>
 
     </body>

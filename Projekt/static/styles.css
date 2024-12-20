@@ -107,6 +107,22 @@ a, :link, :visited, :active{
     margin-left: 1%;
 }
 
+.einAntrag {
+    margin-left: 1%;
+}
+
+.nutzerverzeichnis {
+    margin-left: 1%;
+}
+
+.sperrbutton {
+    margin-left: 1%;
+    margin-bottom: 0.1%;
+    background-color:  #ffbd59;
+    border-color: #b20000;
+    border-radius: 5px;
+}
+
 .berechtigungsantrag {
     color: #000;
 }

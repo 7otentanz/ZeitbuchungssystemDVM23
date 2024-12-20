@@ -59,6 +59,19 @@
                         </div>
                     {% endfor %}
                 </div>
+
+                <div id="nutzerverzeichnis">
+                    Hier kannst du alle Nutzer sehen, die in unserem System registriert sind. Bei grobem Fehlverhalten kannst du Nutzer sperren!
+                    {% for nutzer, nutzerdaten in Benutzer.items %}
+                        <div>
+                            <b>Matrikelnummer:</b> {{ nutzerdaten.matrikelnummer }}, <b>Vorname:</b> {{ nutzerdaten.vorname }}, <b>Nachname:</b> {{ nutzerdaten.nachname }}, <b>Jahrgang:</b> {{ nutzerdaten.jahrgang }}
+                            <form method="post" action="nutzersperren">
+                                {% csrf_token %}
+                                <button class="sperrbutton" type="submit" name="matrikelnummer" value="{{ nutzerdaten.matrikelnummer }}">Nutzer sperren.</button>
+                            </form>
+                        </div>
+                    {% endfor %}
+                </div>
             {% endif %}
 
             {% if request.session.berechtigung == "vip" %}

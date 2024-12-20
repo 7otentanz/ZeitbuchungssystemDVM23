@@ -34,6 +34,7 @@ urlpatterns = [
     path('berechtigungsantrag', views.berechtigungsantrag, name='berechtigungsantrag'),
     path('antragablehnen', views.antragAblehnen, name='antragAblehnen'),
     path('antraggenehmigen', views.antragGenehmigen, name='antragGenehmigen'),
+    path('nutzersperren', views.nutzersperren, name='nutzersperren'),
 ]
 
 urlpatterns += staticfiles_urlpatterns()
