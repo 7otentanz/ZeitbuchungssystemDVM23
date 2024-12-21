@@ -6,6 +6,7 @@ from email.message import EmailMessage
 import os
 import json
 from . import berichtarchitektur
+import subprocess
 
 speicherpfadJSON = "/var/www/static"
 
@@ -95,6 +96,7 @@ def nutzerRegistrieren(request):
 
 	jsonDatei = os.path.join(speicherpfadJSON, "nutzerdatenbank.json")
 
+	# if jsonDatei == True:
 	with open(jsonDatei, "r", encoding="utf-8") as datei:
 		daten = json.load(datei)
 
@@ -106,7 +108,17 @@ def nutzerRegistrieren(request):
 
 	with open(jsonDatei, "w", encoding="utf-8") as datei:
 		json.dump(daten, datei, indent=4)
-	
+	# else:
+	# 	daten = {"Benutzer" : {}}
+	# 	daten["Benutzer"][matrikelnummer] = nutzerDaten
+
+	# 	with open(jsonDatei, "w", encoding="utf-8") as datei:
+	# 		json.dump(daten, datei, indent=4)
+
+	# 	subprocess.run(["sudo", "chown", "ubuntu:ubuntu", jsonDatei])
+	# 	subprocess.run(["sudo", "chmod", "0777", jsonDatei])
+
+		
 	return redirect("login")
 
 ### Bestehenden Benutzer anmelden ###
