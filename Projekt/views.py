@@ -6,7 +6,8 @@ from email.message import EmailMessage
 import os
 import json
 from . import berichtarchitektur
-import subprocess
+#import bcrypt # verschluesselt Passwoerter
+
 
 speicherpfadJSON = "/var/www/static"
 
@@ -74,6 +75,8 @@ def nutzerRegistrieren(request):
 	nachname = request.POST.get("nachname")
 	jahrgang = request.POST.get("jahrgang")
 	passwort = request.POST.get("passwort")
+	#passwort = request.POST.get("passwort").encode('utf-8')
+	#verschluesseltesPasswort = bcrypt.hachpw(passwort, bcrypt.gensalt()).decode('utf-8')
 	berechtigung = "nutzer"
 	
 	startJahr = int(jahrgang[-2:]) + 2000
@@ -91,33 +94,34 @@ def nutzerRegistrieren(request):
 		"jahrgang": jahrgang,
 		"semester": semester,
 		"passwort": passwort,
+		#"passwort": verschluesseltesPasswort,
 		"berechtigung": berechtigung
 	}
 
 	jsonDatei = os.path.join(speicherpfadJSON, "nutzerdatenbank.json")
 
-	# if jsonDatei == True:
-	with open(jsonDatei, "r", encoding="utf-8") as datei:
-		daten = json.load(datei)
+	if jsonDatei == True:
+		with open(jsonDatei, "r", encoding="utf-8") as datei:
+			daten = json.load(datei)
 
-		if matrikelnummer in daten["Benutzer"]:
-			return redirect("login")
-		
-		else:
-			daten["Benutzer"][matrikelnummer] = nutzerDaten
+			if matrikelnummer in daten["Benutzer"]:
+				return redirect("login")
+			
+			else:
+				daten["Benutzer"][matrikelnummer] = nutzerDaten
 
-	with open(jsonDatei, "w", encoding="utf-8") as datei:
-		json.dump(daten, datei, indent=4)
-	# else:
-	# 	daten = {"Benutzer" : {}}
-	# 	daten["Benutzer"][matrikelnummer] = nutzerDaten
+		with open(jsonDatei, "w", encoding="utf-8") as datei:
+			json.dump(daten, datei, indent=4)
 
-	# 	with open(jsonDatei, "w", encoding="utf-8") as datei:
-	# 		json.dump(daten, datei, indent=4)
+	else:
 
-	# 	subprocess.run(["sudo", "chown", "ubuntu:ubuntu", jsonDatei])
-	# 	subprocess.run(["sudo", "chmod", "0777", jsonDatei])
+		daten = {"Benutzer" : {matrikelnummer: nutzerDaten}}
 
+		with open(jsonDatei, "w", encoding="utf-8") as datei:
+			json.dump(daten, datei, indent=4)
+
+			os.chmod(jsonDatei, 0o777)
+			#os.chown(jsonDatei, "ubuntu")
 		
 	return redirect("login")
 
@@ -130,26 +134,29 @@ def nutzerAnmelden(request):
 
 	jsonDatei = os.path.join(speicherpfadJSON, "nutzerdatenbank.json")
 
-	with open(jsonDatei, "r", encoding="utf-8") as datei:
-		daten = json.load(datei)
+	if jsonDatei == True:
+		with open(jsonDatei, "r", encoding="utf-8") as datei:
+			daten = json.load(datei)
 
-		if matrikelnummer in daten["Benutzer"]:
+			if matrikelnummer in daten["Benutzer"]:
 
-			if passwort == daten["Benutzer"][matrikelnummer]["passwort"]:
+				if passwort == daten["Benutzer"][matrikelnummer]["passwort"]:
+					
+					request.session["matrikelnummer"] = matrikelnummer		# erstellt eine session... die so lange aktiv bleibt, wie der browser geöffnet ist.
+					semester = daten["Benutzer"][matrikelnummer]["semester"]
+					request.session["semester"] = semester
+					berechtigung = daten["Benutzer"][matrikelnummer]["berechtigung"]
+					request.session["berechtigung"] = berechtigung
+					
+					return render(request, "woranArbeitestDu.html", {"berechtigung": berechtigung, "matrikelnummer": matrikelnummer, "semester": semester})
 				
-				request.session["matrikelnummer"] = matrikelnummer		# erstellt eine session... die so lange aktiv bleibt, wie der browser geöffnet ist.
-				semester = daten["Benutzer"][matrikelnummer]["semester"]
-				request.session["semester"] = semester
-				berechtigung = daten["Benutzer"][matrikelnummer]["berechtigung"]
-				request.session["berechtigung"] = berechtigung
+				elif passwort != daten["Benutzer"][matrikelnummer]["passwort"]:
+					return HttpResponse("<script>alert('Falsches Passwort!');window.history.back()</script>")
 				
-				return render(request, "woranArbeitestDu.html", {"berechtigung": berechtigung, "matrikelnummer": matrikelnummer, "semester": semester})
-			
-			elif passwort != daten["Benutzer"][matrikelnummer]["passwort"]:
-				return HttpResponse("<script>alert('Falsches Passwort!');window.history.back()</script>")
-			
-		if matrikelnummer not in daten["Benutzer"]:
-			return HttpResponse("<script>alert('Du musst dich zuerst registrieren!');window.history.back()</script>")
+			if matrikelnummer not in daten["Benutzer"]:
+				return HttpResponse("<script>alert('Du musst dich zuerst registrieren!');window.history.back()</script>")
+	else:
+		return HttpResponse("<script>alert('Du musst dich zuerst registrieren!');window.history.back()</script>")
 
 ### Datetime Objekt absetzen ###
 
