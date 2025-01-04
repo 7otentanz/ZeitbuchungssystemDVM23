@@ -22,7 +22,7 @@ class Bericht:
     def textEinfuegen(self, text):
         self.text = text
     
-    def serialisierenalsjson(self):
+    def serialisierenalsjson(self, bestehendeBerichte=None):
         
         if self.endzeit == 0:
             endzeit = 0
@@ -38,8 +38,12 @@ class Bericht:
             "id": str(self.id)
         }
 
-        Bericht.alleBerichte.append(berichtJSON)
+        if bestehendeBerichte == None:
+            bestehendeBerichte = []
 
+        bestehendeBerichte.append(berichtJSON)
+        Bericht.alleBerichte = bestehendeBerichte
+        
         return Bericht.alleBerichte
 
     def serialisierenalscsv(self):

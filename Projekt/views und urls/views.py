@@ -9,8 +9,9 @@ from . import berichtarchitektur
 
 speicherpfadJSON = "/var/www/static"
 
-def loginPruefen(request):
+### FUNKTIONEN ZUR PARAMETERVERGABE ###
 
+def loginPruefen(request):
 	try:
 		matrikelnummer = request.session["matrikelnummer"]
 		semester = request.session["semester"]
@@ -19,9 +20,35 @@ def loginPruefen(request):
 		matrikelnummer = "Nicht angemeldet!"
 		semester= "Nicht angemeldet!"
 		berechtigung = "Nicht angemeldet!"
-
 	parameter = {"berechtigung": berechtigung, "matrikelnummer": matrikelnummer, "semester": semester}
 	return parameter
+
+def nutzerberichte(request):
+	matrikelnummer = request.session["matrikelnummer"]
+	jsonDatei = os.path.join(speicherpfadJSON, "Nutzerberichte", f"berichte_{matrikelnummer}.json")
+	alleBerichte = []
+	try:
+		with open(jsonDatei, "r", encoding="utf-8") as datei:
+			daten = json.load(datei)
+			alleBerichte = daten.get("Berichte", [])
+	except:
+		alleBerichte = []
+	parameter = {"alleBerichte": alleBerichte}
+	return parameter
+
+def berechtigungsantraege(request):
+	jsonDatei = os.path.join(speicherpfadJSON, "berechtigungsantraege.json")
+	with open(jsonDatei, "r", encoding="utf-8") as datei:
+		daten = json.load(datei)
+		antraege = daten["Anträge"]
+	jsonDatei = os.path.join(speicherpfadJSON, "nutzerdatenbank.json")
+	with open(jsonDatei, "r", encoding="utf-8") as datei:
+		daten = json.load(datei)
+		benutzer = daten["Benutzer"]
+	parameter = {"Anträge": antraege, "Benutzer": benutzer}
+	return parameter
+
+### FUNKTIONEN DIE TEMPLATES LADEN UND MIT PARAMETERN VERSEHEN ###
 
 def woranarbeitestdu(request):
 	parameter = loginPruefen(request)
@@ -29,33 +56,22 @@ def woranarbeitestdu(request):
 
 def erzaehlmirmehr(request):
 	parameter = loginPruefen(request)
+	parameter.update(nutzerberichte(request))
 	return render(request, 'erzaehlMirMehr.html', parameter)
 
 def kuerzlichabgeschlossen(request):
 	parameter = loginPruefen(request)
+	parameter.update(nutzerberichte(request))
 	return render(request, 'kuerzlichAbgeschlossen.html', parameter)
 
 def lassmichdaszusammenfassen(request):
 	parameter = loginPruefen(request)
+	parameter.update(nutzerberichte(request))
 	return render(request, 'lassMichDasZusammenfassen.html', parameter)
 
 def nutzerverwaltung(request):
 	parameter = loginPruefen(request)
-
-	jsonDatei = os.path.join(speicherpfadJSON, "berechtigungsantraege.json")
-
-	with open(jsonDatei, "r", encoding="utf-8") as datei:
-		daten = json.load(datei)
-		antraege = daten["Anträge"]
-		parameter["Anträge"] = antraege
-
-	jsonDatei = os.path.join(speicherpfadJSON, "nutzerdatenbank.json")
-
-	with open(jsonDatei, "r", encoding="utf-8") as datei:
-		daten = json.load(datei)
-		benutzer = daten["Benutzer"]
-		parameter["Benutzer"] = benutzer
-
+	parameter.update(berechtigungsantraege(request))
 	return render(request, 'nutzerverwaltung.html', parameter)	# parameter und antraege übergeben!
 
 def login(request):
@@ -63,6 +79,8 @@ def login(request):
 
 def registrieren(request):
 	return render(request, 'registrieren.html')
+
+### FUNKTIONEN DIE FUNKTIONALITÄTEN ABBILDEN ###
 
 ### Neuen Benutzer anlegen / registrieren ###
 
@@ -149,24 +167,21 @@ def berichtAnlegen(request):
 		teilmodul = request.POST.get("teilmodul")
 		matrikelnummer = request.session["matrikelnummer"]
 
-		neuerBericht = berichtarchitektur.Bericht(startzeit, teilmodul)
-
 		jsonDatei = os.path.join(speicherpfadJSON, "Nutzerberichte", f"berichte_{matrikelnummer}.json")
-
-		alleBerichteListe = neuerBericht.serialisierenalsjson()
 
 		try:
 			with open(jsonDatei, "r", encoding="utf-8") as datei:
 				daten = json.load(datei)
-				daten["Berichte"] = alleBerichteListe
-
-			with open(jsonDatei, "w", encoding="utf-8") as datei:
-				json.dump(daten, datei, indent=4)
+				bestehendeBerichte = daten.get("Berichte", [])
 
 		except:
-			with open(jsonDatei, "w", encoding="utf-8") as datei:
-				daten = {"Berichte": alleBerichteListe}
-				json.dump(daten, datei, indent=4)
+			bestehendeBerichte = []
+
+		neuerBericht = berichtarchitektur.Bericht(startzeit, teilmodul)
+		aktualisierteBerichte = neuerBericht.serialisierenalsjson(bestehendeBerichte)
+		
+		with open(jsonDatei, "w", encoding="utf-8") as datei:
+			json.dump({"Berichte": aktualisierteBerichte}, datei, indent=4)
 
 	parameter = loginPruefen(request)
 	return render(request, 'woranArbeitestDu.html', parameter)

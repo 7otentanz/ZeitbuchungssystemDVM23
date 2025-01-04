@@ -33,6 +33,19 @@
             {% if request.session.berechtigung == "gesperrt" %}
                 <p>DU BIST GESPERRT! Lass dich in der Nutzerverwaltung entsperren.</p>
             {% endif %}
+
+            {% if request.session.berechtigung != "gesperrt" %}
+                {% for bericht in alleBerichte %}
+                    {% if bericht.endzeit != 0 %}
+
+                        <div class="bericht">
+                            <p>Startzeit: {{ bericht.startzeit }}</p>
+                            <p>Endzeit: {{ bericht.endzeit }}</p>
+                        </div>
+
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
         </div>
 
     </body>
