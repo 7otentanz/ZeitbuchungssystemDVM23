@@ -49,6 +49,8 @@ def berechtigungsantraege(request):
 	return parameter
 
 ### FUNKTIONEN DIE TEMPLATES LADEN UND MIT PARAMETERN VERSEHEN ###
+def index(request):
+	return woranarbeitestdu(request)
 
 def woranarbeitestdu(request):
 	parameter = loginPruefen(request)
@@ -192,8 +194,7 @@ def berichtAnlegen(request):
 		with open(jsonDatei, "w", encoding="utf-8") as datei:
 			json.dump({"Berichte": aktualisierteBerichte}, datei, indent=4)
 
-	parameter = loginPruefen(request)
-	return render(request, 'woranArbeitestDu.html', parameter)
+	return redirect("woranArbeitestDu")
 
 ### Berechtigungsantrag verschicken, für alle, die noch nicht Admin sind ###
 

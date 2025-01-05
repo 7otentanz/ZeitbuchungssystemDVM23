@@ -21,8 +21,9 @@ from ten_pm import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', views.index, name="index"),
     path('woranarbeitestdu', views.woranarbeitestdu, name='woranArbeitestDu'),
-    path('', views.berichtAnlegen, name='berichtAnlegen'),
+    path('berichtanlegen', views.berichtAnlegen, name='berichtAnlegen'),
     path('erzaehlmirmehr', views.erzaehlmirmehr, name='erzaehlMirMehr'),
     path('kuerzlichabgeschlossen', views.kuerzlichabgeschlossen, name='kuerzlichAbgeschlossen'),
     path('lassmichdaszusammenfassen', views.lassmichdaszusammenfassen, name='lassMichDasZusammenfassen'),
