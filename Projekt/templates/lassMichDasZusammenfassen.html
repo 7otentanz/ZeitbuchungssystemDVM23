@@ -33,6 +33,16 @@
             {% if request.session.berechtigung == "gesperrt" %}
                 <p>DU BIST GESPERRT! Lass dich in der Nutzerverwaltung entsperren.</p>
             {% endif %}
+            {% for bericht in alleBerichte %}
+                {% if bericht.endzeit != 0 and bericht.text != "" %}
+                    <div class="bericht">
+                        <div class="berichtheader">Gearbeitet von <b>{{ bericht.startzeit }}</b> bis <b>{{ bericht.endzeit }}</b> am Modul <b>{{ bericht.teilmodul }}</b></div>
+                        <div class="berichttextfenster">
+                            <p>{{ bericht.text }}</p>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
         </div>
 
     </body>

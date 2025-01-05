@@ -168,7 +168,7 @@ def nutzerAbmelden(request):
 
 	return render(request, "woranArbeitestDu.html", parameter)
 
-### Datetime Objekt absetzen ###
+### Bericht anlegen und mit einer Startzeit versehen ###
 
 def berichtAnlegen(request):
 
@@ -195,6 +195,31 @@ def berichtAnlegen(request):
 			json.dump({"Berichte": aktualisierteBerichte}, datei, indent=4)
 
 	return redirect("woranArbeitestDu")
+
+### Bericht mit einem Text versehen ###
+
+def berichtText(request):
+
+	if request.method == "POST":
+
+		id = request.POST.get("id")
+		text = request.POST.get("text")
+		matrikelnummer = request.session.get("matrikelnummer")
+
+	jsonDatei = os.path.join(speicherpfadJSON, "Nutzerberichte", f"berichte_{matrikelnummer}.json")
+
+	with open(jsonDatei, "r", encoding="utf-8") as datei:
+		daten = json.load(datei)
+		berichte = daten.get("Berichte",[])
+
+	for bericht in berichte:
+		if bericht["id"] == id:
+			bericht["text"] = text
+		
+	with open(jsonDatei, "w", encoding="utf-8") as datei:
+		json.dump({"Berichte": berichte}, datei, indent=4)
+	
+	return redirect("erzaehlMirMehr")
 
 ### Berechtigungsantrag verschicken, für alle, die noch nicht Admin sind ###
 

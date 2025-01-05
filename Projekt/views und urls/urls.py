@@ -25,6 +25,7 @@ urlpatterns = [
     path('woranarbeitestdu', views.woranarbeitestdu, name='woranArbeitestDu'),
     path('berichtanlegen', views.berichtAnlegen, name='berichtAnlegen'),
     path('erzaehlmirmehr', views.erzaehlmirmehr, name='erzaehlMirMehr'),
+    path('berichtText', views.berichtText, name="berichtText"),
     path('kuerzlichabgeschlossen', views.kuerzlichabgeschlossen, name='kuerzlichAbgeschlossen'),
     path('lassmichdaszusammenfassen', views.lassmichdaszusammenfassen, name='lassMichDasZusammenfassen'),
     path('nutzerverwaltung', views.nutzerverwaltung, name='nutzerverwaltung'),
