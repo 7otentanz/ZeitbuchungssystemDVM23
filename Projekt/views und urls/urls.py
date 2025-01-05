@@ -29,6 +29,7 @@ urlpatterns = [
     path('nutzerverwaltung', views.nutzerverwaltung, name='nutzerverwaltung'),
     path('login', views.login, name='login'),
     path('nutzeranmelden', views.nutzerAnmelden, name='nutzerAnmelden'),
+    path('nutzerabmelden', views.nutzerAbmelden, name='nutzerAbmelden'),
     path('registrieren', views.registrieren, name='registrieren'),
     path('nutzerRegistrieren', views.nutzerRegistrieren, name='nutzerRegistrieren'),
     path('berechtigungsantrag', views.berechtigungsantrag, name='berechtigungsantrag'),

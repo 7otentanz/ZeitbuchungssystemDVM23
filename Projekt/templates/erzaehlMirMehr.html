@@ -36,11 +36,17 @@
 
             {% if request.session.berechtigung != "gesperrt" %}
                 {% for bericht in alleBerichte %}
-                    {% if bericht.endzeit != 0 %}
+                    {% if bericht.endzeit != 0 and bericht.text == "" %}
 
                         <div class="bericht">
-                            <p>Startzeit: {{ bericht.startzeit }}</p>
-                            <p>Endzeit: {{ bericht.endzeit }}</p>
+                            <div class="berichtheader">Gearbeitet von <b>{{ bericht.startzeit }}</b> bis <b>{{ bericht.endzeit }}</b> am Modul <b>{{ bericht.teilmodul }}</b></div>
+                            <div class="berichttextfenster">
+                                <form action="" class="berichttextfenster">
+                                    <label for="beschreibung">Beschreibe hier genauer was du bearbeitet hast</label>
+                                    <input type="text">
+                                    <button type="submit">Bericht speichern!</button>
+                                </form>
+                            </div>
                         </div>
 
                     {% endif %}

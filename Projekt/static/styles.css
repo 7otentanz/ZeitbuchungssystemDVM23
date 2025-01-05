@@ -1,124 +1,139 @@
-* {
-    left: 0;
-    top: 0;
-    font-family: "Baloo Paaji 2";
-}
+/* ### STYLING ALLGEMEIN ### */
 
-body {
-    background-color: #ffbd59;
-}
+    * {
+        left: 0;
+        top: 0;
+        font-family: "Baloo Paaji 2";
+    }
 
-.logo {
-    display: inline-block;
-    padding-left: 5vh;
-    height: 20vh;
-    width: auto;
-}
+    body {
+        background-color: #ffbd59;
+    }
 
-#datumUhrzeit {
-    padding-right: 10vh;
-    float: right;
-    margin-left: 15vh;
-    bottom: 10vh;
-}
+    .logo {
+        display: inline-block;
+        padding-left: 5vh;
+        height: 20vh;
+        width: auto;
+    }
 
-#tabBox {
-    top: 0;
-    min-width: 90vh;
-    min-height: 32px;
-}
+    #datumUhrzeit {
+        padding-right: 10vh;
+        float: right;
+        margin-left: 15vh;
+        bottom: 10vh;
+    }
 
-.tab {
-    display: inline-block;
-    min-width: 15%;
-    min-height: 32px;
-    background: linear-gradient(90deg, #0097b2 0%, #a0f5ff 100%);
-    border-radius: 10px 10px 0 0;
-    padding-left: 7.5px;
-    text-align: inherit;
-}
+    #tabBox {
+        top: 0;
+        min-width: 90vh;
+        min-height: 32px;
+    }
 
-.nutzer-tab {
-    display: inline-block;
-    min-width: 15%;
-    min-height: 32px;
-    background: linear-gradient(90deg, #dfd0bb 0%, #ffdaa2 100%);
-    border-radius: 10px 10px 0 0;
-    padding-left: 7.5px;
-    text-align: inherit;
-}
+    .tab {
+        display: inline-block;
+        min-width: 15%;
+        min-height: 32px;
+        background: linear-gradient(90deg, #0097b2 0%, #a0f5ff 100%);
+        border-radius: 10px 10px 0 0;
+        padding-left: 7.5px;
+        text-align: inherit;
+    }
 
-a, :link, :visited, :active{
-    color: #000;
-    text-decoration: none;
-}
+    .nutzer-tab {
+        display: inline-block;
+        min-width: 15%;
+        min-height: 32px;
+        background: linear-gradient(90deg, #dfd0bb 0%, #ffdaa2 100%);
+        border-radius: 10px 10px 0 0;
+        padding-left: 7.5px;
+        text-align: inherit;
+    }
 
-.aktiv {
-    background: #a0f5ff;
-    padding-top: 5px;
-    font-weight: bold;
-}
+    a, :link, :visited, :active{
+        color: #000;
+        text-decoration: none;
+    }
 
-.nutzer-aktiv {
-    background: #ffdaa2;
-    padding-top: 5px;
-    font-weight: bold;
-}
+    .aktiv {
+        background: #a0f5ff;
+        padding-top: 5px;
+        font-weight: bold;
+    }
 
-.tabInhalt {
-    min-width: 90vh;
-    min-height: 80vh;
-    border: solid black 1px;
-    background-color: #a0f5ff99;
-    margin-top: 0;
-}
+    .nutzer-aktiv {
+        background: #ffdaa2;
+        padding-top: 5px;
+        font-weight: bold;
+    }
 
-.tabInhalt div,
-.tabInhalt form,
-.tabInhalt p {
-    margin-left: 1%;
-    margin-top: 1%;
-    color: #000;
-}
+    .tabInhalt {
+        min-width: 90vh;
+        min-height: 80vh;
+        border: solid black 1px;
+        background-color: #a0f5ff99;
+        margin-top: 0;
+    }
 
-.zeitbutton {
-    background-color:  #a0f5ff;
-    border-color: #0097b2;
-    border-radius: 5px;
-    width: 40%;
-}
+    .tabInhalt div,
+    .tabInhalt form,
+    .tabInhalt p {
+        margin-left: 1%;
+        margin-top: 1%;
+        color: #000;
+    }
 
-/* .berechtigungsanfragen {
-    margin-left: 1%;
-}
+/* ### STYLING WORANARBEITESTDU ### */
 
-.einAntrag {
-    margin-left: 1%;
-}
+    .zeitbutton {
+        background-color:  #a0f5ff;
+        border-color: #0097b2;
+        border-radius: 5px;
+        width: 40%;
+    }
 
-.nutzerverzeichnis {
-    margin-left: 1%;
-} */
+/* ### STYLING ERZAEHLMIRMEHR ### */
 
-.sperrbutton,
-.berechtigungsbutton {
-    margin-left: 1%;
-    border-radius: 5px;
-}
+    .bericht {
+        border: solid;
+        border-color: #0097b2;
+        border-radius: 5px;
+        width: 70%;
+        padding-bottom: 0.2%;
+    }    
 
-.sperrbuttonform,
-.berechtigungsbuttonform {
-    display: inline;
-}
+    form.berichttextfenster > * {
+        display: block;
+        width: 70%;
+        margin-bottom: 0.2%;
+    }
 
-/* .berechtigungsantrag {
+    form.berichttextfenster > button {
+        width: 30%;
+    }
 
-} */
-.sperrbutton {
-    background-color:  #ffbd59;
-    border-color: #b20000;
-}
-.berechtigungsbutton {
-    background-color:  #a0f5ff;
-    border-color: #0097b2;
-}
+/* ### STYLING KUERZLICHABGESCHLOSSEN ### */
+
+/* ### STYLING LASSMICHDASZUSAMMENFASSEN ### */
+
+/* ### STYLING NUTZERVERWALTUNG ### */
+
+    .sperrbutton,
+    .berechtigungsbutton {
+        margin-left: 1%;
+        border-radius: 5px;
+    }
+
+    .sperrbuttonform,
+    .berechtigungsbuttonform {
+        display: inline;
+    }
+
+    .sperrbutton {
+        background-color:  #ffbd59;
+        border-color: #b20000;
+    }
+    .berechtigungsbutton {
+        background-color:  #a0f5ff;
+        border-color: #0097b2;
+    }

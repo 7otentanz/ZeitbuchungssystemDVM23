@@ -30,7 +30,14 @@
         <div class="tabInhalt">
 
             <div id="berechtigungsheader">
+                Hallo, {{ matrikelnummer }}! <br>
                 Deine Berechtigung ist <b>"{{ berechtigung }}"</b>.<br>
+                <form class="berechtigungsbuttonform" action="{% url 'nutzerAbmelden' %}" method="post">
+                    {% csrf_token %}
+                    <label for="abmelden">Möchtest du dich ausloggen?</label>
+                    <button class ="berechtigungsbutton" type="submit">Abmelden</button>
+                </form>
+
                 {% if request.session.berechtigung == "nutzer" or request.session.berechtigung == "vip" %}
                 <br>
                 <b>Nutzer</b> können blablabla Text. <br>

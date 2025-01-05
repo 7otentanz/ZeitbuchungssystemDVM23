@@ -72,7 +72,7 @@ def lassmichdaszusammenfassen(request):
 def nutzerverwaltung(request):
 	parameter = loginPruefen(request)
 	parameter.update(berechtigungsantraege(request))
-	return render(request, 'nutzerverwaltung.html', parameter)	# parameter und antraege übergeben!
+	return render(request, 'nutzerverwaltung.html', parameter)
 
 def login(request):
 	return render(request, 'login.html')
@@ -156,6 +156,15 @@ def nutzerAnmelden(request):
 			
 		if matrikelnummer not in daten["Benutzer"]:
 			return HttpResponse("<script>alert('Du musst dich zuerst registrieren!');window.history.back()</script>")
+
+### Nutzer abmelden ###
+
+def nutzerAbmelden(request):
+
+	request.session.flush()
+	parameter = loginPruefen(request)
+
+	return render(request, "woranArbeitestDu.html", parameter)
 
 ### Datetime Objekt absetzen ###
 

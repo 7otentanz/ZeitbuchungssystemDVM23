@@ -33,14 +33,20 @@
 
         {% if request.session.berechtigung != "gesperrt" %}
 
+            {% if request.session.berechtigung == "nutzer" or request.session.berechtigung == "vip" or request.session.berechtigung == "admin" %}
             <div id="semesterheader">
                 Dein aktuelles Semester ist das {{ semester }}. Viel Erfolg!
             </div>
+            {% else %}
+            <div id="semesterheader">
+                Du bist nicht angemeldet, bitte logge dich zuerst ein.
+            </div>
+            {% endif %}
 
                 {% if request.session.semester == 2 %}
                 <form method="post" action="{% url 'berichtAnlegen' %}">
                     {% csrf_token %}
-                    <button type="submit" class="zeitbutton" name="teilmodul"  value="1.1.1">1.1.1 Einführung Informatik</button>
+                    <button type="submit" class="zeitbutton" name="teilmodul"  value="1.1.1 Einführung Informatik">1.1.1 Einführung Informatik</button>
                 </form>
                 {% endif %}
                 {% if request.session.semester == 3 %}
