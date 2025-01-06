@@ -33,16 +33,34 @@
             {% if request.session.berechtigung == "gesperrt" %}
                 <p>DU BIST GESPERRT! Lass dich in der Nutzerverwaltung entsperren.</p>
             {% endif %}
-            {% for bericht in alleBerichte %}
-                {% if bericht.endzeit != 0 and bericht.text != "" %}
-                    <div class="bericht">
-                        <div class="berichtheader">Gearbeitet von <b>{{ bericht.startzeit }}</b> bis <b>{{ bericht.endzeit }}</b> am Modul <b>{{ bericht.teilmodul }}</b></div>
-                        <div class="berichttextfenster">
-                            <p>" {{ bericht.text }} "</p>
+            {% if request.session.berechtigung != "gesperrt" %}
+
+                <form method="post" action="{% url 'jsondownload' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="downloadbutton">Alle Berichte als <b>.json</b> herunterladen</button>
+                </form>
+                <form method="post" action="{% url 'csvdownload' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="downloadbutton">Alle Berichte als <b>.csv</b> herunterladen</button>
+                </form>
+                <form method="post" action="{% url 'xmldownload' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="downloadbutton">Alle Berichte als <b>.xml</b> herunterladen</button>
+                </form>
+
+                {% for bericht in alleBerichte %}
+                    {% if bericht.endzeit != 0 and bericht.text != "" %}
+                        <div class="bericht">
+                            <div class="berichtheader">Gearbeitet von <b>{{ bericht.startzeit }}</b> bis <b>{{ bericht.endzeit }}</b> am Modul <b>{{ bericht.teilmodul }}</b>. <br>
+                            Ingesamt <b>{{ bericht.arbeitszeit }} Minuten</b>.</div>
+                            <div class="berichttextfenster">
+                                <p>" {{ bericht.text }} "</p>
+                            </div>
                         </div>
-                    </div>
-                {% endif %}
-            {% endfor %}
+                    {% endif %}
+                {% endfor %}
+
+            {% endif %}
         </div>
 
     </body>

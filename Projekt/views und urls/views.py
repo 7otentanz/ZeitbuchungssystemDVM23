@@ -1,10 +1,12 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from datetime import datetime
 import smtplib
 from email.message import EmailMessage
 import os
 import json
+import csv
+from lxml import etree	# Achtung, lxml muss IN DER VIRTUAL ENVIRONMENT installiert werden! ### sudo pip install lxml ###
 from . import berichtarchitektur
 
 speicherpfadJSON = "/var/www/static"
@@ -220,6 +222,86 @@ def berichtText(request):
 		json.dump({"Berichte": berichte}, datei, indent=4)
 	
 	return redirect("erzaehlMirMehr")
+
+### Alle Nutzerberichte als json herunterladen ###
+
+def jsondownload(request):
+
+	if request.method =="POST":
+
+		parameter = nutzerberichte(request)
+		alleBerichte = parameter.get("alleBerichte", [])
+
+		downloadberichte = []
+
+		for bericht in alleBerichte:
+			if bericht["endzeit"] != 0 and bericht["text"] != "":
+				downloadberichte.append(bericht)
+		
+		jsonberichte = {"Berichte": downloadberichte}
+		jsondatei = json.dumps(jsonberichte, indent=4)
+
+		response = HttpResponse(jsondatei, content_type="application/json")
+		response["Content-Disposition"] = 'attachment; filename="berichte.json"'
+
+		return response
+
+### Alle Nutzerberichte als csv herunterladen ###
+
+def csvdownload(request):
+
+	if request.method =="POST":
+
+		parameter = nutzerberichte(request)
+		alleBerichte = parameter.get("alleBerichte", [])
+
+		downloadberichte = []
+
+		for bericht in alleBerichte:
+			if bericht["endzeit"] != 0 and bericht["text"] != "":
+				downloadberichte.append(bericht)
+
+		response = HttpResponse(content_type="text/csv")
+		response["Content-Disposition"] = 'attachment; filename="berichte.csv"'
+
+		csvtabelle = csv.DictWriter(response, fieldnames=["startzeit", "teilmodul", "endzeit", "text", "arbeitszeit", "id"], delimiter=";")
+		csvtabelle.writeheader()
+
+		for bericht in downloadberichte:
+			csvtabelle.writerow(bericht)
+		
+		return response
+
+### Alle Nutzerberichte als xml herunterladen ###
+
+def xmldownload(request):
+
+	if request.method == "POST":
+
+		parameter = nutzerberichte(request)
+		alleBerichte = parameter.get("alleBerichte", [])
+
+		downloadberichte = []
+
+		for bericht in alleBerichte:
+			if bericht["endzeit"] != 0 and bericht["text"] != "":
+				downloadberichte.append(bericht)
+		
+		root = etree.Element("Berichte")
+
+		for bericht in downloadberichte:
+			einbericht = etree.SubElement(root, "Bericht")
+			for key, value in bericht.items():
+				etree.SubElement(einbericht, key).text = str(value)
+		
+		tree = etree.ElementTree(root)
+
+		response = HttpResponse(content_type="application/xml")
+		response["Content-Disposition"] = 'attachment; filename="berichte.xml"'
+
+		tree.write(response)
+
+		return response
 
 ### Berechtigungsantrag verschicken, für alle, die noch nicht Admin sind ###
 
