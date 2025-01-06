@@ -7,6 +7,7 @@
         <title>10PM - Wenn's beim Lernen mal wieder spät wird</title>
         <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
         <script src="{% static 'scripts.js' %}"></script>
+        <link rel="icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
         <!-- Schriftarten-->
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -35,18 +36,20 @@
             {% endif %}
             {% if request.session.berechtigung != "gesperrt" %}
 
-                <form method="post" action="{% url 'jsondownload' %}">
-                    {% csrf_token %}
-                    <button type="submit" class="downloadbutton">Alle Berichte als <b>.json</b> herunterladen</button>
-                </form>
-                <form method="post" action="{% url 'csvdownload' %}">
-                    {% csrf_token %}
-                    <button type="submit" class="downloadbutton">Alle Berichte als <b>.csv</b> herunterladen</button>
-                </form>
-                <form method="post" action="{% url 'xmldownload' %}">
-                    {% csrf_token %}
-                    <button type="submit" class="downloadbutton">Alle Berichte als <b>.xml</b> herunterladen</button>
-                </form>
+                {% if request.session.berechtigung == "vip" or request.session.berechtigung == "admin" %}
+                    <form method="post" action="{% url 'jsondownload' %}">
+                        {% csrf_token %}
+                        <button type="submit" class="downloadbutton">Alle Berichte als <b>.json</b> herunterladen</button>
+                    </form>
+                    <form method="post" action="{% url 'csvdownload' %}">
+                        {% csrf_token %}
+                        <button type="submit" class="downloadbutton">Alle Berichte als <b>.csv</b> herunterladen</button>
+                    </form>
+                    <form method="post" action="{% url 'xmldownload' %}">
+                        {% csrf_token %}
+                        <button type="submit" class="downloadbutton">Alle Berichte als <b>.xml</b> herunterladen</button>
+                    </form>
+                {% endif %}
 
                 {% for bericht in alleBerichte %}
                     {% if bericht.endzeit != 0 and bericht.text != "" %}

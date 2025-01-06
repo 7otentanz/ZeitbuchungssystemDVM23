@@ -7,6 +7,7 @@
         <title>10PM - Wenn's beim Lernen mal wieder spät wird</title>
         <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
         <script src="{% static 'scripts.js' %}"></script>
+        <link rel="icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
         <!-- Schriftarten-->
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -47,7 +48,7 @@
                                     </label>
                                     <input type="text" name="text" required>
                                     <input type="hidden" name="id" value="{{ bericht.id }}">
-                                    <button type="submit">Änderungen speichern!</button>
+                                    <button type="submit" class="beschreibungbutton">Änderungen speichern!</button>
                                 </form>
                             </div>
                         </div>
