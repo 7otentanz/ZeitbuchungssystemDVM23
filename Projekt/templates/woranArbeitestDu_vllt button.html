@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="de">
+
+    <head>
+        <meta charset="utf-8">
+        <title>10PM - Wenn's beim Lernen mal wieder spät wird</title>
+        <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
+        <script src="{% static 'scripts.js' %}"></script>
+        <link rel="icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
+        <!-- Schriftarten-->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Baloo+Paaji+2&display=swap" rel="stylesheet">   
+    </head>
+
+    <body onload="datumEinfuegen()">
+
+        <img src="{% static 'Logoentwurf.png' %}" class="logo">
+        <div id="datumUhrzeit"></div>
+
+        <div id="tabBox">
+            <div id="woranArbeitestDu" class="tab aktiv"><a href="{% url 'woranArbeitestDu' %}">Woran arbeitest du gerade?</a></div>
+            <div id="erzaehlMirMehr" class="tab"><a href="{% url 'erzaehlMirMehr' %}">Erzähl mir mehr!</a></div>
+            <div id="kuerzlichAbgeschlossen" class="tab"><a href="{% url 'kuerzlichAbgeschlossen' %}">Kürzlich abgeschlossen.</a></div>
+            <div id="lassMichdasZusammenfassen" class="tab"><a href="{% url 'lassMichDasZusammenfassen' %}">Lass mich das zusammenfassen.</a></div>
+            <div id="login" class="tab"><a href="{% url 'login' %}">Einloggen & Loslegen!</a></div>
+            {% if request.session.matrikelnummer %}
+            <div id="nutzerverwaltung" class="nutzer-tab"><a href="{% url 'nutzerverwaltung' %}">Nutzerverwaltung</a></div>
+            {% endif %}
+        </div>
+
+        <div class="tabInhalt">
+
+        {% if request.session.berechtigung != "gesperrt" %}
+
+            {% if request.session.berechtigung == "nutzer" or request.session.berechtigung == "vip" or request.session.berechtigung == "admin" %}
+            <div id="semesterheader">
+                Dein aktuelles Semester ist das {{ semester }}. Viel Erfolg!
+            </div>
+            {% else %}
+            <div id="semesterheader">
+                Du bist nicht angemeldet, bitte logge dich zuerst ein.
+            </div>
+            {% endif %}
+
+                {% if request.session.semester == 2 %}
+                <form method="post" action="{% url 'berichtAnlegen' %}">
+                    {% csrf_token %}
+                    
+                    <button type="submit" class="zeitbutton" name="teilmodul"  value="1.1.1 Einführung Informatik">1.1.1 Einführung Informatik</button>
+                </form>
+                {% endif %}
+                {% if request.session.semester == 3 %}
+                <form method="post" action="{% url 'berichtAnlegen' %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="bericht_id" id="bericht-id" value="{{ bericht_id }}">
+                    <button type="submit" class="zeitbutton" name="teilmodul"  value="1.1.2 Vertiefung Informatik">1.1.2 Vertiefung Informatik
+                        {% if bericht_id %}
+                            Stop Report
+                        {% else %}
+                            Start Report
+                        {% endif %}
+                    </button>
+                </form>
+                {% endif %}
+                {% if request.session.semester == 1 %}
+                <form method="post" action="{% url 'berichtAnlegen' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="zeitbutton" name="teilmodul"  value="1.2.0 E-Government mit Exkursionen">1.2.0. E-Government mit Exkursionen</button>
+                </form>
+                {% endif %}
+                {% if request.session.semester == 3 %}
+                <form method="post" action="{% url 'berichtAnlegen' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="zeitbutton" name="teilmodul"  value="1.3.1 Betriebs- und Kommunikationssysteme">1.3.1. Betriebs- und Kommunikationssysteme</button>
+                </form>
+                {% endif %}
+                {% if request.session.semester == 4 %}
+                <form method="post" action="{% url 'berichtAnlegen' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="zeitbutton" name="teilmodul"  value="1.3.2. Verteilte Systeme">1.3.2. Verteilte Systeme</button>
+                </form>
+                {% endif %}
+                {% if request.session.semester == 4 %}
+                <form method="post" action="{% url 'berichtAnlegen' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="zeitbutton" name="teilmodul"  value="1.3.3 Aktuelle Anwendungen erproben, Raspberry Pi">1.3.3. Aktuelle Anwendungen erproben, Raspberry Pi</button>
+                </form>
+                {% endif %}
+                {% if request.session.semester == 1 %}
+                <form method="post" action="{% url 'berichtAnlegen' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="zeitbutton" name="teilmodul"  value="1.4.1 Vorgehensmodelle (Software Engineering 1)">1.4.1. Vorgehensmodelle (Software Engineering 1)</button>
+                </form>
+                {% endif %}
+                {% if request.session.semester == 2 %}
+                <form method="post" action="{% url 'berichtAnlegen' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="zeitbutton" name="teilmodul"  value="1.4.2 Requirementsengineering und Requirementsmanagement (Software Engineering 2)">1.4.2. Requirementsengineering und Requirementsmanagement (Software Engineering 2)</button>
+                </form>
+                {% endif %}
+                {% if request.session.semester == 3 %}
+                <form method="post" action="{% url 'berichtAnlegen' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="zeitbutton" name="teilmodul"  value="1.5.1 Systemanalyse (Software Engineering 3)">1.5.1. Systemanalyse (Software Engineering 3)</button>
+                </form>
+                {% endif %}
+                {% if request.session.semester == 4 %}
+                <form method="post" action="{% url 'berichtAnlegen' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="zeitbutton" name="teilmodul"  value="1.5.2 Software Entwurf und Implementierung (Software Engineering 4">1.5.2. Software Entwurf und Implementierung (Software Engineering 4)</button>
+                </form>
+                {% endif %}
+                {% if request.session.semester == 4 %}
+                <form method="post" action="{% url 'berichtAnlegen' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="zeitbutton" name="teilmodul"  value="1.5.3 Softwarequalität und Test (Software Engineering 5)">1.5.3. Softwarequalität und Test (Software Engineering 5)</button>
+                </form>
+                {% endif %}
+                {% if request.session.semester == 6 %}
+                <form method="post" action="{% url 'berichtAnlegen' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="zeitbutton" name="teilmodul"  value="1.6.1 Cybersecurity">1.6.1. Cybersecurity</button>
+                </form>
+                {% endif %}
+                {% if request.session.semester == 6 %}
+                <form method="post" action="{% url 'berichtAnlegen' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="zeitbutton" name="teilmodul"  value="1.6.2 ITIL">1.6.2. ITIL</button>
+                </form>
+                {% endif %}
+                {% if request.session.semester == 5 %}
+                <form method="post" action="{% url 'berichtAnlegen' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="zeitbutton" name="teilmodul"  value="1.7.0 IT-Management">1.7.0. IT-Management</button>
+                </form>
+                {% endif %}
+                {% if request.session.semester == 5 %}
+                <form method="post" action="{% url 'berichtAnlegen' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="zeitbutton" name="teilmodul"  value="1.8.0 IT-Systeme und Informationssysteme">1.8.0. IT-Systeme und Informationssysteme</button>
+                </form>
+                {% endif %}
+                {% if request.session.semester == 1 %}
+                <form method="post" action="{% url 'berichtAnlegen' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="zeitbutton" name="teilmodul"  value="2.1.0 Steuerung, Public Management und Projektmanagement">2.1.0. Steuerung, Public Management und Projektmanagement</button>
+                </form>
+                {% endif %}
+                {% if request.session.semester == 3 %}
+                <form method="post" action="{% url 'berichtAnlegen' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="zeitbutton" name="teilmodul"  value="2.2.0 Organisations- und Prozessmanagement">2.2.0. Organisations- und Prozessmanagement</button>
+                </form>
+                {% endif %}
+                {% if request.session.semester == 5 %}
+                <form method="post" action="{% url 'berichtAnlegen' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="zeitbutton" name="teilmodul"  value="2.3.0 Öffentliche Betriebswirtschaftslehre">2.3.0. Öffentliche Betriebswirtschaftslehre</button>
+                </form>
+                {% endif %}
+                {% if request.session.semester == 1 %}
+                <form method="post" action="{% url 'berichtAnlegen' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="zeitbutton" name="teilmodul"  value="3.1.1 Grundlagen des Staats- und Europarechts">3.1.1. Grundlagen des Staats- und Europarechts</button>
+                </form>
+                {% endif %}
+                {% if request.session.semester == 1 %}
+                <form method="post" action="{% url 'berichtAnlegen' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="zeitbutton" name="teilmodul"  value="3.1.2 Verwaltungsrecht">3.1.2. Verwaltungsrecht</button>
+                </form>
+                {% endif %}
+                {% if request.session.semester == 3 %}
+                <form method="post" action="{% url 'berichtAnlegen' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="zeitbutton" name="teilmodul"  value="3.2.1 Kommunalrecht">3.2.1. Kommunalrecht</button>
+                </form>
+                {% endif %}
+                {% if request.session.semester == 3 %}
+                <form method="post" action="{% url 'berichtAnlegen' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="zeitbutton" name="teilmodul"  value="3.2.2 Finanzwirtschaft der Kommunen">3.2.2. Finanzwirtschaft der Kommunen</button>
+                </form>
+                {% endif %}
+                {% if request.session.semester == 3 %}
+                <form method="post" action="{% url 'berichtAnlegen' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="zeitbutton" name="teilmodul"  value="3.2.3 Staatliches Haushaltsrecht">3.2.3. Staatliches Haushaltsrecht</button>
+                </form>
+                {% endif %}
+                {% if request.session.semester == 2 %}
+                <form method="post" action="{% url 'berichtAnlegen' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="zeitbutton" name="teilmodul"  value="3.3.1 Grundlagen des Zivilrechts">3.3.1. Grundlagen des Zivilrechts</button>
+                </form>
+                {% endif %}
+                {% if request.session.semester == 2 %}
+                <form method="post" action="{% url 'berichtAnlegen' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="zeitbutton" name="teilmodul"  value="3.3.2 Grundlagen des Kartell- und Wettbewerbsrechts">3.3.2. Grundlagen des Kartell- und Wettbewerbsrechts</button>
+                </form>
+                {% endif %}
+                {% if request.session.semester == 2 %}
+                <form method="post" action="{% url 'berichtAnlegen' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="zeitbutton" name="teilmodul"  value="3.3.3 Grundlagen des Handels- und Gesellschaftsrechts">3.3.3. Grundlagen des Handels- und Gesellschaftsrechts</button>
+                </form>
+                {% endif %}
+                {% if request.session.semester == 2 %}
+                <form method="post" action="{% url 'berichtAnlegen' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="zeitbutton" name="teilmodul"  value="3.3.4 IT-Recht">3.3.4. IT-Recht</button>
+                </form>
+                {% endif %}
+                {% if request.session.semester == 4 %}
+                <form method="post" action="{% url 'berichtAnlegen' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="zeitbutton" name="teilmodul"  value="3.4.1 Vergaberecht (einschließlich e-Government)">3.4.1. Vergaberecht (einschließlich e-Government)</button>
+                </form>
+                {% endif %}
+                {% if request.session.semester == 4 %}
+                <form method="post" action="{% url 'berichtAnlegen' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="zeitbutton" name="teilmodul"  value="3.4.2 Beihilferecht">3.4.2. Beihilferecht</button>
+                </form>
+                {% endif %}
+                {% if request.session.semester == 5 %}
+                <form method="post" action="{% url 'berichtAnlegen' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="zeitbutton" name="teilmodul"  value="3.5.1 Recht des Datenschutzes">3.5.1. Recht des Datenschutzes</button>
+                </form>
+                {% endif %}
+                {% if request.session.semester == 5 %}
+                <form method="post" action="{% url 'berichtAnlegen' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="zeitbutton" name="teilmodul"  value="3.5.2 Informationszugangsrecht">3.5.2. Informationszugangsrecht</button>
+                </form>
+                {% endif %}
+                {% if request.session.semester == 5 %}
+                <form method="post" action="{% url 'berichtAnlegen' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="zeitbutton" name="teilmodul"  value="3.5.3 Arbeitsrecht">3.5.3. Arbeitsrecht</button>
+                </form>
+                {% endif %}
+                {% if request.session.semester == 5 %}
+                <form method="post" action="{% url 'berichtAnlegen' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="zeitbutton" name="teilmodul"  value="3.5.4 Beamtenrecht">3.5.4. Beamtenrecht</button>
+                </form>
+                {% endif %}
+                {% if request.session.semester == 6 %}
+                <form method="post" action="{% url 'berichtAnlegen' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="zeitbutton" name="teilmodul"  value="3.6.1 Vertragsgestaltung">3.6.1. Vertragsgestaltung</button>
+                </form>
+                {% endif %}
+                {% if request.session.semester == 6 %}
+                <form method="post" action="{% url 'berichtAnlegen' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="zeitbutton" name="teilmodul"  value="3.6.2 Rechtliche Kernkompetenzen bei Digitalisierungsprojekten">3.6.2. Rechtliche Kernkompetenzen bei Digitalisierungsprojekten</button>
+                </form>
+                {% endif %}
+                {% if request.session.semester == 1 %}
+                <form method="post" action="{% url 'berichtAnlegen' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="zeitbutton" name="teilmodul"  value="4.1.1 Strategische und Integrale Steuerung">4.1.1. Strategische und Integrale Steuerung</button>
+                </form>
+                {% endif %}
+                {% if request.session.semester == 1 %}
+                <form method="post" action="{% url 'berichtAnlegen' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="zeitbutton" name="teilmodul"  value="4.1.2 Smart Cities und Smart Services">4.1.2. Smart Cities und Smart Services</button>
+                </form>
+                {% endif %}
+                {% if request.session.semester == 2 %}
+                <form method="post" action="{% url 'berichtAnlegen' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="zeitbutton" name="teilmodul"  value="4.1.3 Grundlagen des Change Managements">4.1.3. Grundlagen des Change Managements</button>
+                </form>
+                {% endif %}
+                {% if request.session.semester == 4 %}
+                <form method="post" action="{% url 'berichtAnlegen' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="zeitbutton" name="teilmodul"  value="4.2.1 Gestaltung von Kommunikation und Partizipation mit digitalen Medien">4.2.1. Gestaltung von Kommunikation und Partizipation mit digitalen Medien</button>
+                </form>
+                {% endif %}
+                {% if request.session.semester == 3 %}
+                <form method="post" action="{% url 'berichtAnlegen' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="zeitbutton" name="teilmodul"  value="4.2.2 Führung und Teamentwicklung mit digitalen Medien">4.2.2. Führung und Teamentwicklung mit digitalen Medien</button>
+                </form>
+                {% endif %}
+                {% if request.session.semester == 4 %}
+                <form method="post" action="{% url 'berichtAnlegen' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="zeitbutton" name="teilmodul"  value="4.2.3 Digitalisierung und digitales Wissensmanagement">4.2.3. Digitalisierung und digitales Wissensmanagement</button>
+                </form>
+                {% endif %}
+                {% if request.session.semester == 6 %}
+                <form method="post" action="{% url 'berichtAnlegen' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="zeitbutton" name="teilmodul"  value="7.1.1 Bachelorarbeit">7.1.1. Bachelorarbeit</button>
+                </form>
+                {% endif %}
+            
+        {% endif %}
+        
+        {% if request.session.berechtigung == "gesperrt" %}
+            <p>DU BIST GESPERRT! Lass dich in der Nutzerverwaltung entsperren.</p>
+        {% endif %}
+
+        </div>
+
+    </body>
+
+</html>
