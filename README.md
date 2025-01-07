@@ -21,3 +21,4 @@
   ~~7.4 Sie können sehen, welche Anwender es im System gibt und welche Rechte / Rollen diese haben.~~  
   ~~7.5 Sie können Anwender sperren, sodass diese nicht mehr auf das System zugreifen können.~~  
 9. Das System soll jedem Anwender eine Übersicht darstellen aus welcher herausgeht wie viel Zeit er kumulativ für welches Modul gearbeitet hat, und wie viel (in %) der gesamten Arbeitszeit dies ausmachte. Diese Übersicht soll als Bericht, entsprechend visuell für das Medium "DIN A4" angepasst, ausgedruckt werden können.  
+10. Sortierung der Berichte nach Modulgruppe, Modul oder Semester
