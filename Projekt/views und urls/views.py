@@ -131,7 +131,6 @@ def nutzerRegistrieren(request):
 
 		if matrikelnummer in daten["Benutzer"]:
 			return redirect("login")
-		
 		else:
 			daten["Benutzer"][matrikelnummer] = nutzerDaten
 
@@ -146,22 +145,18 @@ def nutzerAnmelden(request):
 
 	matrikelnummer = request.POST.get("matrikelnummer")
 	passwort = request.POST.get("passwort")
-
 	jsonDatei = os.path.join(speicherpfadJSON, "nutzerdatenbank.json")
 
 	with open(jsonDatei, "r", encoding="utf-8") as datei:
 		daten = json.load(datei)
 
 		if matrikelnummer in daten["Benutzer"]:
-
 			if passwort == daten["Benutzer"][matrikelnummer]["passwort"]:
-				
-				request.session["matrikelnummer"] = matrikelnummer		# erstellt eine session... die so lange aktiv bleibt, wie der browser geöffnet ist.
+				request.session["matrikelnummer"] = matrikelnummer
 				semester = daten["Benutzer"][matrikelnummer]["semester"]
 				request.session["semester"] = semester
 				berechtigung = daten["Benutzer"][matrikelnummer]["berechtigung"]
 				request.session["berechtigung"] = berechtigung
-				
 				return render(request, "woranArbeitestDu.html", {"berechtigung": berechtigung, "matrikelnummer": matrikelnummer, "semester": semester})
 			
 			elif passwort != daten["Benutzer"][matrikelnummer]["passwort"]:
@@ -176,7 +171,6 @@ def nutzerAbmelden(request):
 
 	request.session.flush()
 	parameter = loginPruefen(request)
-
 	return render(request, "woranArbeitestDu.html", parameter)
 
 ### Bericht anlegen und mit einer Startzeit versehen ###
@@ -201,7 +195,7 @@ def berichtAnlegen(request):
 
 			neuerBericht = berichtarchitektur.Bericht(startzeit, teilmodul)
 			aktualisierteBerichte = neuerBericht.serialisierenalsjson(bestehendeBerichte)
-			
+
 			with open(jsonDatei, "w", encoding="utf-8") as datei:
 				json.dump({"Berichte": aktualisierteBerichte}, datei, indent=4)
 			
@@ -226,7 +220,6 @@ def berichtAnlegen(request):
 
 			parameter = loginPruefen(request)
 			parameter.update({"id": id})
-
 			return render(request, 'woranArbeitestDu.html', parameter)
 
 ### Bericht mit einem Text versehen ###
@@ -238,7 +231,6 @@ def berichtText(request):
 		id = request.POST.get("id")
 		text = request.POST.get("text")
 		matrikelnummer = request.session.get("matrikelnummer")
-
 	jsonDatei = os.path.join(speicherpfadJSON, "Nutzerberichte", f"berichte_{matrikelnummer}.json")
 
 	with open(jsonDatei, "r", encoding="utf-8") as datei:
@@ -268,7 +260,6 @@ def jsondownload(request):
 
 		parameter = nutzerberichte(request)
 		alleBerichte = parameter.get("alleBerichte", [])
-
 		downloadberichte = []
 
 		for bericht in alleBerichte:
@@ -280,7 +271,6 @@ def jsondownload(request):
 
 		response = HttpResponse(jsondatei, content_type="application/json")
 		response["Content-Disposition"] = 'attachment; filename="berichte.json"'
-
 		return response
 
 ### Alle Nutzerberichte als csv herunterladen ###
@@ -291,7 +281,6 @@ def csvdownload(request):
 
 		parameter = nutzerberichte(request)
 		alleBerichte = parameter.get("alleBerichte", [])
-
 		downloadberichte = []
 
 		for bericht in alleBerichte:
@@ -306,7 +295,6 @@ def csvdownload(request):
 
 		for bericht in downloadberichte:
 			csvtabelle.writerow(bericht)
-		
 		return response
 
 ### Alle Nutzerberichte als xml herunterladen ###
@@ -317,7 +305,6 @@ def xmldownload(request):
 
 		parameter = nutzerberichte(request)
 		alleBerichte = parameter.get("alleBerichte", [])
-
 		downloadberichte = []
 
 		for bericht in alleBerichte:
@@ -332,12 +319,9 @@ def xmldownload(request):
 				etree.SubElement(einbericht, key).text = str(value)
 		
 		tree = etree.ElementTree(root)
-
 		response = HttpResponse(content_type="application/xml")
 		response["Content-Disposition"] = 'attachment; filename="berichte.xml"'
-
 		tree.write(response)
-
 		return response
 
 ### Alle Nutzerberichte als pdf herunterladen ###
@@ -348,43 +332,39 @@ def pdfdownload(request):
 
 		parameter = nutzerberichte(request)
 		alleBerichte = parameter.get("alleBerichte", [])
-
 		downloadberichte = []
 
 		for bericht in alleBerichte:
 			if bericht["endzeit"] != 0 and bericht["text"] != "":
 				downloadberichte.append(bericht)
 
-	matrikelnummer = request.session["matrikelnummer"]
+		matrikelnummer = request.session["matrikelnummer"]
 
-	pdf = FPDF()
+		pdf = FPDF()
+		pdf.add_page()
+		pdf.set_fill_color(255, 189, 89)
+		pdf.rect(0, 0, 210, 297, "F")
+		pdf.image(os.path.join(speicherpfadJSON, "Logoentwurf.png"), x=5, y=5, w=37.5, h=28.5)
 
-	pdf.add_page()
-	pdf.set_fill_color(255, 189, 89)
-	pdf.rect(0, 0, 210, 297, "F")
-	pdf.image(os.path.join(speicherpfadJSON, "Logoentwurf.png"), x=5, y=5, w=37.5, h=28.5)
-
-	pdf.set_font("Arial", style="B", size=16)
-	pdf.cell(0, 11, f"Berichte von {matrikelnummer}", ln=True, align='C')
-	pdf.ln(10)
-	pdf.line(10, pdf.get_y(), 200, pdf.get_y())
-	
-	for bericht in downloadberichte:
-		arbeitszeit = str(bericht["arbeitszeit"])
-		pdf.set_font("Arial", style="B", size=11)
-		pdf.cell(0, 10, f"{arbeitszeit} Minuten von {bericht["startzeit"]} bis {bericht["endzeit"]}", ln=True)
-		pdf.cell(0, 10, f"{bericht["teilmodul"]}", ln=True)
-		pdf.set_font("Arial", size=11)
-		pdf.multi_cell(0, 10, f"Folgendes wurde in dieser Zeit bearbeitet:\n  {bericht["text"]}")
-		pdf.ln(5)
+		pdf.set_font("Arial", style="B", size=16)
+		pdf.cell(0, 11, f"Berichte von {matrikelnummer}", ln=True, align='C')
+		pdf.ln(10)
 		pdf.line(10, pdf.get_y(), 200, pdf.get_y())
+		
+		for bericht in downloadberichte:
+			arbeitszeit = str(bericht["arbeitszeit"])
+			pdf.set_font("Arial", style="B", size=11)
+			pdf.cell(0, 10, f"{arbeitszeit} Minuten von {bericht["startzeit"]} bis {bericht["endzeit"]}", ln=True)
+			pdf.cell(0, 10, f"{bericht["teilmodul"]}", ln=True)
+			pdf.set_font("Arial", size=11)
+			pdf.multi_cell(0, 10, f"Folgendes wurde in dieser Zeit bearbeitet:\n  {bericht["text"]}")
+			pdf.ln(5)
+			pdf.line(10, pdf.get_y(), 200, pdf.get_y())
 
-	fertigespdf = pdf.output(dest="S").encode("latin1")
-
-	response = HttpResponse(fertigespdf, content_type="application/pdf")
-	response["Content-Disposition"] = 'attachment; filename="berichte.pdf"'
-
-	return response
+		fertigespdf = pdf.output(dest="S").encode("latin1")
+		response = HttpResponse(fertigespdf, content_type="application/pdf")
+		response["Content-Disposition"] = 'attachment; filename="berichte.pdf"'
+		return response
 
 ### Berichte hochladen und damit die eigenen Berichte auf dem Server aktualisieren ###
 
@@ -395,27 +375,22 @@ def berichtehochladen(request):
 		matrikelnummer = request.session["matrikelnummer"]
 		hochgeladenedatei = request.FILES["datei"]
 		dateiname= hochgeladenedatei.name
-
 		jsonDatei = os.path.join(speicherpfadJSON, "Nutzerberichte", f"berichte_{matrikelnummer}.json")
 
 		with open(jsonDatei, "r", encoding="utf-8") as datei:
 			daten = json.load(datei)
 			alteBerichte = daten.get("Berichte",[])
-		
 		if dateiname.endswith(".json"):
 			neueBerichte = json.load(hochgeladenedatei)
-
 		elif dateiname.endswith(".csv"):
 			inhaltcsv = hochgeladenedatei.text
 			csvinhalt = csv.DictReader(inhaltcsv.splitlines(), delimiter=";")
 			neueBerichte = list(csvinhalt)
-
 		elif dateiname.endswith(".xml"):
 			tree = etree.parse(hochgeladenedatei)
 			neueBerichte =[]
 			for einbericht in tree.xpath(".//Bericht"):
 				pass
-
 		for neuerbericht in neueBerichte:
 			for alterbericht in alteBerichte:
 				if alterbericht["id"] == neuerbericht["id"]:
@@ -433,7 +408,6 @@ def berechtigungsantrag(request):
 	if request.method =="POST":
 
 		jsonDatei = os.path.join(speicherpfadJSON, "berechtigungsantraege.json")
-
 		berechtigung = request.session["berechtigung"]
 		matrikelnummer = request.session["matrikelnummer"]
 
@@ -445,19 +419,14 @@ def berechtigungsantrag(request):
 			antragAls = "nutzer"
 
 		with open(jsonDatei, "r", encoding="utf-8") as datei:
-			
 			daten = json.load(datei)
-
 			if matrikelnummer in daten["Anträge"]:
 				daten["Anträge"][matrikelnummer] = antragAls
-
 			else:
 				daten["Anträge"][matrikelnummer] = antragAls
 
-
 		with open(jsonDatei, "w", encoding="utf-8") as datei:
 			json.dump(daten, datei, indent=4)
-
 		return redirect("nutzerverwaltung")
 
 ### Anträge, die bearbeitet wurde, müssen auch wieder aus der Übersicht entfernt werden ###
@@ -465,9 +434,7 @@ def berechtigungsantrag(request):
 def antragEntfernen(request):
 
 	jsonDatei = os.path.join(speicherpfadJSON, "berechtigungsantraege.json")
-
-	with open(jsonDatei, "r", encoding="utf-8") as datei:
-			
+	with open(jsonDatei, "r", encoding="utf-8") as datei:	
 		daten = json.load(datei)
 		print(daten)
 		matrikelnummer = request.POST.get("matrikelnummer")
@@ -481,9 +448,7 @@ def antragEntfernen(request):
 def antragAblehnen(request):
 	
 	if request.method =="POST":
-
 		antragEntfernen(request)
-
 		return redirect("nutzerverwaltung")
 
 ### Antrag genehmigen und Nutzer neuen Status zuteilen ###
@@ -493,7 +458,6 @@ def antragGenehmigen(request):
 	if request.method =="POST":
 
 		matrikelnummer = request.POST.get("matrikelnummer")
-
 		jsonDatei = os.path.join(speicherpfadJSON, "nutzerdatenbank.json")
 
 		with open(jsonDatei, "r", encoding="utf-8") as datei:
@@ -512,7 +476,6 @@ def antragGenehmigen(request):
 			json.dump(daten, datei, indent=4)
 		
 		antragEntfernen(request)
-
 		return redirect("nutzerverwaltung")
 
 ### Nutzer sperren, sodass nichts mehr verwendet werden kann ###
@@ -522,15 +485,12 @@ def nutzersperren(request):
 	if request.method =="POST":
 
 		matrikelnummer = request.POST.get("matrikelnummer")
-
 		jsonDatei = os.path.join(speicherpfadJSON, "nutzerdatenbank.json")
 
 		with open(jsonDatei, "r", encoding="utf-8") as datei:
 			daten = json.load(datei)
-
 			daten["Benutzer"][matrikelnummer]["berechtigung"] = "gesperrt"
 		
 		with open(jsonDatei, "w", encoding="utf-8") as datei:
 			json.dump(daten, datei, indent=4)
-
 		return redirect("nutzerverwaltung")
