@@ -492,21 +492,21 @@ def antragGenehmigen(request):
 
 	if request.method =="POST":
 
-		matrnummer = request.POST.get("matrikelnummer")
+		matrikelnummer = request.POST.get("matrikelnummer")
 
 		jsonDatei = os.path.join(speicherpfadJSON, "nutzerdatenbank.json")
 
 		with open(jsonDatei, "r", encoding="utf-8") as datei:
 			daten = json.load(datei)
 
-			if daten["Benutzer"][matrnummer]["berechtigung"] == "nutzer":
-				daten["Benutzer"][matrnummer]["berechtigung"] = "vip"
+			if daten["Benutzer"][matrikelnummer]["berechtigung"] == "nutzer":
+				daten["Benutzer"][matrikelnummer]["berechtigung"] = "vip"
 			
-			elif daten["Benutzer"][matrnummer]["berechtigung"] == "vip":
-				daten["Benutzer"][matrnummer]["berechtigung"] = "admin"
+			elif daten["Benutzer"][matrikelnummer]["berechtigung"] == "vip":
+				daten["Benutzer"][matrikelnummer]["berechtigung"] = "admin"
 
-			elif daten["Benutzer"][matrnummer]["berechtigung"] == "gesperrt":
-				daten["Benutzer"][matrnummer]["berechtigung"] = "nutzer"
+			elif daten["Benutzer"][matrikelnummer]["berechtigung"] == "gesperrt":
+				daten["Benutzer"][matrikelnummer]["berechtigung"] = "nutzer"
 		
 		with open(jsonDatei, "w", encoding="utf-8") as datei:
 			json.dump(daten, datei, indent=4)
@@ -521,14 +521,14 @@ def nutzersperren(request):
 
 	if request.method =="POST":
 
-		matrnummer = request.POST.get("matrikelnummer")
+		matrikelnummer = request.POST.get("matrikelnummer")
 
 		jsonDatei = os.path.join(speicherpfadJSON, "nutzerdatenbank.json")
 
 		with open(jsonDatei, "r", encoding="utf-8") as datei:
 			daten = json.load(datei)
 
-			daten["Benutzer"][matrnummer]["berechtigung"] = "gesperrt"
+			daten["Benutzer"][matrikelnummer]["berechtigung"] = "gesperrt"
 		
 		with open(jsonDatei, "w", encoding="utf-8") as datei:
 			json.dump(daten, datei, indent=4)
