@@ -112,7 +112,7 @@
         width: 30%;
     }
 
-    form.beschreibungbutton {
+    .beschreibungbutton {
         background-color:  #a0f5ff;
         border-color: #0097b2;
         border-radius: 5px;
@@ -120,7 +120,11 @@
 
 /* ### STYLING LASSMICHDASZUSAMMENFASSEN ### */
 
-    form.downloadbutton {
+    .downloadbuttonform {
+        display: inline-block;
+    }
+
+    .downloadbutton {
         display: inline-block;
         background-color:  #a0f5ff;
         border-color: #0097b2;

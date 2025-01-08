@@ -31,6 +31,7 @@ urlpatterns = [
     path('jsondownload', views.jsondownload, name='jsondownload'),
     path('csvdownload', views.csvdownload, name='csvdownload'),
     path('xmldownload', views.xmldownload, name='xmldownload'),
+    path('pdfdownload', views.pdfdownload, name='pdfdownload'),
     path('nutzerverwaltung', views.nutzerverwaltung, name='nutzerverwaltung'),
     path('login', views.login, name='login'),
     path('nutzeranmelden', views.nutzerAnmelden, name='nutzerAnmelden'),

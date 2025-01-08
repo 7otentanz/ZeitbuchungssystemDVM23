@@ -37,17 +37,21 @@
             {% if request.session.berechtigung != "gesperrt" %}
 
                 {% if request.session.berechtigung == "vip" or request.session.berechtigung == "admin" %}
-                    <form method="post" action="{% url 'jsondownload' %}">
+                    <form method="post" action="{% url 'jsondownload' %}" class="downloadbuttonform">
                         {% csrf_token %}
                         <button type="submit" class="downloadbutton">Alle Berichte als <b>.json</b> herunterladen</button>
                     </form>
-                    <form method="post" action="{% url 'csvdownload' %}">
+                    <form method="post" action="{% url 'csvdownload' %}" class="downloadbuttonform">
                         {% csrf_token %}
                         <button type="submit" class="downloadbutton">Alle Berichte als <b>.csv</b> herunterladen</button>
                     </form>
-                    <form method="post" action="{% url 'xmldownload' %}">
+                    <form method="post" action="{% url 'xmldownload' %}" class="downloadbuttonform">
                         {% csrf_token %}
                         <button type="submit" class="downloadbutton">Alle Berichte als <b>.xml</b> herunterladen</button>
+                    </form>
+                    <form method="post" action="{% url 'pdfdownload' %}" class="downloadbuttonform">
+                        {% csrf_token %}
+                        <button type="submit" class="downloadbutton">Alle Berichte als <b>.pdf</b> herunterladen</button>
                     </form>
                 {% endif %}
 

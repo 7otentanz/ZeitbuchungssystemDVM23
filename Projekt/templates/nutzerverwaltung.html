@@ -38,12 +38,14 @@
                     <label for="abmelden">Möchtest du dich ausloggen?</label>
                     <button class ="berechtigungsbutton" type="submit">Abmelden</button>
                 </form>
+                <hr>
 
                 {% if request.session.berechtigung == "nutzer" or request.session.berechtigung == "vip" %}
                 <br>
                 <b>Nutzer</b> können blablabla Text. <br>
                 <b>Vips</b> können zusätzlich blablabla Text. <br>
                 <b>Admins</b> können, zusätzlich zu allem was vip und nutzer können blablabla Text...
+                <hr>
                 {% endif %}
             </div>
 
@@ -67,6 +69,7 @@
                             </form>
                         </div>
                     {% endfor %}
+                    <hr>
                 </div>
 
                 <div id="nutzerverzeichnis">
@@ -80,6 +83,7 @@
                             </form>
                         </div>
                     {% endfor %}
+                    <hr>
                 </div>
             {% endif %}
 
@@ -90,6 +94,7 @@
                     <label for="berechtigungsantrag">Mit Klick auf den folgenden Button kannst du den Admin-Status für deinen Benutzeraccount beantragen: </label>
                     <button class="berechtigungsbutton" type="submit"><b>Admin-Status beantragen</b></button>
                 </form>
+                <hr>
             </div>
             {% endif %}
 
@@ -100,6 +105,7 @@
                     <label for="berechtigungsantrag">Mit Klick auf den folgenden Button kannst du den VIP-Status für deinen Benutzeraccount beantragen: </label>
                     <button class="berechtigungsbutton" type="submit"><b>VIP-Status beantragen</b></button>
                 </form>
+                <hr>
             </div>
             {% endif %}
 
@@ -110,6 +116,7 @@
                     <label for="berechtigungsantrag">Mit Klick auf den folgenden Button kannst du beantragen entsperrt zu werden: </label>
                     <button class="berechtigungsbutton" type="submit"><b>Entsperrung beantragen</b></button>
                 </form>
+                <hr>
             </div>
             {% endif %}
 

@@ -7,6 +7,8 @@ import os
 import json
 import csv
 from lxml import etree	# Achtung, lxml muss IN DER VIRTUAL ENVIRONMENT installiert werden! ### sudo pip install lxml ###
+from fpdf import FPDF	# Achtung, fpdf muss IN DER VIRTUAL ENVIRONMENT installiert werden! ### sudo pip install fpdf ###
+import io
 from . import berichtarchitektur
 
 speicherpfadJSON = "/var/www/static"
@@ -51,6 +53,7 @@ def berechtigungsantraege(request):
 	return parameter
 
 ### FUNKTIONEN DIE TEMPLATES LADEN UND MIT PARAMETERN VERSEHEN ###
+
 def index(request):
 	return woranarbeitestdu(request)
 
@@ -302,6 +305,51 @@ def xmldownload(request):
 		tree.write(response)
 
 		return response
+
+### Alle Nutzerberichte als pdf herunterladen ###
+
+def pdfdownload(request):
+
+	if request.method == "POST":
+
+		parameter = nutzerberichte(request)
+		alleBerichte = parameter.get("alleBerichte", [])
+
+		downloadberichte = []
+
+		for bericht in alleBerichte:
+			if bericht["endzeit"] != 0 and bericht["text"] != "":
+				downloadberichte.append(bericht)
+
+	matrikelnummer = request.session["matrikelnummer"]
+
+	pdf = FPDF()
+	pdf.add_page()
+	pdf.set_fill_color(255, 189, 89)
+	pdf.rect(0, 0, 210, 297, "F")
+	pdf.image(os.path.join(speicherpfadJSON, "Logoentwurf.png"), x=5, y=5, w=37.5, h=28.5)
+
+	pdf.set_font("Arial", style="B", size=16)
+	pdf.cell(0, 11, f"Berichte von {matrikelnummer}", ln=True, align='C')
+	pdf.ln(10)
+	pdf.line(10, pdf.get_y(), 200, pdf.get_y())
+	
+	for bericht in downloadberichte:
+		arbeitszeit = str(bericht["arbeitszeit"])
+		pdf.set_font("Arial", style="B", size=11)
+		pdf.cell(0, 10, f"{arbeitszeit} Minuten von {bericht["startzeit"]} bis {bericht["endzeit"]}", ln=True)
+		pdf.cell(0, 10, f"{bericht["teilmodul"]}", ln=True)
+		pdf.set_font("Arial", size=11)
+		pdf.multi_cell(0, 10, f"Folgendes wurde in dieser Zeit bearbeitet:\n  {bericht["text"]}")
+		pdf.ln(5)
+		pdf.line(10, pdf.get_y(), 200, pdf.get_y())
+
+	fertigespdf = pdf.output(dest="S")
+
+	response = HttpResponse(fertigespdf, content_type="application/pdf")
+	response["Content-Disposition"] = 'attachment; filename="berichte.pdf"'
+
+	return response
 
 ### Berechtigungsantrag verschicken, für alle, die noch nicht Admin sind ###
 
