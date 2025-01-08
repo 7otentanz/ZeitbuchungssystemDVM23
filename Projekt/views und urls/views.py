@@ -256,8 +256,15 @@ def berichtText(request):
 		
 	with open(jsonDatei, "w", encoding="utf-8") as datei:
 		json.dump({"Berichte": berichte}, datei, indent=4)
-	
+
+def berichtTexterzaehl(request):
+
+	berichtText(request)
 	return redirect("erzaehlMirMehr")
+
+def berichtTextkuerzlich(request):
+	berichtText(request)
+	return redirect("kuerzlichAbgeschlossen")
 
 ### Alle Nutzerberichte als json herunterladen ###
 
