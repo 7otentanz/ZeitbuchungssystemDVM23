@@ -1,14 +1,11 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse
 from datetime import datetime
-import smtplib
-from email.message import EmailMessage
 import os
 import json
 import csv
 from lxml import etree	# Achtung, lxml muss IN DER VIRTUAL ENVIRONMENT installiert werden! ### sudo pip install lxml ###
 from fpdf import FPDF	# Achtung, fpdf muss IN DER VIRTUAL ENVIRONMENT installiert werden! ### sudo pip install fpdf ###
-import io
 from . import berichtarchitektur
 
 speicherpfadJSON = "/var/www/static"
@@ -190,7 +187,6 @@ def berichtAnlegen(request):
 		
 		matrikelnummer = request.session["matrikelnummer"]
 		id = request.POST.get('id')
-
 		jsonDatei = os.path.join(speicherpfadJSON, "Nutzerberichte", f"berichte_{matrikelnummer}.json")
 		
 		if not id:
@@ -200,7 +196,6 @@ def berichtAnlegen(request):
 				with open(jsonDatei, "r", encoding="utf-8") as datei:
 					daten = json.load(datei)
 					bestehendeBerichte = daten.get("Berichte", [])
-
 			except:
 				bestehendeBerichte = []
 
@@ -258,7 +253,6 @@ def berichtText(request):
 		json.dump({"Berichte": berichte}, datei, indent=4)
 
 def berichtTexterzaehl(request):
-
 	berichtText(request)
 	return redirect("erzaehlMirMehr")
 
@@ -364,9 +358,10 @@ def pdfdownload(request):
 	matrikelnummer = request.session["matrikelnummer"]
 
 	pdf = FPDF()
+
 	pdf.add_page()
 	pdf.set_fill_color(255, 189, 89)
-	pdf.rect(0, 0, 210, 29700, "F")
+	pdf.rect(0, 0, 210, 297, "F")
 	pdf.image(os.path.join(speicherpfadJSON, "Logoentwurf.png"), x=5, y=5, w=37.5, h=28.5)
 
 	pdf.set_font("Arial", style="B", size=16)
@@ -390,6 +385,46 @@ def pdfdownload(request):
 	response["Content-Disposition"] = 'attachment; filename="berichte.pdf"'
 
 	return response
+
+### Berichte hochladen und damit die eigenen Berichte auf dem Server aktualisieren ###
+
+def berichtehochladen(request):
+
+	if request.method == "POST":
+
+		matrikelnummer = request.session["matrikelnummer"]
+		hochgeladenedatei = request.FILES["datei"]
+		dateiname= hochgeladenedatei.name
+
+		jsonDatei = os.path.join(speicherpfadJSON, "Nutzerberichte", f"berichte_{matrikelnummer}.json")
+
+		with open(jsonDatei, "r", encoding="utf-8") as datei:
+			daten = json.load(datei)
+			alteBerichte = daten.get("Berichte",[])
+		
+		if dateiname.endswith(".json"):
+			neueBerichte = json.load(hochgeladenedatei)
+
+		elif dateiname.endswith(".csv"):
+			inhaltcsv = hochgeladenedatei.text
+			csvinhalt = csv.DictReader(inhaltcsv.splitlines(), delimiter=";")
+			neueBerichte = list(csvinhalt)
+
+		elif dateiname.endswith(".xml"):
+			tree = etree.parse(hochgeladenedatei)
+			neueBerichte =[]
+			for einbericht in tree.xpath(".//Bericht"):
+				pass
+
+		for neuerbericht in neueBerichte:
+			for alterbericht in alteBerichte:
+				if alterbericht["id"] == neuerbericht["id"]:
+					alterbericht.update(neuerbericht)
+				else:
+					alteBerichte.append(neuerbericht)
+
+		### Berichte wieder abspeichern
+		### return render... zusammenfassung
 
 ### Berechtigungsantrag verschicken, für alle, die noch nicht Admin sind ###
 
@@ -425,6 +460,8 @@ def berechtigungsantrag(request):
 
 		return redirect("nutzerverwaltung")
 
+### Anträge, die bearbeitet wurde, müssen auch wieder aus der Übersicht entfernt werden ###
+
 def antragEntfernen(request):
 
 	jsonDatei = os.path.join(speicherpfadJSON, "berechtigungsantraege.json")
@@ -433,11 +470,13 @@ def antragEntfernen(request):
 			
 		daten = json.load(datei)
 		print(daten)
-		matrnummer = request.POST.get("matrikelnummer")
-		daten["Anträge"].pop(matrnummer)
+		matrikelnummer = request.POST.get("matrikelnummer")
+		daten["Anträge"].pop(matrikelnummer)
 		
 	with open(jsonDatei, "w", encoding="utf-8") as datei:
 		json.dump(daten, datei, indent=4)
+
+### Antrag ablehen und alten Status des Nutzers beibehalten ###
 
 def antragAblehnen(request):
 	
@@ -446,6 +485,8 @@ def antragAblehnen(request):
 		antragEntfernen(request)
 
 		return redirect("nutzerverwaltung")
+
+### Antrag genehmigen und Nutzer neuen Status zuteilen ###
 
 def antragGenehmigen(request):
 
@@ -473,7 +514,9 @@ def antragGenehmigen(request):
 		antragEntfernen(request)
 
 		return redirect("nutzerverwaltung")
-			
+
+### Nutzer sperren, sodass nichts mehr verwendet werden kann ###
+
 def nutzersperren(request):
 
 	if request.method =="POST":

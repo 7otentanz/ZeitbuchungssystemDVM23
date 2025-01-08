@@ -1,26 +1,19 @@
 import smtplib
 from email.message import EmailMessage
 
-adresse = "tenpm@web.de"        # eigene emailadresse
-passwort = ""       # eigenes Passwort
-emails = ["t_hauser@web.de"]
-
-
 def emailsenden():
+    adresse = "tenpm@web.de"        # eigene emailadresse
+    passwort = ""                   # eigenes Passwort
+    emails = ["t_hauser@web.de"]
 
     for mail in emails:
-
-        s = smtplib.SMTP_SSL("smtp.web.de", 465)
+        s = smtplib.SMTP("smtp.web.de", 587)
+        s.starttls()
         s.login(adresse, passwort)
-
         msg = EmailMessage()
         msg["From"] = adresse
         msg["To"] = mail
-        msg["Subject"] = "Testmail!"
-        msg.set_content("Ja moin, jetzt ist hier auch\nInhalt")
-
+        msg["Subject"] = betreff
+        msg.set_content(inhalt)
         s.send_message(msg)
-
         s.quit()
-
-emailsenden()
