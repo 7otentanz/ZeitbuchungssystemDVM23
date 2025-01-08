@@ -62,19 +62,28 @@ def woranarbeitestdu(request):
 	return render(request, 'woranArbeitestDu.html', parameter)
 
 def erzaehlmirmehr(request):
-	parameter = loginPruefen(request)
-	parameter.update(nutzerberichte(request))
-	return render(request, 'erzaehlMirMehr.html', parameter)
+	try:
+		parameter = loginPruefen(request)
+		parameter.update(nutzerberichte(request))
+		return render(request, 'erzaehlMirMehr.html', parameter)
+	except:
+		return render (request,'erzaehlMirMehr.html')
 
 def kuerzlichabgeschlossen(request):
-	parameter = loginPruefen(request)
-	parameter.update(nutzerberichte(request))
-	return render(request, 'kuerzlichAbgeschlossen.html', parameter)
+	try:
+		parameter = loginPruefen(request)
+		parameter.update(nutzerberichte(request))
+		return render(request, 'kuerzlichAbgeschlossen.html', parameter)
+	except:
+		return render (request,'kuerzlichAbgeschlossen.html')
 
 def lassmichdaszusammenfassen(request):
-	parameter = loginPruefen(request)
-	parameter.update(nutzerberichte(request))
-	return render(request, 'lassMichDasZusammenfassen.html', parameter)
+	try:
+		parameter = loginPruefen(request)
+		parameter.update(nutzerberichte(request))
+		return render(request, 'lassMichDasZusammenfassen.html', parameter)
+	except:
+		return render (request,'lassMichDasZusammenfassen.html')
 
 def nutzerverwaltung(request):
 	parameter = loginPruefen(request)
