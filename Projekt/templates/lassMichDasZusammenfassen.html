@@ -34,8 +34,8 @@
             {% if request.session.berechtigung == "gesperrt" %}
                 <p>DU BIST GESPERRT! Lass dich in der Nutzerverwaltung entsperren.</p>
             {% endif %}
-            {% if request.session.berechtigung != "gesperrt" %}
 
+            {% if request.session.berechtigung == "nutzer" or request.session.berechtigung == "vip" or request.session.berechtigung == "admin" %}
                 {% if request.session.berechtigung == "vip" or request.session.berechtigung == "admin" %}
                     <form method="post" action="{% url 'jsondownload' %}" class="downloadbuttonform">
                         {% csrf_token %}
@@ -66,8 +66,12 @@
                         </div>
                     {% endif %}
                 {% endfor %}
-
+            {% else %}
+                <div id="semesterheader">
+                    Du bist nicht angemeldet, bitte logge dich zuerst ein.
+                </div>
             {% endif %}
+                    
         </div>
 
     </body>

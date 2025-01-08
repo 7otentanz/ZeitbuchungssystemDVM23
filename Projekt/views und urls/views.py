@@ -188,27 +188,51 @@ def berichtAnlegen(request):
 
 	if request.method == "POST":
 		
-		startzeit = datetime.now()
-		teilmodul = request.POST.get("teilmodul")
 		matrikelnummer = request.session["matrikelnummer"]
+		id = request.POST.get('id')
 
 		jsonDatei = os.path.join(speicherpfadJSON, "Nutzerberichte", f"berichte_{matrikelnummer}.json")
+		
+		if not id:
+			startzeit = datetime.now()
+			teilmodul = request.POST.get("teilmodul")
+			try:
+				with open(jsonDatei, "r", encoding="utf-8") as datei:
+					daten = json.load(datei)
+					bestehendeBerichte = daten.get("Berichte", [])
 
-		try:
+			except:
+				bestehendeBerichte = []
+
+			neuerBericht = berichtarchitektur.Bericht(startzeit, teilmodul)
+			aktualisierteBerichte = neuerBericht.serialisierenalsjson(bestehendeBerichte)
+			
+			with open(jsonDatei, "w", encoding="utf-8") as datei:
+				json.dump({"Berichte": aktualisierteBerichte}, datei, indent=4)
+			
+			parameter = loginPruefen(request)
+			parameter.update({"id": str(neuerBericht.id)})
+
+			return render(request, 'woranArbeitestDu.html', parameter)
+		
+		else:
+			endzeit = datetime.now()
+
 			with open(jsonDatei, "r", encoding="utf-8") as datei:
 				daten = json.load(datei)
 				bestehendeBerichte = daten.get("Berichte", [])
 
-		except:
-			bestehendeBerichte = []
+			for bericht in bestehendeBerichte:
+				if str(bericht["id"]) == id:
+					bericht["endzeit"] = endzeit.strftime("%R %d.%m.%y")
+					
+			with open(jsonDatei, "w", encoding="utf-8") as datei:
+				json.dump({"Berichte": bestehendeBerichte}, datei, indent=4)
 
-		neuerBericht = berichtarchitektur.Bericht(startzeit, teilmodul)
-		aktualisierteBerichte = neuerBericht.serialisierenalsjson(bestehendeBerichte)
-		
-		with open(jsonDatei, "w", encoding="utf-8") as datei:
-			json.dump({"Berichte": aktualisierteBerichte}, datei, indent=4)
+			parameter = loginPruefen(request)
+			parameter.update({"id": id})
 
-	return redirect("woranArbeitestDu")
+			return render(request, 'woranArbeitestDu.html', parameter)
 
 ### Bericht mit einem Text versehen ###
 
@@ -335,7 +359,7 @@ def pdfdownload(request):
 	pdf = FPDF()
 	pdf.add_page()
 	pdf.set_fill_color(255, 189, 89)
-	pdf.rect(0, 0, 210, 297, "F")
+	pdf.rect(0, 0, 210, 29700, "F")
 	pdf.image(os.path.join(speicherpfadJSON, "Logoentwurf.png"), x=5, y=5, w=37.5, h=28.5)
 
 	pdf.set_font("Arial", style="B", size=16)
@@ -353,7 +377,7 @@ def pdfdownload(request):
 		pdf.ln(5)
 		pdf.line(10, pdf.get_y(), 200, pdf.get_y())
 
-	fertigespdf = pdf.output(dest="S")
+	fertigespdf = pdf.output(dest="S").encode("latin1")
 
 	response = HttpResponse(fertigespdf, content_type="application/pdf")
 	response["Content-Disposition"] = 'attachment; filename="berichte.pdf"'
