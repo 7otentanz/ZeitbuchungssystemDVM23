@@ -426,17 +426,11 @@ def berechtigungsantrag(request):
 			daten = json.load(datei)
 			if matrikelnummer in daten["Anträge"]:
 				daten["Anträge"][matrikelnummer]["antragAls"] = antragAls
-				if email != None:
-					daten["Anträge"][matrikelnummer]["email"] = email
-				else:
-					pass
+				daten["Anträge"][matrikelnummer]["email"] = email
+
 			else:
-				einAntrag = {"antragAls": antragAls}
+				einAntrag = {"antragAls": antragAls, "email": email}
 				daten["Anträge"][matrikelnummer] = einAntrag
-				if email != None:
-					einAntrag.update({"email": email})
-				else:
-					pass
 
 		with open(jsonDatei, "w", encoding="utf-8") as datei:
 			json.dump(daten, datei, indent=4)
@@ -484,19 +478,7 @@ def antragGenehmigen(request):
 			daten = json.load(datei)
 
 			daten["Benutzer"][matrikelnummer]["berechtigung"] = antragAls
-
-			if email != None:
-				daten["Benutzer"][matrikelnummer]["email"] = email
-
-			# if daten["Benutzer"][matrikelnummer]["berechtigung"] == "nutzer":
-			# 	daten["Benutzer"][matrikelnummer]["berechtigung"] = "vip"
-			
-			# elif daten["Benutzer"][matrikelnummer]["berechtigung"] == "vip":
-			# 	daten["Benutzer"][matrikelnummer]["berechtigung"] = "admin"
-			# 	daten["Benutzer"][matrikelnummer]["email"] = 
-
-			# elif daten["Benutzer"][matrikelnummer]["berechtigung"] == "gesperrt":
-			# 	daten["Benutzer"][matrikelnummer]["berechtigung"] = "nutzer"
+			daten["Benutzer"][matrikelnummer]["email"] = email
 		
 		with open(jsonDatei, "w", encoding="utf-8") as datei:
 			json.dump(daten, datei, indent=4)
