@@ -181,11 +181,11 @@ def berichtAnlegen(request):
 		
 		matrikelnummer = request.session["matrikelnummer"]
 		id = request.POST.get('id')
+		teilmodul = request.POST.get("teilmodul")
 		jsonDatei = os.path.join(speicherpfadJSON, "Nutzerberichte", f"berichte_{matrikelnummer}.json")
 		
 		if not id:
 			startzeit = datetime.now()
-			teilmodul = request.POST.get("teilmodul")
 			try:
 				with open(jsonDatei, "r", encoding="utf-8") as datei:
 					daten = json.load(datei)
@@ -200,7 +200,7 @@ def berichtAnlegen(request):
 				json.dump({"Berichte": aktualisierteBerichte}, datei, indent=4)
 			
 			parameter = loginPruefen(request)
-			parameter.update({"id": str(neuerBericht.id)})
+			parameter.update({"id": str(neuerBericht.id), "teilmodul": str(neuerBericht.teilmodul)})
 
 			return render(request, 'woranArbeitestDu.html', parameter)
 		
@@ -214,12 +214,13 @@ def berichtAnlegen(request):
 			for bericht in bestehendeBerichte:
 				if str(bericht["id"]) == id:
 					bericht["endzeit"] = endzeit.strftime("%R %d.%m.%y")
+					teilmodul = bericht["teilmodul"]
 					
 			with open(jsonDatei, "w", encoding="utf-8") as datei:
 				json.dump({"Berichte": bestehendeBerichte}, datei, indent=4)
 
 			parameter = loginPruefen(request)
-			parameter.update({"id": id})
+			parameter.update({"id": None, "teilmodul" : teilmodul}) #Id solle eigentlich "gelöscht" werden, hier also >id: None<?
 			return render(request, 'woranArbeitestDu.html', parameter)
 
 ### Bericht mit einem Text versehen ###

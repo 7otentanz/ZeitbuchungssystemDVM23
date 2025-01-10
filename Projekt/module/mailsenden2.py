@@ -4,7 +4,7 @@ from email.message import EmailMessage
 def emailsenden():
 
     adresse = "timhausertim@gmail.com"        # eigene emailadresse
-    passwort = "jevtweduoirhiiqh"                   # eigenes Passwort
+    passwort = ""                   # eigenes Passwort
     emails = "t_hauser@web.de"
 
     s = smtplib.SMTP_SSL("smtp.gmail.com", 465)
