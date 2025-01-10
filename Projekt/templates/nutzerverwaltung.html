@@ -58,7 +58,7 @@
                 <div class="berechtigungsanfragen">
                     {% for matrikelnummer, antragAls in Anträge.items %}
                         <div class="einAntrag">
-                            Nutzer <b>{{ matrikelnummer }}</b> beantragt seinen Status als <b>{{ antragAls }}</b>
+                            Nutzer <b>{{ matrikelnummer }}</b> beantragt seinen Status als <b>{{ antragAls.antragAls }}</b>
                             <form method="post" action="antraggenehmigen" class="berechtigungsbuttonform">
                                 {% csrf_token %}
                                 <button class="berechtigungsbutton" type="submit" name="matrikelnummer" value="{{ matrikelnummer }}">Genehmigen!</button>
@@ -91,7 +91,8 @@
             <div class="berechtigungsantrag">
                 <form class="antragsbuttonlabel" action="berechtigungsantrag" method="post">
                     {% csrf_token %}
-                    <label for="berechtigungsantrag">Mit Klick auf den folgenden Button kannst du den Admin-Status für deinen Benutzeraccount beantragen: </label>
+                    <label for="berechtigungsantrag">Gib deine Emailadresse ein und beantrage deinen Status als Admin: </label>
+                    <input type="email" name="email">
                     <button class="berechtigungsbutton" type="submit"><b>Admin-Status beantragen</b></button>
                 </form>
                 <hr>
