@@ -1,11 +1,13 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from datetime import datetime
+from datetime import datetime, timedelta
 import os
 import json
 import csv
 from lxml import etree	# Achtung, lxml muss IN DER VIRTUAL ENVIRONMENT installiert werden! ### sudo pip install lxml ###
 from fpdf import FPDF	# Achtung, fpdf muss IN DER VIRTUAL ENVIRONMENT installiert werden! ### sudo pip install fpdf ###
+import smtplib
+from email.message import EmailMessage
 from . import berichtarchitektur
 
 speicherpfadJSON = "/var/www/static"
@@ -69,7 +71,22 @@ def erzaehlmirmehr(request):
 def kuerzlichabgeschlossen(request):
 	try:
 		parameter = loginPruefen(request)
-		parameter.update(nutzerberichte(request))
+		alleBerichte = nutzerberichte(request).get("alleBerichte", [])
+		jetzt = datetime.now()
+		kürzlich = jetzt - timedelta(hours=3)
+
+		berichteKuerzlich = []
+		for bericht in alleBerichte:
+			try:
+				if "endzeit" in bericht and bericht["endzeit"]:
+					endzeit = datetime.strptime(bericht["endzeit"], "%H:%M %d.%m.%y")
+					if endzeit > kürzlich:
+						berichteKuerzlich.append(bericht)
+			except:
+				pass
+
+		parameter.update({"alleBerichte": berichteKuerzlich})
+
 		return render(request, 'kuerzlichAbgeschlossen.html', parameter)
 	except:
 		return render (request,'kuerzlichAbgeschlossen.html')
@@ -419,6 +436,26 @@ def berichtehochladen(request):
 
 		return render(request, "lassMichDasZusammenfassen.html", parameter)
 
+### Email senden - allgemeine Funktion ###
+
+def emailsenden(emails, betreff, inhalt):
+
+	adresse = "tenpm.app@gmail.com" #Hier neue Mailadresse
+	passwort = "gouiipozoxvkecgl " # Hier neues App Passwort
+
+	server = smtplib.SMTP_SSL("smtp.gmail.com", 465)
+	server.login(adresse, passwort)
+
+	for email in emails:
+		msg = EmailMessage()
+		msg["From"] = adresse
+		msg["To"] = email
+		msg["Subject"] = betreff
+		msg.set_content(inhalt)
+		server.send_message(msg)
+	
+	server.quit()
+
 ### Berechtigungsantrag verschicken, für alle, die noch nicht Admin sind ###
 
 def berechtigungsantrag(request):
@@ -444,13 +481,32 @@ def berechtigungsantrag(request):
 			if matrikelnummer in daten["Anträge"]:
 				daten["Anträge"][matrikelnummer]["antragAls"] = antragAls
 				daten["Anträge"][matrikelnummer]["email"] = email
-
 			else:
 				einAntrag = {"antragAls": antragAls, "email": email}
 				daten["Anträge"][matrikelnummer] = einAntrag
 
 		with open(jsonDatei, "w", encoding="utf-8") as datei:
 			json.dump(daten, datei, indent=4)
+		
+		jsonDatei = os.path.join(speicherpfadJSON, "nutzerdatenbank.json")
+		adminmails = []
+
+		with open(jsonDatei, "r", encoding="utf-8") as datei:
+			daten = json.load(datei)
+			for benutzer in daten["Benutzer"].values():
+				if benutzer.get("email"):
+					adminmails.append(benutzer["email"])
+
+		betreff = "Neuer Berechtigungsantrag"
+		inhalt = f"""
+Hallo liebe Admins,\n\n
+der Nutzer mit der Matrikelnummer {matrikelnummer} beantragt den Status {antragAls}.\n
+Logge dich auf 10PM ein um den Antrag zu genehmigen oder abzulehnen!\n\n
+Danke für deine Unterstützung!
+""" 
+		
+		emailsenden(adminmails, betreff, inhalt)
+
 		return redirect("nutzerverwaltung")
 
 ### Anträge, die bearbeitet wurde, müssen auch wieder aus der Übersicht entfernt werden ###
@@ -507,7 +563,7 @@ def antragGenehmigen(request):
 
 def nutzersperren(request):
 
-	if request.method =="POST":
+	if request.method == "POST":
 
 		matrikelnummer = request.POST.get("matrikelnummer")
 		jsonDatei = os.path.join(speicherpfadJSON, "nutzerdatenbank.json")
@@ -518,4 +574,24 @@ def nutzersperren(request):
 		
 		with open(jsonDatei, "w", encoding="utf-8") as datei:
 			json.dump(daten, datei, indent=4)
+		return redirect("nutzerverwaltung")
+
+### Änderung des Modulhandbuchs an die Webmaster melden ###
+
+def antragmodulhandbuch(request):
+
+	if request.method == "POST":
+
+		matrikelnummer = request.session["matrikelnummer"]
+		webmaster = ["hauser_tim@teams.hs-ludwigsburg.de", "pfefferkorn_laura@teams.hs-ludwigsburg.de"]
+		betreff = "ACHTUNG! Eine Änderung des Modulhandbuchs steht bevor!"
+		inhalt = f"""
+Hallo Laura, hallo Tim,\n
+der Nutzer mit der Matrikelnummer {matrikelnummer} hat das Formular für Änderungen des Modulhandbuchs verwendet.\n
+Das ist der Text, den er übermittelt:\n\n
+"{request.POST.get("text")}"\n\n
+Bitte fügt diese Änderungen entsprechend auf dem "Woran arbeitest du gerade?"-Template ein.\n
+Herzlichste Grüße!
+"""
+		emailsenden(webmaster, betreff, inhalt)
 		return redirect("nutzerverwaltung")

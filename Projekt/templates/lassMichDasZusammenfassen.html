@@ -58,7 +58,7 @@
                     <form method="post" enctype="multipart/form-data" action="{% url 'berichtehochladen' %}">
                         {% csrf_token %}
                         <input type="file" name="datei" id="datei">
-                        <button type="submit">Berichte hochladen (JSON, CSV, XML)</button>
+                        <button type="submit" class="sperrbutton">Berichte hochladen (JSON, CSV, XML)</button>
                     </form>
                 {% endif %}
 

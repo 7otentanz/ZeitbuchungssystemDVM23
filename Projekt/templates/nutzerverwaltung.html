@@ -89,6 +89,19 @@
                     {% endfor %}
                     <hr>
                 </div>
+
+                <div id="antragmodulhandbuch">
+                    <form method="post" action="antragmodulhandbuch">
+                        {% csrf_token %}
+                        <label for="antragmodulhandbuch">
+                            <b>Hat sich am Modulhandbuch des Studiengangs etwas verändert?</b><br>
+                            Gehören Module in ein anderes Semester als bisher? Haben sich Modulnamen oder Modulnummern geändert? Die gesamte Struktur?<br>
+                            Lass es uns wissen, damit wir das entsprechend anpassen können!<br>
+                            <textarea type="text" name="text" rows="10" cols="50" placeholder="Beschreibe möglichst ausführlich, welche Änderungen es gibt." required></textarea><br>
+                            <button type="submit" class="berechtigungsbutton">Antrag abschicken!</button>
+                        </label>
+                    </form>
+                </div>
             {% endif %}
 
             {% if request.session.berechtigung == "vip" %}
