@@ -53,6 +53,11 @@
                         {% csrf_token %}
                         <button type="submit" class="downloadbutton">Alle Berichte als <b>.pdf</b> herunterladen</button>
                     </form>
+                    <form method="post" enctype="multipart/form-data" action="{% url 'berichtehochladen' %}">
+                        {% csrf_token %}
+                        <input type="file" name="datei" id="datei">
+                        <button type="submit">Berichte hochladen (JSON, CSV, XML)</button>
+                    </form>
                 {% endif %}
 
                 {% for bericht in alleBerichte %}

@@ -33,6 +33,7 @@ urlpatterns = [
     path('csvdownload', views.csvdownload, name='csvdownload'),
     path('xmldownload', views.xmldownload, name='xmldownload'),
     path('pdfdownload', views.pdfdownload, name='pdfdownload'),
+    path('berichtehochladen', views.berichtehochladen, name="berichtehochladen"),
     path('nutzerverwaltung', views.nutzerverwaltung, name='nutzerverwaltung'),
     path('login', views.login, name='login'),
     path('nutzeranmelden', views.nutzerAnmelden, name='nutzerAnmelden'),
