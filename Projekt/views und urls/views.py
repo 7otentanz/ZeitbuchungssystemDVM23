@@ -377,13 +377,9 @@ def berichtehochladen(request):
 		dateiname= hochgeladenedatei.name
 		jsonDatei = os.path.join(speicherpfadJSON, "Nutzerberichte", f"berichte_{matrikelnummer}.json")
 
-		if os.path.exists(jsonDatei):
-			with open(jsonDatei, "r", encoding="utf-8") as datei:
-				daten = json.load(datei)
-				alteBerichte = daten.get("Berichte",[])
-		else:
-			alteBerichte = []
-
+		with open(jsonDatei, "r", encoding="utf-8") as datei:
+			daten = json.load(datei)
+			alteBerichte = daten.get("Berichte",[])
 		if dateiname.endswith(".json"):
 			neueBerichte = json.load(hochgeladenedatei)
 		elif dateiname.endswith(".csv"):
@@ -395,26 +391,15 @@ def berichtehochladen(request):
 			neueBerichte =[]
 			for einbericht in tree.xpath(".//Bericht"):
 				pass
-
-		for neuerbericht in neueBerichte["Berichte"]:
-			existiert = False
+		for neuerbericht in neueBerichte:
 			for alterbericht in alteBerichte:
 				if alterbericht["id"] == neuerbericht["id"]:
 					alterbericht.update(neuerbericht)
-					existiert = True
-					break
-			if not existiert:
+				else:
 					alteBerichte.append(neuerbericht)
 
-		alleBerichte = {"Berichte": alteBerichte}
-
-		with open(jsonDatei, "w", encoding="utf-8") as datei:
-			json.dump(alleBerichte, datei, indent=4)
-		
-		parameter = loginPruefen(request)
-		parameter.update(nutzerberichte(request))
-
-		return render(request, "lassMichDasZusammenfassen.html", parameter)
+		### Berichte wieder abspeichern
+		### return render... zusammenfassung
 
 ### Berechtigungsantrag verschicken, für alle, die noch nicht Admin sind ###
 
