@@ -14,8 +14,8 @@
   ~~6.1 Sie können ihre Daten in einer maschinenlesbaren Struktur ihrer Wahl - JSON, CSV, oder XML, runterladen können.~~  
   6.2 Sie können ihre Daten hochladen um so die Online-Daten zu überschreiben.  
   ~~6.3 VIP Anwender können Administratoren werden, wenn sie es beantragen und ein Administrator das genehmigt hat.~~  
-8. Für Administratoren gilt, zusätzlich zu dem was für VIP Anwender gilt:  
-  7.1 Sie können festlegen zu welchen Modulen berichtet werden kann.  
+~~8. Für Administratoren gilt, zusätzlich zu dem was für VIP Anwender gilt:~~  
+  ~~7.1 Sie können festlegen zu welchen Modulen berichtet werden kann.~~  
   ~~7.2 Sie können VIP-Ansuchen genehmigen.~~  
   ~~7.3 Sie können Administrator-Ansuchen genehmigen.~~  
   ~~7.4 Sie können sehen, welche Anwender es im System gibt und welche Rechte / Rollen diese haben.~~  
