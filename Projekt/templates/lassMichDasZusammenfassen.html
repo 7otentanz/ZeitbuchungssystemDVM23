@@ -38,6 +38,9 @@
             {% endif %}
 
             {% if request.session.berechtigung == "nutzer" or request.session.berechtigung == "vip" or request.session.berechtigung == "admin" %}
+
+                <img src="{% static 'Nutzerberichte/diagramm_{{ matrikelnummer }}.png' %}" alt="Tortendiagramm deiner Berichte">
+
                 {% if request.session.berechtigung == "vip" or request.session.berechtigung == "admin" %}
                     <form method="post" action="{% url 'jsondownload' %}" class="downloadbuttonform">
                         {% csrf_token %}

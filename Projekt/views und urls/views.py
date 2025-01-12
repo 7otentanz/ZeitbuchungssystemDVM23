@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from datetime import datetime, timedelta
 import os
+import matplotlib.pyplot as plot		# Achtung, matplotlib muss IN DER VIRTUAL ENVIRONMENT installiert werden! ### pip install matplotlib ###
+import numpy as np
 import json
 import csv
 from lxml import etree	# Achtung, lxml muss IN DER VIRTUAL ENVIRONMENT installiert werden! ### sudo pip install lxml ###
@@ -38,6 +40,61 @@ def nutzerberichte(request):
 		alleBerichte = []
 	parameter = {"alleBerichte": alleBerichte}
 	return parameter
+
+def diagrammberichte(request):
+	matrikelnummer = request.session["matrikelnummer"]
+	jsonDatei = os.path.join(speicherpfadJSON, "Nutzerberichte", f"berichte_{matrikelnummer}.json")
+
+	gesamtarbeitszeit = []
+	technischeDimension = []
+	verwaltungsmanagement = []
+	rechtlicheGrundlagen = []
+	digitalLeadership = []
+	bachelorarbeit = []
+
+	with open(jsonDatei, "r", encoding="utf-8") as datei:
+		daten = json.load(datei)
+		alleBerichte = daten.get("Berichte", [])
+	
+	for bericht in alleBerichte:
+		gesamtarbeitszeit.append(bericht["arbeitszeit"])
+		modul = bericht["teilmodul"].split(".")
+		if modul[0] == "1":
+			technischeDimension.append(int(bericht["arbeitszeit"]))
+		elif modul[0] == "2":
+			verwaltungsmanagement.append(int(bericht["arbeitszeit"]))
+		elif modul[0] == "3":
+			rechtlicheGrundlagen.append(int(bericht["arbeitszeit"]))
+		elif modul[0] == "4":
+			digitalLeadership.append(int(bericht["arbeitszeit"]))
+		elif modul[0] == "7":
+			bachelorarbeit.append(int(bericht["arbeitszeit"]))
+		else:
+			pass
+
+	technischeDimensionSumme = sum(technischeDimension)
+	verwaltungsmanagementSumme = sum(verwaltungsmanagement)
+	rechtlicheGrundlagenSumme = sum(rechtlicheGrundlagen)
+	digitalLeadershipSumme = sum(digitalLeadership)
+	bachelorarbeitSumme = sum(bachelorarbeit)
+
+	modulgruppen = "Technische Dimension der Digitalisierung", "Verwaltungsmanagement", "Rechtliche Grundlagen der öffentlichen Verwaltung", "Digital Leadership", "Bachelorarbeit"
+	zeiten = [technischeDimensionSumme, verwaltungsmanagementSumme, rechtlicheGrundlagenSumme, digitalLeadershipSumme, bachelorarbeitSumme]
+
+	fig, ax = plot.subplots()
+	ax.pie(zeiten, labels=modulgruppen, autopct="%1.1f%%")
+	diagrammPNG = os.path.join(speicherpfadJSON, "Nutzerberichte", f"diagramm_{matrikelnummer}.png")
+	plot.savefig(diagrammPNG, format="png")
+	if os.path.exists(diagrammPNG):
+		print("Ja, ist da.")
+	else:
+		print("Nein, ist nicht da.")
+	print("Datei geschrieben.")
+	plot.close(fig)
+	if os.path.exists(diagrammPNG):
+		print("Ja, existiert immer noch!")
+	else:
+		print("Jetzt ist sie weg!")
 
 def berechtigungsantraege(request):
 	jsonDatei = os.path.join(speicherpfadJSON, "berechtigungsantraege.json")
@@ -92,11 +149,19 @@ def kuerzlichabgeschlossen(request):
 		return render (request,'kuerzlichAbgeschlossen.html')
 
 def lassmichdaszusammenfassen(request):
+	diagrammberichte(request)
+	print("Fürs erste alles korrekt!")
 	try:
 		parameter = loginPruefen(request)
 		parameter.update(nutzerberichte(request))
+		print("Alles korrekt geladen!")
+		if os.path.exists("var/www/static/Nutzerberichte/diagramm_987654.png"):
+			print("Jo, ist da!!!")
+		else:
+			print("Nope, wegh!")
 		return render(request, 'lassMichDasZusammenfassen.html', parameter)
 	except:
+		print("Irgendwas passt nicht!")
 		return render (request,'lassMichDasZusammenfassen.html')
 
 def nutzerverwaltung(request):
