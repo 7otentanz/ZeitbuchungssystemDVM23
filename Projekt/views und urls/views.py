@@ -78,23 +78,20 @@ def diagrammberichte(request):
 	digitalLeadershipSumme = sum(digitalLeadership)
 	bachelorarbeitSumme = sum(bachelorarbeit)
 
-	modulgruppen = "Technische Dimension der Digitalisierung", "Verwaltungsmanagement", "Rechtliche Grundlagen der öffentlichen Verwaltung", "Digital Leadership", "Bachelorarbeit"
+	modulgruppen = "Technische Dimension\nder Digitalisierung", "Verwaltungsmanagement", "Rechtliche Grundlagen\nder öff. Verwaltung", "Digital Leadership", "Bachelorarbeit"
 	zeiten = [technischeDimensionSumme, verwaltungsmanagementSumme, rechtlicheGrundlagenSumme, digitalLeadershipSumme, bachelorarbeitSumme]
+	gesamtarbeitszeit = sum(zeiten)
 
 	fig, ax = plot.subplots()
-	ax.pie(zeiten, labels=modulgruppen, autopct="%1.1f%%")
+	ax.pie(zeiten, labels=modulgruppen, autopct= lambda p:f"{p: .1f}%\n{p*gesamtarbeitszeit/100: .0f} Minuten")
 	diagrammPNG = os.path.join(speicherpfadJSON, "Nutzerberichte", f"diagramm_{matrikelnummer}.png")
-	plot.savefig(diagrammPNG, format="png")
-	if os.path.exists(diagrammPNG):
-		print("Ja, ist da.")
-	else:
-		print("Nein, ist nicht da.")
-	print("Datei geschrieben.")
+	with open(diagrammPNG, "w") as leereDatei:
+		leereDatei.write("Kein Inhalt.")
+	plot.savefig(diagrammPNG, format="png", facecolor="#c6debc")
 	plot.close(fig)
-	if os.path.exists(diagrammPNG):
-		print("Ja, existiert immer noch!")
-	else:
-		print("Jetzt ist sie weg!")
+
+	parameter = {"Gesamtarbeitszeit": gesamtarbeitszeit}
+	return parameter
 
 def berechtigungsantraege(request):
 	jsonDatei = os.path.join(speicherpfadJSON, "berechtigungsantraege.json")
@@ -150,18 +147,12 @@ def kuerzlichabgeschlossen(request):
 
 def lassmichdaszusammenfassen(request):
 	diagrammberichte(request)
-	print("Fürs erste alles korrekt!")
 	try:
 		parameter = loginPruefen(request)
 		parameter.update(nutzerberichte(request))
-		print("Alles korrekt geladen!")
-		if os.path.exists("var/www/static/Nutzerberichte/diagramm_987654.png"):
-			print("Jo, ist da!!!")
-		else:
-			print("Nope, wegh!")
+		parameter.update(diagrammberichte(request))
 		return render(request, 'lassMichDasZusammenfassen.html', parameter)
 	except:
-		print("Irgendwas passt nicht!")
 		return render (request,'lassMichDasZusammenfassen.html')
 
 def nutzerverwaltung(request):
@@ -426,12 +417,14 @@ def pdfdownload(request):
 		pdf = FPDF()
 		pdf.add_page()
 		pdf.set_fill_color(255, 189, 89)
-		pdf.rect(0, 0, 210, 297, "F")
+		pdf.rect(0, 0, 210, 33.5, "F")
 		pdf.image(os.path.join(speicherpfadJSON, "Logoentwurf.png"), x=5, y=5, w=37.5, h=28.5)
 
 		pdf.set_font("Arial", style="B", size=16)
 		pdf.cell(0, 11, f"Berichte von {matrikelnummer}", ln=True, align='C')
-		pdf.ln(10)
+		pdf.ln(15)
+		pdf.image(os.path.join(speicherpfadJSON, "Nutzerberichte", f"diagramm_{matrikelnummer}.png"), x=40, y=pdf.get_y(), w=130)
+		pdf.ln(100)
 		pdf.line(10, pdf.get_y(), 200, pdf.get_y())
 		
 		for bericht in downloadberichte:

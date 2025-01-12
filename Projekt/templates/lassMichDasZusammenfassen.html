@@ -38,8 +38,10 @@
             {% endif %}
 
             {% if request.session.berechtigung == "nutzer" or request.session.berechtigung == "vip" or request.session.berechtigung == "admin" %}
-
-                <img src="{% static 'Nutzerberichte/diagramm_{{ matrikelnummer }}.png' %}" alt="Tortendiagramm deiner Berichte">
+                <p class="tortentext">Du hast bisher {{ Gesamtarbeitszeit }} Minuten konstruktive Arbeitszeit für dein Studium aufgewendet - herzlichen Glückwunsch!</p>
+                <p class="tortentext">Hier kannst du sehen, wie die prozentuale Verteilung auf die Modulgruppen aussieht:</p>
+                <img src="/static/Nutzerberichte/diagramm_{{ matrikelnummer }}.png" alt="Tortendiagramm deiner Berichte" class="tortendiagramm"><br>
+                <hr>
 
                 {% if request.session.berechtigung == "vip" or request.session.berechtigung == "admin" %}
                     <form method="post" action="{% url 'jsondownload' %}" class="downloadbuttonform">

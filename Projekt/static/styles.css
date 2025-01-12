@@ -120,6 +120,15 @@
 
 /* ### STYLING LASSMICHDASZUSAMMENFASSEN ### */
 
+    .tortentext {
+        margin-top: 0.5%;
+        margin-left: 1%;
+    }
+
+    .tortendiagramm {
+        margin-left: 2.5%;
+    }
+
     .downloadbuttonform {
         display: inline-block;
     }
