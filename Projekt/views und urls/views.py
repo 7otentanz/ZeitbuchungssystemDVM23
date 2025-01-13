@@ -464,15 +464,23 @@ def berichtehochladen(request):
 			neueBerichte = json.load(hochgeladenedatei)
 
 		elif dateiname.endswith(".csv"):
-			inhaltcsv = hochgeladenedatei.text
+			inhaltcsv = hochgeladenedatei.read().decode("utf-8")
 			csvinhalt = csv.DictReader(inhaltcsv.splitlines(), delimiter=";")
-			neueBerichte = list(csvinhalt)
+			hochgeladeneberichte = []
+			for bericht in csvinhalt:
+				hochgeladeneberichte.append(bericht)
+			neueBerichte = {"Berichte": hochgeladeneberichte}
 
 		elif dateiname.endswith(".xml"):
 			tree = etree.parse(hochgeladenedatei)
-			neueBerichte =[]
+			neueBerichte = {"Berichte": []}
 			for einbericht in tree.xpath(".//Bericht"):
-				pass
+				bericht = {}
+				for detail in einbericht:
+					bericht[detail.tag] = detail.text
+				neueBerichte["Berichte"].append(bericht)
+		else:
+			return HttpResponse("<script>alert('Verwende .json, .csv oder .xml!');window.history.back()</script>")
 
 		for neuerbericht in neueBerichte["Berichte"]:
 			existiert = False
@@ -488,18 +496,15 @@ def berichtehochladen(request):
 
 		with open(jsonDatei, "w", encoding="utf-8") as datei:
 			json.dump(alleBerichte, datei, indent=4)
-		
-		parameter = loginPruefen(request)
-		parameter.update(nutzerberichte(request))
 
-		return render(request, "lassMichDasZusammenfassen.html", parameter)
+		return redirect("lassMichDasZusammenfassen")
 
 ### Email senden - allgemeine Funktion ###
 
 def emailsenden(emails, betreff, inhalt):
 
-	adresse = "tenpm.app@gmail.com" #Hier neue Mailadresse
-	passwort = "gouiipozoxvkecgl " # Hier neues App Passwort
+	adresse = "tenpm.app@gmail.com"
+	passwort = "gouiipozoxvkecgl "
 
 	server = smtplib.SMTP_SSL("smtp.gmail.com", 465)
 	server.login(adresse, passwort)
