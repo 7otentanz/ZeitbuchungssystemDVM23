@@ -83,7 +83,7 @@ def diagrammberichte(request):
 	gesamtarbeitszeit = sum(zeiten)
 
 	fig, ax = plot.subplots()
-	ax.pie(zeiten, labels=modulgruppen, autopct= lambda p:f"{p: .1f}%\n{p*gesamtarbeitszeit/100: .0f} Minuten")
+	ax.pie(zeiten, labels=modulgruppen, autopct= lambda p:f"{p: .1f}%\n{p*gesamtarbeitszeit/100: .0f} Minuten")		# "p" ist der Prozentwert, alles nach dem Doppelpunkt die Formatierung der Darstellung. lambda ist ein einmalige funktionsaufruf ohne dafür eine eigene Funktion definieren zu müssen... oder so...
 	diagrammPNG = os.path.join(speicherpfadJSON, "Nutzerberichte", f"diagramm_{matrikelnummer}.png")
 	with open(diagrammPNG, "w") as leereDatei:
 		leereDatei.write("Kein Inhalt.")

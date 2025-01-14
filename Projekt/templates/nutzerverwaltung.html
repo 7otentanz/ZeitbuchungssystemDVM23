@@ -46,9 +46,14 @@
 
                 {% if request.session.berechtigung == "nutzer" or request.session.berechtigung == "vip" %}
                 <br>
-                <b>Nutzer</b> können blablabla Text. <br>
-                <b>Vips</b> können zusätzlich blablabla Text. <br>
-                <b>Admins</b> können, zusätzlich zu allem was vip und nutzer können blablabla Text...
+                <b>Nutzer</b> können ihre Arbeitszeit tracken und dazugehörige Berichte anlegen sowie kürzlich abgeschlossene Berichte verändern.<br>
+                Sie können den Status als VIP beantragen. <br>
+                <b>VIPs</b> können, zusätzlich zu den Funktionen die auch Nutzern bereitstehen, ihre Berichte in selbstgewählten Formaten herunterladen<br>
+                Sie können auch Berichte in selbstgewählten Formaten hochladen um die gespeicherten Berichte in TenPM zu ergänzen. <br>
+                VIPs können den Status als Admin beantragen. <br>
+                <b>Admins</b> können, zusätzlich zu den Funktionen die auch Nutzern und VIPs bereitstehen, Statusbeantragungen von Nutzern und VIPs genehmigen oder ablehnen. <br>
+                Sie sehen die Liste aller registrierter Benutzer von TenPM sowie ihren Status, und können diese bei Bedarf sperren. <br>
+                Admins können den Webmastern über ein Formular kommende Änderungen am Modulhandbuch mitteilen.
                 <hr>
                 {% endif %}
             </div>
