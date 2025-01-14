@@ -296,7 +296,7 @@ def berichtAnlegen(request):
 				json.dump({"Berichte": bestehendeBerichte}, datei, indent=4)
 
 			parameter = loginPruefen(request)
-			parameter.update({"id": None, "teilmodul" : teilmodul}) #Id solle eigentlich "gelöscht" werden, hier also >id: None<?
+			parameter.update({"teilmodul" : teilmodul}) #Id solle eigentlich "gelöscht" werden, hier also >id: None<?
 			return render(request, 'woranArbeitestDu.html', parameter)
 
 ### Bericht mit einem Text versehen ###

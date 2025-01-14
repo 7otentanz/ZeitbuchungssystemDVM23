@@ -2,6 +2,7 @@
 
 **Allgemeines**
 CI und Logo ändern.
+Optimierung für mobile Nutzung
 
 **Woran Arbeitest Du**
 Teilmodule werden zu Projekten.
