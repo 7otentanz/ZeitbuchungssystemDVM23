@@ -234,7 +234,7 @@ def nutzerAnmelden(request):
 				request.session["semester"] = semester
 				berechtigung = daten["Benutzer"][matrikelnummer]["berechtigung"]
 				request.session["berechtigung"] = berechtigung
-				return render(request, "woranArbeitestDu.html", {"berechtigung": berechtigung, "matrikelnummer": matrikelnummer, "semester": semester})
+				return redirect("woranArbeitestDu")
 			
 			elif passwort != daten["Benutzer"][matrikelnummer]["passwort"]:
 				return HttpResponse("<script>alert('Falsches Passwort!');window.history.back()</script>")
@@ -247,8 +247,7 @@ def nutzerAnmelden(request):
 def nutzerAbmelden(request):
 
 	request.session.flush()
-	parameter = loginPruefen(request)
-	return render(request, "woranArbeitestDu.html", parameter)
+	return redirect("woranArbeitestDu")
 
 ### Bericht anlegen und mit einer Startzeit versehen ###
 
