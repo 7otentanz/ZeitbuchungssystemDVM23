@@ -52,46 +52,50 @@ def diagrammberichte(request):
 	digitalLeadership = []
 	bachelorarbeit = []
 
-	with open(jsonDatei, "r", encoding="utf-8") as datei:
-		daten = json.load(datei)
-		alleBerichte = daten.get("Berichte", [])
+	if os.path.isfile(jsonDatei):
+		with open(jsonDatei, "r", encoding="utf-8") as datei:
+			daten = json.load(datei)
+			alleBerichte = daten.get("Berichte", [])
+		
+		for bericht in alleBerichte:
+			gesamtarbeitszeit.append(bericht["arbeitszeit"])
+			modul = bericht["teilmodul"].split(".")
+			if modul[0] == "1":
+				technischeDimension.append(int(bericht["arbeitszeit"]))
+			elif modul[0] == "2":
+				verwaltungsmanagement.append(int(bericht["arbeitszeit"]))
+			elif modul[0] == "3":
+				rechtlicheGrundlagen.append(int(bericht["arbeitszeit"]))
+			elif modul[0] == "4":
+				digitalLeadership.append(int(bericht["arbeitszeit"]))
+			elif modul[0] == "7":
+				bachelorarbeit.append(int(bericht["arbeitszeit"]))
+			else:
+				pass
+
+		technischeDimensionSumme = sum(technischeDimension)
+		verwaltungsmanagementSumme = sum(verwaltungsmanagement)
+		rechtlicheGrundlagenSumme = sum(rechtlicheGrundlagen)
+		digitalLeadershipSumme = sum(digitalLeadership)
+		bachelorarbeitSumme = sum(bachelorarbeit)
+
+		modulgruppen = "Technische Dimension\nder Digitalisierung", "Verwaltungsmanagement", "Rechtliche Grundlagen\nder öff. Verwaltung", "Digital Leadership", "Bachelorarbeit"
+		zeiten = [technischeDimensionSumme, verwaltungsmanagementSumme, rechtlicheGrundlagenSumme, digitalLeadershipSumme, bachelorarbeitSumme]
+		gesamtarbeitszeit = sum(zeiten)
+
+		fig, ax = plot.subplots()
+		ax.pie(zeiten, labels=modulgruppen, autopct= lambda p:f"{p: .1f}%\n{p*gesamtarbeitszeit/100: .0f} Minuten")		# "p" ist der Prozentwert, alles nach dem Doppelpunkt die Formatierung der Darstellung. lambda ist ein einmalige funktionsaufruf ohne dafür eine eigene Funktion definieren zu müssen... oder so...
+		diagrammPNG = os.path.join(speicherpfadJSON, "Nutzerberichte", f"diagramm_{matrikelnummer}.png")
+		with open(diagrammPNG, "w") as leereDatei:
+			leereDatei.write("Kein Inhalt.")
+		plot.savefig(diagrammPNG, format="png", facecolor="#c6debc")
+		plot.close(fig)
+
+		parameter = {"Gesamtarbeitszeit": gesamtarbeitszeit}
+		return parameter
 	
-	for bericht in alleBerichte:
-		gesamtarbeitszeit.append(bericht["arbeitszeit"])
-		modul = bericht["teilmodul"].split(".")
-		if modul[0] == "1":
-			technischeDimension.append(int(bericht["arbeitszeit"]))
-		elif modul[0] == "2":
-			verwaltungsmanagement.append(int(bericht["arbeitszeit"]))
-		elif modul[0] == "3":
-			rechtlicheGrundlagen.append(int(bericht["arbeitszeit"]))
-		elif modul[0] == "4":
-			digitalLeadership.append(int(bericht["arbeitszeit"]))
-		elif modul[0] == "7":
-			bachelorarbeit.append(int(bericht["arbeitszeit"]))
-		else:
-			pass
-
-	technischeDimensionSumme = sum(technischeDimension)
-	verwaltungsmanagementSumme = sum(verwaltungsmanagement)
-	rechtlicheGrundlagenSumme = sum(rechtlicheGrundlagen)
-	digitalLeadershipSumme = sum(digitalLeadership)
-	bachelorarbeitSumme = sum(bachelorarbeit)
-
-	modulgruppen = "Technische Dimension\nder Digitalisierung", "Verwaltungsmanagement", "Rechtliche Grundlagen\nder öff. Verwaltung", "Digital Leadership", "Bachelorarbeit"
-	zeiten = [technischeDimensionSumme, verwaltungsmanagementSumme, rechtlicheGrundlagenSumme, digitalLeadershipSumme, bachelorarbeitSumme]
-	gesamtarbeitszeit = sum(zeiten)
-
-	fig, ax = plot.subplots()
-	ax.pie(zeiten, labels=modulgruppen, autopct= lambda p:f"{p: .1f}%\n{p*gesamtarbeitszeit/100: .0f} Minuten")		# "p" ist der Prozentwert, alles nach dem Doppelpunkt die Formatierung der Darstellung. lambda ist ein einmalige funktionsaufruf ohne dafür eine eigene Funktion definieren zu müssen... oder so...
-	diagrammPNG = os.path.join(speicherpfadJSON, "Nutzerberichte", f"diagramm_{matrikelnummer}.png")
-	with open(diagrammPNG, "w") as leereDatei:
-		leereDatei.write("Kein Inhalt.")
-	plot.savefig(diagrammPNG, format="png", facecolor="#c6debc")
-	plot.close(fig)
-
-	parameter = {"Gesamtarbeitszeit": gesamtarbeitszeit}
-	return parameter
+	else:
+		pass
 
 def berechtigungsantraege(request):
 	jsonDatei = os.path.join(speicherpfadJSON, "berechtigungsantraege.json")

@@ -28,7 +28,7 @@
             <div id="login" class="tab"><a href="{% url 'login' %}">Einloggen & Loslegen!</a></div>
             {% endif %}
             {% if request.session.matrikelnummer %}
-            <div id="nutzerverwaltung" class="nutzer-tab nutzer-aktiv"><a href="{% url 'nutzerverwaltung' %}">Nutzerverwaltung</a></div>
+            <div id="nutzerverwaltung" class="nutzer-tab"><a href="{% url 'nutzerverwaltung' %}">Nutzerverwaltung</a></div>
             {% endif %}
         </div>
 
