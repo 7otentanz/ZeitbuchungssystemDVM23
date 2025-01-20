@@ -275,9 +275,10 @@ def berichtAnlegen(request):
 			with open(jsonDatei, "w", encoding="utf-8") as datei:
 				json.dump({"Berichte": aktualisierteBerichte}, datei, indent=4)
 			
-			parameter = loginPruefen(request)
-			parameter.update({"id": str(neuerBericht.id), "teilmodul": str(neuerBericht.teilmodul)})
+			request.session["id"] = str(neuerBericht.id)
+			request.session["teilmodul"] = teilmodul
 
+			parameter = loginPruefen(request)
 			return render(request, 'woranArbeitestDu.html', parameter)
 		
 		else:
@@ -295,8 +296,11 @@ def berichtAnlegen(request):
 			with open(jsonDatei, "w", encoding="utf-8") as datei:
 				json.dump({"Berichte": bestehendeBerichte}, datei, indent=4)
 
+			request.session.pop("id", None)
+			request.session.pop("teilmodul", None)
+
 			parameter = loginPruefen(request)
-			parameter.update({"teilmodul" : teilmodul})
+
 			return render(request, 'woranArbeitestDu.html', parameter)
 
 ### Bericht mit einem Text versehen ###
