@@ -88,7 +88,7 @@ def diagrammberichte(request):
 		diagrammPNG = os.path.join(speicherpfadJSON, "Nutzerberichte", f"diagramm_{matrikelnummer}.png")
 		with open(diagrammPNG, "w") as leereDatei:
 			leereDatei.write("Kein Inhalt.")
-		plot.savefig(diagrammPNG, format="png", facecolor="#c6debc")
+		plot.savefig(diagrammPNG, format="png", transparent=True)
 		plot.close(fig)
 
 		parameter = {"Gesamtarbeitszeit": gesamtarbeitszeit}
