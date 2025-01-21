@@ -261,7 +261,7 @@ def berichtAnlegen(request):
 		jsonDatei = os.path.join(speicherpfadJSON, "Nutzerberichte", f"berichte_{matrikelnummer}.json")
 		
 		if not id:
-			startzeit = datetime.now()
+			startzeit = datetime.now() + timedelta(hours=1)
 			try:
 				with open(jsonDatei, "r", encoding="utf-8") as datei:
 					daten = json.load(datei)
@@ -282,7 +282,7 @@ def berichtAnlegen(request):
 			return render(request, 'woranArbeitestDu.html', parameter)
 		
 		else:
-			endzeit = datetime.now()
+			endzeit = datetime.now() + timedelta(hours=1)
 
 			with open(jsonDatei, "r", encoding="utf-8") as datei:
 				daten = json.load(datei)
@@ -291,6 +291,8 @@ def berichtAnlegen(request):
 			for bericht in bestehendeBerichte:
 				if str(bericht["id"]) == id:
 					bericht["endzeit"] = endzeit.strftime("%R %d.%m.%y")
+					arbeitszeit = datetime.strptime(bericht["endzeit"], "%H:%M %d.%m.%y") - datetime.strptime(bericht["startzeit"], "%H:%M %d.%m.%y")
+					bericht["arbeitszeit"] = int(arbeitszeit.total_seconds()/60)
 					teilmodul = bericht["teilmodul"]
 					
 			with open(jsonDatei, "w", encoding="utf-8") as datei:
@@ -577,7 +579,8 @@ Danke für deine Unterstützung!
 		
 		emailsenden(adminmails, betreff, inhalt)
 
-		return redirect("nutzerverwaltung")
+		return HttpResponse("<script>alert('Antrag ist eingeganen und wird in den nächsten Tagen bearbeitet!');window.history.back()</script>")
+
 
 ### Anträge, die bearbeitet wurde, müssen auch wieder aus der Übersicht entfernt werden ###
 
