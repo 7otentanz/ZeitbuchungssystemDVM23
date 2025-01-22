@@ -40,7 +40,7 @@
             {% if request.session.berechtigung == "nutzer" or request.session.berechtigung == "vip" or request.session.berechtigung == "admin" %}
                 <p class="tortentext">Du hast bisher {{ Gesamtarbeitszeit }} Minuten konstruktive Arbeitszeit für dein Studium aufgewendet - herzlichen Glückwunsch!</p>
                 <p class="tortentext">Hier kannst du sehen, wie die prozentuale Verteilung auf die Modulgruppen aussieht:</p>
-                <img src="/static/Nutzerberichte/diagramm_{{ matrikelnummer }}.png" alt="Tortendiagramm deiner Berichte" class="tortendiagramm"><br>
+                <img src="/static/Nutzerberichte/diagramm_{{ matrikelnummer }}.png" alt="Tortendiagramm deiner Berichte - Lege Berichte an um die hier eine grafische Übersicht anzeigen zu lassen!" class="tortendiagramm"><br>
                 <hr>
 
                 {% if request.session.berechtigung == "vip" or request.session.berechtigung == "admin" %}

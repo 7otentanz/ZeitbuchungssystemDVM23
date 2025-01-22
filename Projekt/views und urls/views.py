@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from datetime import datetime, timedelta
 import os
 import matplotlib.pyplot as plot		# Achtung, matplotlib muss IN DER VIRTUAL ENVIRONMENT installiert werden! ### pip install matplotlib ###
-import numpy as np	# muss importiert werden, weil matplotlob damit arbeitet ###
+import numpy as np	# muss importiert werden, weil matplotlib damit arbeitet ###
 import json
 import csv
 from lxml import etree	# Achtung, lxml muss IN DER VIRTUAL ENVIRONMENT installiert werden! ### sudo pip install lxml ###
@@ -42,59 +42,60 @@ def nutzerberichte(request):
 	return parameter
 
 def diagrammberichte(request):
-	matrikelnummer = request.session["matrikelnummer"]
-	jsonDatei = os.path.join(speicherpfadJSON, "Nutzerberichte", f"berichte_{matrikelnummer}.json")
+	try:
+		matrikelnummer = request.session["matrikelnummer"]
+		jsonDatei = os.path.join(speicherpfadJSON, "Nutzerberichte", f"berichte_{matrikelnummer}.json")
 
+		technischeDimension = []
+		verwaltungsmanagement = []
+		rechtlicheGrundlagen = []
+		digitalLeadership = []
+		bachelorarbeit = []
 
-	technischeDimension = []
-	verwaltungsmanagement = []
-	rechtlicheGrundlagen = []
-	digitalLeadership = []
-	bachelorarbeit = []
+		if os.path.isfile(jsonDatei):
+			with open(jsonDatei, "r", encoding="utf-8") as datei:
+				daten = json.load(datei)
+				alleBerichte = daten.get("Berichte", [])
+			
+			for bericht in alleBerichte:
+				modul = bericht["teilmodul"].split(".")
+				if modul[0] == "1":
+					technischeDimension.append(int(bericht["arbeitszeit"]))
+				elif modul[0] == "2":
+					verwaltungsmanagement.append(int(bericht["arbeitszeit"]))
+				elif modul[0] == "3":
+					rechtlicheGrundlagen.append(int(bericht["arbeitszeit"]))
+				elif modul[0] == "4":
+					digitalLeadership.append(int(bericht["arbeitszeit"]))
+				elif modul[0] == "7":
+					bachelorarbeit.append(int(bericht["arbeitszeit"]))
+				else:
+					pass
 
-	if os.path.isfile(jsonDatei):
-		with open(jsonDatei, "r", encoding="utf-8") as datei:
-			daten = json.load(datei)
-			alleBerichte = daten.get("Berichte", [])
-		
-		for bericht in alleBerichte:
-			modul = bericht["teilmodul"].split(".")
-			if modul[0] == "1":
-				technischeDimension.append(int(bericht["arbeitszeit"]))
-			elif modul[0] == "2":
-				verwaltungsmanagement.append(int(bericht["arbeitszeit"]))
-			elif modul[0] == "3":
-				rechtlicheGrundlagen.append(int(bericht["arbeitszeit"]))
-			elif modul[0] == "4":
-				digitalLeadership.append(int(bericht["arbeitszeit"]))
-			elif modul[0] == "7":
-				bachelorarbeit.append(int(bericht["arbeitszeit"]))
-			else:
-				pass
+			technischeDimensionSumme = sum(technischeDimension)+1
+			verwaltungsmanagementSumme = sum(verwaltungsmanagement)+1
+			rechtlicheGrundlagenSumme = sum(rechtlicheGrundlagen)+1
+			digitalLeadershipSumme = sum(digitalLeadership)+1
+			bachelorarbeitSumme = sum(bachelorarbeit)+1
+			# +1 damit immer ein Diagramm gezeichnet werden kann, sonst wird durch 0 geteilt... #
 
-		technischeDimensionSumme = sum(technischeDimension)+1
-		verwaltungsmanagementSumme = sum(verwaltungsmanagement)+1
-		rechtlicheGrundlagenSumme = sum(rechtlicheGrundlagen)+1
-		digitalLeadershipSumme = sum(digitalLeadership)+1
-		bachelorarbeitSumme = sum(bachelorarbeit)+1
-		# +1 damit immer ein Diagramm gezeichnet werden kann, sonst wird durch 0 geteilt... #
+			modulgruppen = "Technische Dimension\nder Digitalisierung", "Verwaltungsmanagement", "Rechtliche Grundlagen\nder öff. Verwaltung", "Digital Leadership", "Bachelorarbeit"
+			zeiten = [technischeDimensionSumme, verwaltungsmanagementSumme, rechtlicheGrundlagenSumme, digitalLeadershipSumme, bachelorarbeitSumme]
+			gesamtarbeitszeit = sum(zeiten)
 
-		modulgruppen = "Technische Dimension\nder Digitalisierung", "Verwaltungsmanagement", "Rechtliche Grundlagen\nder öff. Verwaltung", "Digital Leadership", "Bachelorarbeit"
-		zeiten = [technischeDimensionSumme, verwaltungsmanagementSumme, rechtlicheGrundlagenSumme, digitalLeadershipSumme, bachelorarbeitSumme]
-		gesamtarbeitszeit = sum(zeiten)
+			fig, ax = plot.subplots()
+			ax.pie(zeiten, labels=modulgruppen, autopct= lambda p:f"{p: .1f}%\n{p*gesamtarbeitszeit/100: .0f} Minuten")		# "p" ist der Prozentwert, alles nach dem Doppelpunkt die Formatierung der Darstellung. lambda ist ein einmalige funktionsaufruf ohne dafür eine eigene Funktion definieren zu müssen... oder so...
+			diagrammPNG = os.path.join(speicherpfadJSON, "Nutzerberichte", f"diagramm_{matrikelnummer}.png")
+			with open(diagrammPNG, "w") as leereDatei:
+				leereDatei.write("Kein Inhalt.")
+			plot.savefig(diagrammPNG, format="png", transparent=True)
+			plot.close(fig)
 
-		fig, ax = plot.subplots()
-		ax.pie(zeiten, labels=modulgruppen, autopct= lambda p:f"{p: .1f}%\n{p*gesamtarbeitszeit/100: .0f} Minuten")		# "p" ist der Prozentwert, alles nach dem Doppelpunkt die Formatierung der Darstellung. lambda ist ein einmalige funktionsaufruf ohne dafür eine eigene Funktion definieren zu müssen... oder so...
-		diagrammPNG = os.path.join(speicherpfadJSON, "Nutzerberichte", f"diagramm_{matrikelnummer}.png")
-		with open(diagrammPNG, "w") as leereDatei:
-			leereDatei.write("Kein Inhalt.")
-		plot.savefig(diagrammPNG, format="png", transparent=True)
-		plot.close(fig)
-
-		parameter = {"Gesamtarbeitszeit": gesamtarbeitszeit}
-		return parameter
-	
-	else:
+			parameter = {"Gesamtarbeitszeit": gesamtarbeitszeit}
+			return parameter
+		else:
+			pass
+	except:
 		pass
 
 def berechtigungsantraege(request):
@@ -144,7 +145,6 @@ def kuerzlichabgeschlossen(request):
 				pass
 
 		parameter.update({"alleBerichte": berichteKuerzlich})
-
 		return render(request, 'kuerzlichAbgeschlossen.html', parameter)
 	except:
 		return render (request,'kuerzlichAbgeschlossen.html')
@@ -277,10 +277,7 @@ def berichtAnlegen(request):
 			
 			request.session["id"] = str(neuerBericht.id)
 			request.session["teilmodul"] = teilmodul
-
-			parameter = loginPruefen(request)
-			return render(request, 'woranArbeitestDu.html', parameter)
-		
+			return redirect("woranArbeitestDu")		
 		else:
 			endzeit = datetime.now() + timedelta(hours=1)
 
@@ -300,10 +297,7 @@ def berichtAnlegen(request):
 
 			request.session.pop("id", None)
 			request.session.pop("teilmodul", None)
-
-			parameter = loginPruefen(request)
-
-			return render(request, 'woranArbeitestDu.html', parameter)
+			return redirect("woranArbeitestDu")
 
 ### Bericht mit einem Text versehen ###
 
@@ -314,18 +308,18 @@ def berichtText(request):
 		id = request.POST.get("id")
 		text = request.POST.get("text")
 		matrikelnummer = request.session.get("matrikelnummer")
-	jsonDatei = os.path.join(speicherpfadJSON, "Nutzerberichte", f"berichte_{matrikelnummer}.json")
+		jsonDatei = os.path.join(speicherpfadJSON, "Nutzerberichte", f"berichte_{matrikelnummer}.json")
 
-	with open(jsonDatei, "r", encoding="utf-8") as datei:
-		daten = json.load(datei)
-		berichte = daten.get("Berichte",[])
+		with open(jsonDatei, "r", encoding="utf-8") as datei:
+			daten = json.load(datei)
+			berichte = daten.get("Berichte",[])
 
-	for bericht in berichte:
-		if bericht["id"] == id:
-			bericht["text"] = text
-		
-	with open(jsonDatei, "w", encoding="utf-8") as datei:
-		json.dump({"Berichte": berichte}, datei, indent=4)
+		for bericht in berichte:
+			if bericht["id"] == id:
+				bericht["text"] = text
+			
+		with open(jsonDatei, "w", encoding="utf-8") as datei:
+			json.dump({"Berichte": berichte}, datei, indent=4)
 
 def berichtTexterzaehl(request):
 	berichtText(request)
@@ -576,11 +570,8 @@ der Nutzer mit der Matrikelnummer {matrikelnummer} beantragt den Status {antragA
 Logge dich auf 10PM ein um den Antrag zu genehmigen oder abzulehnen!\n\n
 Danke für deine Unterstützung!
 """ 
-		
 		emailsenden(adminmails, betreff, inhalt)
-
-		return HttpResponse("<script>alert('Antrag ist eingeganen und wird in den nächsten Tagen bearbeitet!');window.history.back()</script>")
-
+		return HttpResponse("<script>alert('Antrag ist eingegangen und wird in den nächsten Tagen bearbeitet!');window.history.back()</script>")
 
 ### Anträge, die bearbeitet wurde, müssen auch wieder aus der Übersicht entfernt werden ###
 
